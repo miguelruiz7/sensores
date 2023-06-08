@@ -1,14 +1,17 @@
 <?php
-
+# Dependencias
   include('../backend/conexion.php');
   include('iconos.php');
 ?>
 
 <?php
+# Consulta de los espacios; consolidar para poder mostrar sus espacios de cada usuario
+
 $consulta = "SELECT * FROM esp_mst";
 $buscaEspacio = mysqli_query($conexion, $consulta);
 
 if(mysqli_num_rows($buscaEspacio)>0){
+  # Si existe un registro despliega toda la informacion que exista
   ?>
  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 ">
   <?php
@@ -27,12 +30,6 @@ if(mysqli_num_rows($buscaEspacio)>0){
               <div class="col text-center"><h6 class="card-subtitle mb-2 text-body-secondary"><?php echo $i_espacio_borde; ?><span class="badge bg-secondary">0</span></h6></div>
               <div class="col text-center"><h6 class="card-subtitle mb-2 text-body-secondary"><?php echo $i_personas; ?><span class="badge bg-secondary">0</span></h6></div>
             </div>
-        
-           <!-- <p class="card-text"><?php echo $i_detalles; ?><?php echo $datos['esp_desc']; ?></p> -->
-           
-           <!-- <a href="#" class="card-link">Card link</a> -->
-           <!-- <a href="#" class="card-link">Another link</a> -->
-
            <button class="btn btn-outline-dark">Ver detalles</button>
            <button class="btn btn-outline-danger" onclick="eliminarEspacio(<?php echo $datos['esp_id']; ?>)">Eliminar</button>
   
@@ -47,8 +44,8 @@ if(mysqli_num_rows($buscaEspacio)>0){
    <?php
 
 }else{
+  # Muestra alguna tarjeta que despliegue alguna informacion de que no hay ningun registro
   ?>
- 
   <div class="position-relative p-5 text-center bg-body">
     <?php echo $i_advertencia ?>
     <h1 class="text-body-emphasis">Aun no has creado espacios</h1>

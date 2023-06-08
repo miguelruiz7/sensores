@@ -54,16 +54,13 @@ switch($formulario){
   
           break;
 
-
-
-    
-
-
         default:
         echo 'Error al comunicar con el sistema';
         break;
 
           }}else{
-            echo "<script>alert('¿Qué estas haciendo?')</script>";
+            ?>
+           <script>alert('¿Qué estas haciendo?'); window.location.href='index.php';</script>
+            <?php
           }
 ?>

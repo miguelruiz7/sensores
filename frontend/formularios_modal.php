@@ -5,9 +5,8 @@
                           <div class="modal-body m-3">
                           <div id="notificacionesform" class="sticky-top"></div>
                            <div id="formularios_contenedor">
-
+                           <!-- Se vaciará el contenido del formulario -->
                           </div>
-                         
                         </div>
                       </div>
                     </div>

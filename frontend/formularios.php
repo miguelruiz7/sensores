@@ -4,6 +4,9 @@ include('iconos.php');
 
 
 
+// Guarda todos los formularios que se vallan ocupar en el sistema
+
+
 if(isset($_POST['formulario'])){
 $formulario = $_POST['formulario'];
 switch($formulario){
