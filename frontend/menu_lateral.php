@@ -35,7 +35,6 @@ $ruta_base = basename($_SERVER['PHP_SELF']);
          <?php echo $i_agregar; ?> Crear sección
       </button>
       <?php }  ?>
-
       </li>
 
    
@@ -49,6 +48,16 @@ $ruta_base = basename($_SERVER['PHP_SELF']);
             </li>
       <?php }  ?>
 
+      <!-- <li class="mb-1">
+        <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#config" aria-expanded="true">
+         <?php echo $i_ajustes; ?> Configuración
+        </button>
+        <div class="collapse" id="config">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-light d-inline-flex text-decoration-none rounded">Perfil</a></li>
+          </ul>
+        </div>
+      </li> -->
     </ul> 
 </div>
 
