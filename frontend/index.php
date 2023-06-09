@@ -1,7 +1,14 @@
 <?php
-
+include('../backend/conexion.php');
 include('../backend/info.php');
 include('iconos.php');
+
+include('../backend/controladorSesion.php');
+sesion_usr();
+// Almacenamos esto en variables
+$sesion=sesion_usr();
+$rol_defecto = rol_defecto($sesion, $conexion);
+
 
 ?>
 
@@ -18,6 +25,9 @@ include('iconos.php');
 
 <body id="cuerpo">
     <header id="notificaciones" class="sticky-top"></header>
+
+    <?php include('notificaciones.php'); ?>
+
 <div id="encabezado">
                 <!-- Apartado de botones y acciones o logos -->
                 <button class="btn text-light m-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuOffcanvas" aria-controls="offcanvasRight"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
@@ -40,8 +50,6 @@ include('iconos.php');
         </div>
 </div>
 
-
-
 <div class="album py-5">
     <div id="espacios"  class="container">
 
@@ -56,6 +64,16 @@ include('iconos.php');
 
 <!-- Formularios modales -->
 <?php include('formularios_modal.php'); ?>
+
+<!-- Notificaciones -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+<div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+    <div class="toast-body" id="mensaje"></div>
+    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div>
+</div>
 
     <script src="jquery/jquery.min.js"></script>
     <script src="js/app.js"></script>

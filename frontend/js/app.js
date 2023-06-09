@@ -3,10 +3,14 @@ $(document).ready(function() {
   cargarEspacios();
 });
 
-
 $(document).ready(function() {
   cargarSecciones();
 });
+
+ // Para que la vista se actualize cada 5 segundos
+ setInterval(function() {
+  cargarEspacios();
+}, 1000);
 
 
 function cargarEspacios(){
@@ -20,13 +24,11 @@ function cargarEspacios(){
         $('#espacios').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
       },
       error: function() {
-        alert('Ha ocurrido un error al cargar el archivo.');
+        //alert('Ha ocurrido un error al cargar el archivo.');
       }
     });
     });   
   }
-
-
   
 function cargarSecciones(){
   verificaConectividad(function() {
@@ -39,12 +41,11 @@ function cargarSecciones(){
         $('#secciones').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
       },
       error: function() {
-        alert('Ha ocurrido un error al cargar el archivo.');
+        //alert('Ha ocurrido un error al cargar el archivo.');
       }
     });
     });   
   }
-
 
 
 //Espacio
@@ -63,6 +64,22 @@ function formAgregarEsp(){
     });   
   }
 
+  function formModificarEsp(id){
+    verificaConectividad(function() {
+          var formulario = 'modificarEspacio';
+          $.ajax({
+                  url: "formularios.php",
+                  type: "POST",
+                  data: {id:id, formulario:formulario},
+                  success: function(contenido){
+                      $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      });   
+    }
+
+   
+ 
   
 function agregarEspacio() {
   verificaConectividad(function() {
@@ -118,6 +135,64 @@ function eliminarEspacio(id) {
   });    
 }
 
+
+  
+function modificarEspacio(id) {
+  verificaConectividad(function() {
+      verificarllenosForm("modificaEspacio", "notificacionesform",function() {
+          var nombre = $("#txt_esp_nom").val();
+          var tipoespacio = $("#txt_esp_espt_id").val();
+          var descripcion = $("#txt_esp_desc").val();
+          var area = $("#txt_esp_area").val();
+          var ubicacion = $("#txt_esp_geo").val();
+          var funcion = $("#funcion").val();
+  
+          $.ajax({
+                  url: "../backend/formularios.php",
+                  type: "POST",
+                  data: { id:id, 
+                          nombre:nombre,
+                          espacio:tipoespacio,
+                          descripcion:descripcion,
+                          area:area,
+                          ubicacion:ubicacion,
+                          funcion:funcion},
+                  success: function(errores){
+                      $("#notificaciones").html(errores);       
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+      });
+  });    
+}
+
+
+function eliminarUsuario(usuario,espacio) {
+  verificaConectividad(function() {
+    var funcion = "eliminarUsuario";
+          $.ajax({
+                  url: "../backend/formularios.php",
+                  type: "POST",
+                  data: {usuario:usuario,espacio:espacio, funcion:funcion},
+                  success: function(contenido){
+                    $("#notificaciones").html(contenido);
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+  });    
+}
+
+
 //Formulario para agregar una seccion
 function formAgregarSec(){
   verificaConectividad(function() {
@@ -134,19 +209,35 @@ function formAgregarSec(){
   }
 
 
+  //Ve a todos los usuarios
+function formUsuariosEsp(id){
+  verificaConectividad(function() {
+        var formulario = 'verUsuarios';
+        $.ajax({
+                url: "formularios.php",
+                type: "POST",
+                data: {id:id, formulario:formulario},
+                success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                }
+            });
+    });   
+  }
+
+
 
 function cerrarSesion() {
   verificaConectividad(function() {
     
           muestraMensajes("Se cerrará la sesión",'')
         window.setTimeout(function() {
-             location.href = 'logout';
+             location.href = '../backend/cerrarSesion.php';
          }, 3500);
   });   
   ocultarCanvas('menuOffcanvas'); 
 }
 
-function muestraMensajes(alerta, tipo){
+function muestraMensajesold(alerta, tipo){
   if(tipo == 'error'){
       var spinner = "<div class='spinner-grow text-light' role='status'><span class='visually-hidden'></span></div>";
       }else{
@@ -175,6 +266,13 @@ function muestraMensajesFormularios(alerta, formulario, tipo){
           $(this).remove(); 
       });
   }, 2500);  
+}
+
+function muestraMensajes(alerta){
+  //Se establece el mensaje en la etiqueta
+  $("#mensaje").html(alerta);  
+
+  $('.toast').toast('show');
 }
 
 //Carga las urls en el iframe main
@@ -258,6 +356,11 @@ function verificarllenosForm(formulario,notificacionform,funcion) {
            document.getElementById(formulario).reset();
       }
 
+      function revertirFormulario(){
+        var spinner = '<div class="container text-center"><div class="spinner-border text-light text-center" role="status"></div></div>';
+        $("#formularios_contenedor").html(spinner);
+      }
+
 
 window.setTimeout(function() {
   $(".alert").fadeTo(500, 0).slideUp(500, function(){
@@ -267,7 +370,15 @@ window.setTimeout(function() {
 
 
 
-                                                         
+       /* global bootstrap: false */
+(() => {
+  'use strict'
+  const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  tooltipTriggerList.forEach(tooltipTriggerEl => {
+    new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+})()
+                                                  
 
       
 

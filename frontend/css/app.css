@@ -7,6 +7,52 @@
   }
 
 
+/* Acceso */
+
+html,
+body {
+  height: 100%;
+}
+
+.valido {
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+.invalido {
+  padding-right: calc(1.5em + 0.75rem);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' fill='black' viewBox='0 0 16 16'><path d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/><path d='M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+}
+
+
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+#footer{
+  flex: auto;
+}
+
+#ultimo + div {
+    visibility:hidden;
+}
+
+
+
+
+
+
 body#cuerpo {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 18px;
@@ -26,6 +72,11 @@ background-color: var(--bgcolor);
 
 #contenidoformulario{
   background-color: var(--bgcolor);
+}
+
+#toast_alert{
+  background-color: var(--bgcolor);
+  color: white;
 }
 
 
@@ -134,7 +185,7 @@ iframe#main{
 }
 
 #contenedor {
-  background-color: rgb(252, 252, 252);
+  /*background-color: rgb(252, 252, 252);*/
   border-top: solid 4px rgb(7, 6, 105);
   margin-top: 2px;
   border-radius: 1px;

@@ -13,15 +13,19 @@ $ruta_base = basename($_SERVER['PHP_SELF']);
 
     <div class="mb-0 container-fluid bg-none text-center p-3 border-bottom" >
     <svg class="bd-placeholder-img rounded-circle" width="70" height="70" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="white"></rect><text x="40%" y="52%" fill="#084f88" dy=".3em">M</text></svg>
-<h5 class="fw-light text-light m-3">¡Hola!, Miguel Ruiz Zamora</h5>
-<button type="button" class="btn btn-outline-light" >Cerrar sesión</button>
+<h5 class="fw-light text-light m-3">¡Hola!, <?php echo $sesion; ?></h5>
+<button type="button" class="btn btn-outline-light" onclick="cerrarSesion()">Cerrar sesión</button>
 </div>
 
 <div class="mb-0 container-fluid bg-none text-center p-3 border-bottom mt-3" >
 <ul class="list-unstyled ps-0 ">
       <li class="mb-1">
        <!-- Botones para agregar -->
-
+      
+       <?php 
+       #Define si tiene el rol administrativo por defecto o el rol que se le haya asignado en el espacio
+       if($rol_defecto == 1){ 
+        ?>
        <?php if($ruta_base == 'index.php'){ ?>
             <!-- Agregar espacio -->
       <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarEsp(); ocultarCanvas('menuOffcanvas');">
@@ -36,6 +40,7 @@ $ruta_base = basename($_SERVER['PHP_SELF']);
       </button>
       <?php }  ?>
       </li>
+      <?php } ?>
 
    
       <?php if($ruta_base != 'index.php'){ ?>
