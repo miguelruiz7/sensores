@@ -15,7 +15,7 @@ function acceso($usuario,$password,$conexion){
         }
         
         //Valida si el usuario esta en la base de datos
-        $usr=mysqli_query($conexion,"SELECT usr_id FROM usr_mst WHERE usr_id = '$usuario';");
+        $usr=mysqli_query($conexion,"SELECT usr_usu FROM usr_mst WHERE usr_usu = '$usuario';");
         if (mysqli_num_rows($usr)==0)
         {
            /*  $errores .= "<div class='alert alert-dismissible bg-dark text-dark fade show' role='alert'><center>
@@ -40,7 +40,7 @@ function acceso($usuario,$password,$conexion){
         }
         
         //Valida si la contraseña coincide en la base de datos descifrada.
-    $usr=mysqli_query($conexion,"SELECT usr_con FROM usr_mst WHERE usr_id = '$usuario';");
+    $usr=mysqli_query($conexion,"SELECT usr_con FROM usr_mst WHERE usr_usu = '$usuario';");
     if (mysqli_num_rows($usr)>0)
     {
         $columnas = mysqli_fetch_array($usr);
@@ -56,12 +56,12 @@ function acceso($usuario,$password,$conexion){
             $clasespwd .= "<script>document.getElementById('contrasena').classList.remove('invalido');</script>";
             $clasespwd .= "<script>document.getElementById('contrasena').classList.add('valido');</script>";
             //Selecciona el usuario
-            $selusr=mysqli_query($conexion,"SELECT * FROM usr_mst WHERE usr_id = '$usuario';");
+            $selusr=mysqli_query($conexion,"SELECT * FROM usr_mst WHERE usr_usu = '$usuario';");
             if(mysqli_num_rows($selusr)>0){
                     $selusuario = mysqli_fetch_array($selusr);
                     $usuario = $selusuario['usr_id'];
             }
-            $_SESSION['usr_mst'] = $usuario;
+            $_SESSION['usr_id'] = $usuario;
 
            /* $errores .= "<div class='alert alert-dismissible bg-dark text-dark fade show' role='alert'><center>
             Bienvenido; $nombre. $alerta</center>
@@ -92,8 +92,8 @@ function acceso($usuario,$password,$conexion){
 
 
 function sesion_usr(){
-    if (isset($_SESSION['usr_mst'])) {
-        $sesion = $_SESSION['usr_mst'];
+    if (isset($_SESSION['usr_id'])) {
+        $sesion = $_SESSION['usr_id'];
     } else {
         $sesion = '';
        header('Location:acceso.php');
@@ -102,8 +102,11 @@ function sesion_usr(){
     return $sesion;
 }
 
+
+
+
 function sesion_login(){
-    if (isset($_SESSION['usr_mst'])) {
+    if (isset($_SESSION['usr_id'])) {
         header('Location: index.php');
     }
     return;
@@ -125,8 +128,8 @@ return $rol_defecto;
 }
 
 
-function detectarRolEspacio($sesion, $id, $conexion){         
-    $consulta = "SELECT * FROM esp_mst, aeu_mst WHERE aeu_usr_id = '$sesion' AND esp_id = '$id' AND esp_id = aeu_esp_id";
+function detectarRolEspacio($espacio, $sesion, $conexion){         
+    $consulta = "SELECT * FROM esp_mst, esp_det WHERE esp_esp_id = '$espacio' AND esp_usr_id = '$sesion'";
     $detectarol = mysqli_query($conexion, $consulta);
 
           if(mysqli_num_rows($detectarol)>0){
@@ -134,15 +137,30 @@ function detectarRolEspacio($sesion, $id, $conexion){
             $dato = mysqli_fetch_array($detectarol);
           }
 
-            $resultado = $dato['aeu_usrol_id'];
+            $resultado = $dato['esp_usrol_id'];
 
   return $resultado;
 }
 
 
 
+function detectarRolUsuario($sesion, $conexion){         
+  $consulta = "SELECT * FROM esp_det WHERE esp_usr_id = '$sesion'";
+  $detectarol = mysqli_query($conexion, $consulta);
+
+        if(mysqli_num_rows($detectarol)>0){
+          # Si existe un registro despliega toda la informacion que exista
+          $dato = mysqli_fetch_array($detectarol);
+        }
+
+          $resultado = $dato['esp_usrol_id'];
+
+return $resultado;
+}
+
+
 function cerrarsesion(){
-    unset($_SESSION["usr_mst"]);
+    unset($_SESSION["usr_id"]);
     if(isset($_GET['redirect'])) {
      header('Location: '.base64_decode($_GET['redirect']));  
     } else {

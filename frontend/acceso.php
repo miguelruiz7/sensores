@@ -1,12 +1,13 @@
-<?php include('../backend/info.php');
+<?php 
+#Dependencias
+include('../backend/info.php');
 include('iconos.php'); 
-
 include('../backend/controladorSesion.php');
+
+#Funciones
 sesion_login();
 
 ?>
-
-
 
 <!doctype html>
 <html lang="en">

@@ -45,7 +45,7 @@ $rol_defecto = rol_defecto($sesion, $conexion);
 
             <div id="contenedor">
                 <!-- aqui va el contenido de la paginación -->
-                <div id="contenedor_encabezado"><?php echo $i_espacios; ?><h1> Mis espacios</h1></div>
+                <div id="contenedor_encabezado"><h1> Mis espacios</h1></div>
             </div>
         </div>
 </div>

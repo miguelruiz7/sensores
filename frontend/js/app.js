@@ -172,13 +172,13 @@ function modificarEspacio(id) {
 }
 
 
-function eliminarUsuario(usuario,espacio) {
+function eliminarUsuario(usuario) {
   verificaConectividad(function() {
     var funcion = "eliminarUsuario";
           $.ajax({
                   url: "../backend/formularios.php",
                   type: "POST",
-                  data: {usuario:usuario,espacio:espacio, funcion:funcion},
+                  data: {usuario:usuario, funcion:funcion},
                   success: function(contenido){
                     $("#notificaciones").html(contenido);
                   }
@@ -189,6 +189,57 @@ function eliminarUsuario(usuario,espacio) {
                       $(this).remove(); 
                   });
               }, 2500);
+  });    
+}
+
+
+function formModificaUsr(usuario,espacio){
+  verificaConectividad(function() {
+    var formulario = "modificarUsuario";
+          $.ajax({
+                  url: "formularios.php",
+                  type: "POST",
+                  data: {usuario:usuario,espacio:espacio,formulario:formulario},
+                  success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+  });    
+}
+
+
+function modificarUsuario(id,espacio) {
+  verificaConectividad(function() {
+      verificarllenosForm("modificaUsuario", "notificacionesform",function() {
+          var nombre = $("#txt_usr_nom").val();
+          var rol = $("#txt_esp_usrol_id").val();
+          var funcion = $("#funcion").val();
+  
+          $.ajax({
+                  url: "../backend/formularios.php",
+                  type: "POST",
+                  data: { id:id, 
+                          nombre:nombre,
+                          rol:rol,
+                          espacio:espacio,
+                          funcion:funcion},
+                  success: function(errores){
+                      $("#notificaciones").html(errores);       
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+      });
   });    
 }
 

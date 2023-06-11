@@ -1,6 +1,6 @@
 <?php
 function conteoUsuarios($id,$conexion){
-    $consulta = "SELECT COUNT(aeu_usr_id) as usuarios FROM `aeu_mst` WHERE aeu_esp_id = $id;";
+    $consulta = "SELECT COUNT(esp_usr_id) as usuarios FROM esp_det WHERE esp_esp_id = $id;";
     $conteoUsuarios = mysqli_query($conexion, $consulta);
     
     if(mysqli_num_rows($conteoUsuarios)>0){
