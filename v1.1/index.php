@@ -1,2 +1,2 @@
 <?php
-header('Location:frontend');
+header('Location:frontend/espacios_mst.php');
