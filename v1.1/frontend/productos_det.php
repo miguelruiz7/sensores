@@ -78,7 +78,7 @@ if(mysqli_num_rows($buscaSecciones)>0){
     <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="formAgregarSec()"> 
       Crear producto
     </button>
-   <a href="secciones_mst.php"><button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="formAgregarSec()"> 
+   <a href="secciones_mst.php"><button class="btn btn-outline-dark px-5 mb-5" type="button"> 
       Regresar a secciones
     </button> </a>
   </div>
