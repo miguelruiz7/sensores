@@ -17,6 +17,7 @@ if(isset($_SESSION['usr_id'])){
     <div class="mb-0 container-fluid bg-none text-center p-3 border-bottom" >
 
     <?php
+  
 $consulta = "SELECT * FROM usr_mst WHERE usr_id = '$sesion'";
 $infoUsuario = mysqli_query($conexion, $consulta);
 
@@ -24,8 +25,9 @@ if(mysqli_num_rows($infoUsuario)>0){
   # Si existe un registro despliega toda la informacion que exista
   $datos = mysqli_fetch_array($infoUsuario);
 }
-
-
+  /*
+$rolNativo = detectarRolNativo($sesion,$conexion);
+*/
   ?>
 
 
@@ -37,18 +39,20 @@ if(mysqli_num_rows($infoUsuario)>0){
 <div class="mb-0 container-fluid bg-none text-center p-3 border-bottom mt-3" >
 <ul class="list-unstyled ps-0 ">
    <li class="mb-1">
-          <a href="espacios_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
-            <?php echo $i_espacio_borde; ?> Espacios
+          <a href="admin_usr_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
+            <?php echo $i_personas; ?> Administradores
             </button></a>
     </li>
-    <?php if(1 == 1){ ?>
     <li class="mb-1">
-          <a href="usuarios_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
-            <?php echo $i_personas; ?> Usuarios
+          <a href="#"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
+            <?php echo $i_espacio_borde; ?> Tipos de espacio
             </button></a>
-    </li>
-    <?php } ?>
-    
+    </li>  
+    <li class="mb-1">
+          <a href="#"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
+            <?php echo $i_usuario_rol; ?> Roles
+            </button></a>
+    </li>  
      <li class="mb-1">
         <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#config" aria-expanded="true">
          <?php echo $i_ajustes; ?> Configuración

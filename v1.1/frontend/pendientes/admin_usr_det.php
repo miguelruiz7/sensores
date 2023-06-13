@@ -19,12 +19,11 @@ $sesion = $_SESSION['usr_id'];
 
 <?php
 
-$consulta = "SELECT * FROM usr_mst WHERE usr_id NOT IN ('$sesion') AND usr_id NOT IN ('1')";
+$consulta = "SELECT * FROM usr_mst WHERE usr_id NOT IN ('$sesion')";
 $buscaUsuarios = mysqli_query($conexion, $consulta);
 
 if(mysqli_num_rows($buscaUsuarios)>0){
 
-  if(1 == 1){
   # Si existe un registro despliega toda la informacion que exista
   ?>
     <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="nuevoUsuario();">
@@ -36,6 +35,7 @@ if(mysqli_num_rows($buscaUsuarios)>0){
                 <thead>
                   <tr>
                     <th scope="col">Nombre</th>
+                    <th scope="col">Rol</th>
                     <th scope="col">Usuario</th>
                     <th scope="col">Acciones</th>
                   </tr>
@@ -47,10 +47,11 @@ if(mysqli_num_rows($buscaUsuarios)>0){
             ?>
           <tr>
                 <th scope="row"><?php echo $datosUsuarios['usr_nom'];?></th>
+                <td><?php if($datosUsuarios['usr_sistema'] == 1){echo 'Administrador por defecto';}else{echo 'Usuario';}?></td>
                 <td><?php echo $datosUsuarios['usr_usu'];?></td>
                 <td>
-                    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formModificarDatos('<?php echo $datosUsuarios['usr_id'];?>');"><?php echo $i_modificar; ?></button>
-                    <button class="btn btn-outline-dark" onclick="eliminarUsuario_('<?php echo $datosUsuarios['usr_id'];?>')"><?php echo $i_basura; ?></button>
+                    <button class="btn btn-outline-dark" onclick=";"><?php echo $i_modificar; ?></button>
+                    <button class="btn btn-outline-dark" onclick=";"><?php echo $i_basura; ?></button>
                     <button class="btn btn-outline-dark"  data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true"  onclick="formModificarCon('<?php echo $datosUsuarios['usr_id'];?>');"><?php echo $i_llave; ?></button>
                   </td>
                 </tr>
@@ -60,31 +61,18 @@ if(mysqli_num_rows($buscaUsuarios)>0){
     </div>
    <?php
 }else{
-   # Muestra alguna tarjeta que despliegue restriccion
-   ?>
-      <div class="position-relative p-5 text-center text-dark">
-            <?php echo $i_advertencia ?>
-            <h1 class="text-body-emphasis">No tienes permisos</h1>
-            <p class="col-lg-6 mx-auto mb-4">
-              No tienes los suficientes privilegios para acceder a la siguiente información
-            </p>
-          </div>
-   <?php
-  }}else{
      # Muestra alguna tarjeta que despliegue alguna informacion de que no hay ningun registro para administrador
   ?>
   <div class="position-relative p-5 text-center bg-body">
     <?php echo $i_advertencia ?>
 
-    <h1 class="text-body-emphasis"> No hay usuarios en el sistema</h1>
+    <h1 class="text-body-emphasis"> No existe ningún administrador en el sistema</h1>
     <p class="col-lg-6 mx-auto mb-4">
       Sin embargo puedes crear uno desde aquí
     </p>
     <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="nuevoUsuario();"> 
       Crear usuario
-    </button>
-    </div>
-
+    </button> 
   <?php
   }
   }else{

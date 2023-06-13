@@ -19,14 +19,51 @@ switch($formulario){
     case 'agregaUsuario':
       #Variables
       $nombre = $_POST['nombre'];
-      $rol = $_POST['rol'];
+     # $rol = $_POST['rol'];
       $usuario = $_POST['usuario'];
       $contrasena = $_POST['contrasena'];
       $contrasenacon = $_POST['contrasenacon'];
   
-      insertaUsuario($nombre, $rol, $usuario, $contrasena, $contrasenacon, $conexion);
+      insertaUsuario($nombre, $usuario, $contrasena, $contrasenacon, $conexion);
 
      break;
+
+
+     
+  #Modificar contrasena usuario
+    case 'modificarContrasena':
+      #Variables
+      $usuario = $_POST['usuario'];
+      $contrasena = $_POST['contrasena'];
+      $contrasenacon = $_POST['contrasenacon'];
+  
+      modificarContrasena($usuario,$contrasena,$contrasenacon,$conexion);
+
+     break;
+
+
+        
+  #Modificar datos usuario
+    case 'modificarDatos':
+      #Variables
+      $usuario = $_POST['usuario'];
+      $nombre = $_POST['nombre'];
+  
+      modificarDatos($usuario,$nombre,$conexion);
+
+     break;
+
+
+
+    #Modificar datos usuario
+    case 'eliminarUsuario':
+      #Variables
+      $usuario = $_POST['usuario'];
+    
+      eliminarUsuario($usuario,$conexion);
+      
+     break;
+     
      
  
 

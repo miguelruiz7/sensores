@@ -5,18 +5,15 @@ include('iconos.php');
 include('../backend/funciones.php');
 
 sesion_usr();
-// Almacenamos esto en variables
 $sesion=sesion_usr();
-# Limpiamos la seccion 
 
-destruirvariables();
-
+$espacio = comprobarSeccion();
 ?>
 
 <!doctype html>
 <html lang="es">
 <head>
-    <title>Inicio</title>
+    <title>Secciones</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="css/app.css">
@@ -46,14 +43,14 @@ destruirvariables();
 
             <div id="contenedor">
                 <!-- aqui va el contenido de la paginación -->
-                <div id="contenedor_encabezado"><h1> Mis espacios</h1></div>
+                <div id="contenedor_encabezado"><h1>Secciones</h1></div>
              
             </div>
 </div>
 </div>
 
 <div class="album py-5">
-    <div id="espacios"  class="container">
+    <div id="secciones" class="container">
     <div id="loader" class="text-center">
     <div class="spinner-border text-dark" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -96,3 +93,5 @@ destruirvariables();
     <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+

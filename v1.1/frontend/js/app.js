@@ -4,6 +4,9 @@
  setInterval(function() {
   cargarEspacios();
   cargarUsuarios();
+  cargarSecciones();
+  cargarProductos();
+
 }, 1000);
 
 
@@ -23,6 +26,24 @@ function cargarMenu(){
     });
     });   
   }
+  
+
+  function cargarMenuAdmin(){
+    verificaConectividad(function() {
+      $.ajax({
+        url: 'menu_lateral_admin.php', // Ruta al archivo que quieres cargar
+        type: 'GET', // Método de la petición (GET, POST, etc.)
+        dataType: 'html', // Tipo de datos esperados en la respuesta
+  
+        success: function(data) {
+          $('#contenedorMenuAdmin').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
+        },
+        error: function() {
+          //alert('Ha ocurrido un error al cargar el archivo.');
+        }
+      });
+      });   
+    }
 
 function cargarEspacios(){
   verificaConectividad(function() {
@@ -76,6 +97,82 @@ function cargarSecciones(){
   }
 
 
+  function cargarProductos(){
+    verificaConectividad(function() {
+      $.ajax({
+        url: 'productos_det.php', // Ruta al archivo que quieres cargar
+        type: 'GET', // Método de la petición (GET, POST, etc.)
+        dataType: 'html', // Tipo de datos esperados en la respuesta
+  
+        success: function(data) {
+          $('#productos').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
+        },
+        error: function() {
+          //alert('Ha ocurrido un error al cargar el archivo.');
+        }
+      });
+      });   
+    }
+
+ function cargarSeccionesEspacio(espacio){
+  verificaConectividad(function() {
+    var funcion = "cargarSeccion";
+          $.ajax({
+                  url: "../backend/secciones.php",
+                  type: "POST",
+                  data: {espacio:espacio, funcion:funcion},
+                  success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+  });    
+  }
+
+  function cargarProductosSeccion(seccion){
+    verificaConectividad(function() {
+      var funcion = "cargarProductos";
+            $.ajax({
+                    url: "../backend/productos.php",
+                    type: "POST",
+                    data: {seccion:seccion, funcion:funcion},
+                    success: function(contenido){
+                      $("#formularios_contenedor").html(contenido);
+                    }
+                });
+        
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                        $(this).remove(); 
+                    });
+                }, 2500);
+    });    
+    }
+
+
+  function admincargarUsuarios(){
+    verificaConectividad(function() {
+      $.ajax({
+        url: 'admin_usr_det.php', // Ruta al archivo que quieres cargar
+        type: 'GET', // Método de la petición (GET, POST, etc.)
+        dataType: 'html', // Tipo de datos esperados en la respuesta
+  
+        success: function(data) {
+          $('#adminUsuarios').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
+        },
+        error: function() {
+          //alert('Ha ocurrido un error al cargar el archivo.');
+        }
+      });
+      });   
+    }
+
+
 //Espacio
 //Formulario para agregar un espacio
 function formAgregarEsp(){
@@ -105,6 +202,24 @@ function formAgregarEsp(){
               });
       });   
     }
+
+
+
+    function formModificarSec(id){
+      verificaConectividad(function() {
+            var formulario = 'modificarSeccion';
+            $.ajax({
+                    url: "secciones.php",
+                    type: "POST",
+                    data: {id:id, formulario:formulario},
+                    success: function(contenido){
+                        $("#formularios_contenedor").html(contenido);
+                    }
+                });
+        });   
+      }
+
+
 
    
  
@@ -200,6 +315,85 @@ function modificarEspacio(id) {
 }
 
 
+function agregarSeccion(espacio) {
+  verificaConectividad(function() {
+      verificarllenosForm("agregarSeccion", "notificacionesform",function() {
+          var nombre = $("#txt_sec_nom").val();
+          var descripcion = $("#txt_sec_desc").val();
+          var funcion = $("#funcion").val();
+  
+          $.ajax({
+                  url: "../backend/secciones.php",
+                  type: "POST",
+                  data: {nombre:nombre,
+                          espacio:espacio,
+                          descripcion:descripcion,
+                          funcion:funcion},
+                  success: function(errores){
+                      $("#notificaciones").html(errores);       
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+      });
+  });    
+}
+
+
+  
+function modificarSeccion(id) {
+  verificaConectividad(function() {
+      verificarllenosForm("modificaSeccion", "notificacionesform",function() {
+          var nombre = $("#txt_sec_nom").val();
+          var descripcion = $("#txt_sec_desc").val();
+          var funcion = $("#funcion").val();
+  
+          $.ajax({
+                  url: "../backend/secciones.php",
+                  type: "POST",
+                  data: { id:id, 
+                          nombre:nombre,
+                          descripcion:descripcion,
+                          funcion:funcion},
+                  success: function(errores){
+                      $("#notificaciones").html(errores);       
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+      });
+  });    
+}
+
+function eliminarSeccion(id) {
+  verificaConectividad(function() {
+    var funcion = "eliminarSeccion";
+          $.ajax({
+                  url: "../backend/secciones.php",
+                  type: "POST",
+                  data: {id:id, funcion:funcion},
+                  success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+  });    
+}
+
+
 function eliminarUsuario(usuario) {
   verificaConectividad(function() {
     var funcion = "eliminarUsuario";
@@ -271,13 +465,179 @@ function modificarUsuario(id,espacio) {
   });    
 }
 
+function formModificarCon(usuario){
+  verificaConectividad(function() {
+    var formulario = "modificarContrasena";
+          $.ajax({
+                  url: "usuarios.php",
+                  type: "POST",
+                  data: {usuario:usuario,
+                    formulario:formulario},
+                  success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+  });    
+}
+
+function formModificarDatos(usuario){
+  verificaConectividad(function() {
+    var formulario = "modificarDatos"; 
+          $.ajax({
+                  url: "usuarios.php",
+                  type: "POST",
+                  data: {usuario:usuario,
+                    formulario:formulario},
+                  success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+  });    
+}
+
+function modificarContrasena(usuario) {
+  verificaConectividad(function() {
+      verificarllenosForm("modificarContrasena", "notificacionesform",function() {
+          var contrasena = $("#txt_usr_con").val();
+          var contrasenacon = $("#txt_usr_con_con").val();
+          var funcion = $("#funcion").val();
+  
+          $.ajax({
+                  url: "../backend/usuarios.php",
+                  type: "POST",
+                  data: { usuario:usuario, 
+                          contrasena:contrasena,
+                          contrasenacon:contrasenacon,
+                          funcion:funcion},
+                  success: function(errores){
+                      $("#notificaciones").html(errores);       
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+      });
+  });    
+}
+
+function modificarDatos(usuario) {
+  verificaConectividad(function() {
+      verificarllenosForm("modificarDatos", "notificacionesform",function() {
+           var nombre = $("#txt_usr_nom").val();
+          var funcion = $("#funcion").val();
+  
+          $.ajax({
+                  url: "../backend/usuarios.php",
+                  type: "POST",
+                  data: { usuario:usuario, 
+                          nombre:nombre,
+                          funcion:funcion},
+                  success: function(errores){
+                      $("#notificaciones").html(errores);       
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+      });
+  });    
+}
+
+function eliminarUsuario_(usuario) {
+  verificaConectividad(function() {
+    var funcion = "eliminarUsuario";
+          $.ajax({
+                  url: "../backend/usuarios.php",
+                  type: "POST",
+                  data: {usuario:usuario, funcion:funcion},
+                  success: function(contenido){
+                    $("#notificaciones").html(contenido);
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+  });    
+}
+
+
+function asignausuarioEspacio(espacio){
+  verificaConectividad(function() {
+    var formulario = "asignausuarioEspacio";
+          $.ajax({
+                  url: "espacios.php",
+                  type: "POST",
+                  data: {espacio:espacio,
+                    formulario:formulario},
+                  success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+  });    
+}
+
+function asignarUsuario(espacio) {
+  verificaConectividad(function() {
+      verificarllenosForm("asignaUsuario", "notificacionesform",function() {
+          var nombre = $("#txt_usr_nom").val();
+          var rol = $("#txt_esp_usrol_id").val();
+          var funcion = $("#funcion").val();
+  
+          $.ajax({
+                  url: "../backend/espacio.php",
+                  type: "POST",
+                  data: { nombre:nombre,
+                          rol:rol,
+                          espacio:espacio,
+                          funcion:funcion},
+                  success: function(errores){
+                      $("#notificaciones").html(errores);       
+                  }
+              });
+      
+              window.setTimeout(function() {
+                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                      $(this).remove(); 
+                  });
+              }, 2500);
+      });
+  });    
+}
+
 
 //Formulario para agregar una seccion
 function formAgregarSec(){
   verificaConectividad(function() {
         var formulario = 'agregarSeccion';
         $.ajax({
-                url: "espacios.php",
+                url: "secciones.php",
                 type: "POST",
                 data: {formulario:formulario},
                 success: function(contenido){

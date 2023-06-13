@@ -6,7 +6,7 @@
                           <div id="notificacionesform" class="sticky-top"></div>
                            <div id="formularios_contenedor">
                            <!-- Se vaciará el contenido del formulario -->
-                            <div class="container text-center"><div class="spinner-border text-light text-center" role="status"></div></div>
+                            <div class="container text-center"><div class="spinner-border text-light text-center" role="status" data-bs-dismiss="modal" aria-label="Close"data-bs-dismiss="modal" aria-label="Close" ></div></div>
                           </div>
                         </div>
                       </div>

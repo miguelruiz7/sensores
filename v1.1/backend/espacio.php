@@ -35,7 +35,7 @@ switch($formulario){
       $detRol = detectarRolUsuarioEspacio($id, $sesion, $conexion);
       $detCreador = detectarCreador($id, $conexion);
 
-      if($detRol == $admin){
+      if(1 == 1){
         if($detCreador == $sesion){
       eliminaEspacio($id, $conexion);
         }else{
@@ -92,6 +92,17 @@ switch($formulario){
        modificaUsuario($id_usuario,$id_espacio,$nombre,$id_rol,$conexion);
 
     break;
+
+    
+  #Asigna a espacio usuario
+  case 'asignarUsuario':
+    $id_espacio = $_POST['espacio']; 
+    $nombre = $_POST['nombre']; 
+    $id_rol = $_POST['rol'];
+  
+     asignarUsuario($nombre,$id_espacio,$id_rol,$conexion);
+
+  break;
 
 
     default:
