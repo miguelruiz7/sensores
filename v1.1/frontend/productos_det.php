@@ -75,7 +75,7 @@ if(mysqli_num_rows($buscaSecciones)>0){
     <p class="col-lg-6 mx-auto mb-4">
       Sin embargo puedes crear uno desde aquí
     </p>
-    <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="formAgregarSec()"> 
+    <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="formAgregarProd()"> 
       Crear producto
     </button>
    <a href="secciones_mst.php"><button class="btn btn-outline-dark px-5 mb-5" type="button"> 
