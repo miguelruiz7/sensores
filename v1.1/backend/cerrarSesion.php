@@ -3,5 +3,6 @@
 include('funciones.php');
 # Llamamos a la funcion
  cerrarsesion();
+ destruirvariables()
 ?>
        
