@@ -79,6 +79,9 @@ if(mysqli_num_rows($buscaSecciones)>0){
     <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="formAgregarSec()"> 
       Crear secciones
     </button>
+    <a href="espacios_mst.php"><button class="btn btn-outline-dark px-5 mb-5" type="button"> 
+      Regresar a espacios
+    </button> </a>
   </div>
 
 <?php
