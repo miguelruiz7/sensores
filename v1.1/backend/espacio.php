@@ -4,11 +4,7 @@ include('funciones.php');
 sesion_usr();
 $sesion=sesion_usr();
 
-
-
-
 $admin_sistema = administradorSistema($sesion, $conexion);
-
 
 if(isset($_POST['funcion'])){
 

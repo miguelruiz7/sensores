@@ -9,10 +9,7 @@ if(isset($_SESSION['usr_id'])){
 
   # Consulta de los espacios; consolidar para poder mostrar sus espacios de cada usuario
   $sesion = $_SESSION['usr_id'];
-
-  
-
-
+  $admin_sistema = administradorSistema($sesion, $conexion);
 
 
   $espacio = comprobarSeccion();
@@ -32,7 +29,7 @@ if(mysqli_num_rows($buscaSecciones)>0){
   # Detecta el rol si es adminitrativo
   if(1 == 1) {
   ?>
-  <div class="container m-2 text-center"> <?php if($funcionesRol['usrol_sec_esc'] == 1) { ?> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarSec(); ocultarCanvas('menuOffcanvas');">
+  <div class="container m-2 text-center"> <?php  if($admin_sistema == 1 || $funcionesRol['usrol_sec_esc'] == 1) { ?> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarSec(); ocultarCanvas('menuOffcanvas');">
          <?php echo $i_agregar; ?> Crear secciones
       </button> <?php } ?>
       <a href="espacios_mst.php"><button class="btn btn-outline-dark" type="button"> <?php echo $i_atras; ?>
@@ -56,8 +53,8 @@ if(mysqli_num_rows($buscaSecciones)>0){
             <div class="card-body">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3 m-3">
               <div class="col"><h5 class="card-title"><?php echo $datos['sec_nom']; ?></h5></div>
-              <div class="col text-center"> <?php if($funcionesRol['usrol_sec_esc'] == 1) { ?><button class="btn btn-outline-danger" onclick="eliminarSeccion(<?php echo $datos['sec_id']; ?>)"><?php echo $i_basura; ?></button><?php } ?>
-              <?php if($funcionesRol['usrol_sec_esc'] == 1) { ?> <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formModificarSec(<?php echo $datos['sec_id']; ?>)"><?php echo $i_modificar; ?></button></div> <?php } ?>
+              <div class="col text-center"> <?php if($admin_sistema == 1 || $funcionesRol['usrol_sec_esc'] == 1) { ?><button class="btn btn-outline-danger" onclick="eliminarSeccion(<?php echo $datos['sec_id']; ?>)"><?php echo $i_basura; ?></button><?php } ?>
+              <?php if($admin_sistema == 1 || $funcionesRol['usrol_sec_esc'] == 1) { ?> <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formModificarSec(<?php echo $datos['sec_id']; ?>)"><?php echo $i_modificar; ?></button></div> <?php } ?>
             
             </div>
   
@@ -80,7 +77,7 @@ if(mysqli_num_rows($buscaSecciones)>0){
    <?php
 }else{
   # Muestra alguna tarjeta que despliegue alguna informacion de que no hay ningun registro para administrador
-  if($funcionesRol['usrol_sec_esc'] == 1) {
+  if($admin_sistema == 1 || $funcionesRol['usrol_sec_esc'] == 1) {
   ?>
   <div class="position-relative p-5 text-center bg-body">
     <?php echo $i_advertencia ?>

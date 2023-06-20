@@ -12,7 +12,6 @@ if(isset($_SESSION['usr_id'])){
 
 # Consulta de los espacios; consolidar para poder mostrar sus espacios de cada usuario
 $sesion = $_SESSION['usr_id'];
-
 $admin_sistema = administradorSistema($sesion, $conexion);
 
 
