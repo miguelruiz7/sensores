@@ -17,29 +17,84 @@ cargaproductosSeccion($seccion);
 break;
 
 
-case 'agregarSeccion':
-    $espacio = $_POST['espacio'];
+case 'agregarProducto':
+    $seccion = $_POST['seccion'];
     $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
 
-    agregarSeccion($espacio,$nombre,$descripcion,$conexion);
+    agregarProducto($seccion,$nombre,$descripcion,$conexion);
 
 break;
 
-case 'modificarSeccion':
-    $seccion = $_POST['id'];
+case 'modificarProducto':
+    $producto = $_POST['producto'];
     $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
-
-    modificarSeccion($seccion,$nombre,$descripcion,$conexion);
+    modificarProducto($producto,$nombre,$descripcion,$conexion);
 
 break;
 
-
-case 'eliminarSeccion':
-    $seccion = $_POST['id'];
-    eliminarSeccion($seccion,$conexion);
+case 'eliminarProducto':
+    $producto = $_POST['producto'];
+    eliminarProducto($producto,$conexion);
 break;
+
+case 'agregarPlaca':
+    $producto = $_POST['producto'];
+    $nombre = $_POST['nombre'];
+    $descripcion = $_POST['descripcion'];
+    $ip =  $_POST['ip'];
+
+    agregarPlaca($producto,$nombre,$descripcion,$ip,$conexion);
+break;
+
+
+case 'modificarPlaca':
+    $placa = $_POST['placa'];
+    $producto = $_POST['producto'];
+    $nombre = $_POST['nombre'];
+    $descripcion = $_POST['descripcion'];
+    $ip =  $_POST['ip'];
+
+    modificarPlaca($placa, $producto, $nombre,$descripcion,$ip,$conexion);
+break;
+
+case 'eliminarPlaca':
+    $placa = $_POST['placa'];
+    $producto = $_POST['producto'];
+    eliminarPlaca($placa, $producto,$conexion);
+break;
+
+case 'agregarDispositivo':
+    $producto = $_POST['producto'];
+    $nombre = $_POST['nombre'];
+    $unidad = $_POST['unidad'];
+    $placa = $_POST['placa'];
+    $tipo = $_POST['tipo'];
+    $puerto = $_POST['puerto'];
+
+    agregarDispositivo($producto,$nombre,$unidad,$placa,$tipo,$puerto,$conexion);
+
+break;
+
+case 'modificarDispositivo':
+    $dispositivo = $_POST['dispositivo'];
+    $producto = $_POST['producto'];
+    $nombre = $_POST['nombre'];
+    $unidad = $_POST['unidad'];
+    $placa = $_POST['placa'];
+    $tipo = $_POST['tipo'];
+
+    modificarDispositivo($dispositivo,$producto,$nombre,$unidad,$placa,$tipo,$conexion);
+
+break;
+
+case 'eliminarDispositivo':
+    $dispositivo = $_POST['dispositivo'];
+    $producto = $_POST['producto'];
+    eliminarDispositivo($dispositivo, $producto,$conexion);
+break;
+
 
 default:
 ?>

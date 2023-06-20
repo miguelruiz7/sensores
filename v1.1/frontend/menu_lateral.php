@@ -41,7 +41,7 @@ if(mysqli_num_rows($infoUsuario)>0){
             <?php echo $i_espacio_borde; ?> Espacios
             </button></a>
     </li>
-    <?php if(1 == 1){ ?>
+    <?php if(administradorPlataforma($sesion, $conexion) == 1){ ?>
     <li class="mb-1">
           <a href="usuarios_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
             <?php echo $i_personas; ?> Usuarios

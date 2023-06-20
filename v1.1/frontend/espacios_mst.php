@@ -1,4 +1,6 @@
 <?php
+#Incluimos nuestras dependencias.
+
 include('../backend/conexion.php');
 include('../backend/info.php');
 include('iconos.php');
@@ -7,8 +9,8 @@ include('../backend/funciones.php');
 sesion_usr();
 // Almacenamos esto en variables
 $sesion=sesion_usr();
-# Limpiamos la seccion 
 
+# Limpiamos la seccion 
 destruirvariables();
 
 ?>

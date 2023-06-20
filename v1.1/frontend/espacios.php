@@ -186,10 +186,10 @@ switch($formulario){
           $consulta = "SELECT * FROM esp_mst, esp_det, usr_mst, usrol_mst WHERE esp_esp_id = '$id'  AND esp_usr_id = usr_id  AND esp_id = esp_esp_id  AND esp_usrol_id = usrol_id   ORDER BY usrol_id ASC;";
           $buscaUsuarios = mysqli_query($conexion, $consulta);
 
+          $admin_sistema = administradorSistema($sesion, $conexion);
+          $detRol = rolPlataforma($sesion, $id, $conexion);
 
-          $detRol = detectarRolUsuarioEspacio($id, $sesion, $conexion);
-
-          if($detRol == 2) {
+          if( $admin_sistema == 1 || $detRol['usrol_gral_lec'] == 1) {
 
           if(mysqli_num_rows($buscaUsuarios)>0){
             ?>
@@ -226,7 +226,7 @@ switch($formulario){
                 <th scope="row"><?php if($datosUsuarios['usr_id'] == $sesion){ echo $datosUsuarios['usr_nom']." (Tú)";}else{echo $datosUsuarios['usr_nom'];}?></th>
                 <td><?php echo $datosUsuarios['usrol_nom'];?> <?php if($datosUsuarios['esp_crea'] == $datosUsuarios['usr_id'] ){echo '(Creador)';}?></td>
                 <td><?php echo $datosUsuarios['usr_usu'];?></td>
-                <td><?php if($datosUsuarios['usr_id'] != $sesion){ if($datosUsuarios['usr_sistema'] != 1){?><button class="btn btn-outline-light" onclick="revertirFormulario(); formModificaUsr('<?php echo $datosUsuarios['esp_usr_id']?>','<?php echo $datosUsuarios['esp_esp_id']?>');"><?php echo $i_modificar; ?></button>
+                <td><?php if($datosUsuarios['usr_id'] != $sesion){ if(detectarCreador($id, $conexion) != $datosUsuarios['usr_id']){?><button class="btn btn-outline-light" onclick="revertirFormulario(); formModificaUsr('<?php echo $datosUsuarios['esp_usr_id']?>','<?php echo $datosUsuarios['esp_esp_id']?>');"><?php echo $i_modificar; ?></button>
                     <button class="btn btn-outline-light" onclick="eliminarUsuario('<?php echo $datosUsuarios['esp_id_']?>');"><?php echo $i_basura; ?></button><?php } } ?></td>
               </tr>
            <?php

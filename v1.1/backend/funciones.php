@@ -68,29 +68,15 @@ function acceso($usuario,$password,$conexion){
             if(mysqli_num_rows($selusr)>0){
                     $selusuario = mysqli_fetch_array($selusr);
                     $usuario = $selusuario['usr_id'];
-                    $admin = $selusuario['usr_sistema'];
+                  
             }
+
             $_SESSION['usr_id'] = $usuario;
 
            /* $errores .= "<div class='alert alert-dismissible bg-dark text-dark fade show' role='alert'><center>
             Bienvenido; $nombre. $alerta</center>
           </div>"; */
-          if($admin == 1){
-            $errores.='<div class="spinner-border text-dark" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>';
-
-            $errores.="<script type='text/javascript'>
-            var n = 2;
-            window.setInterval(function(){
-                n--;
-                // Si se cumple la condición te redirige a la página de inicio
-                if(n == 0){
-                location.href = 'admin_mst.php';
-            }
-            },1000);
-            </script>";
-          }else{
+         
           $errores.='<div class="spinner-border text-dark" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>';
@@ -105,7 +91,7 @@ function acceso($usuario,$password,$conexion){
             }
             },1000);
             </script>";
-          }
+          
         }
     }
     }
@@ -164,6 +150,76 @@ function destruirvariables(){
 
 
 
+function administradorSistema($sesion, $conexion){         
+  $consulta = "SELECT * FROM usr_mst WHERE usr_id = '$sesion'";
+  $detectarol = mysqli_query($conexion, $consulta);
+
+        if(mysqli_num_rows($detectarol)>0){
+          # Si existe un registro despliega toda la informacion que exista
+          $dato = mysqli_fetch_array($detectarol);
+          $resultado = $dato['usr_sistema'];
+          
+        }else{
+          $resultado = '';
+        }
+        return $resultado;
+}
+
+
+function administradorPlataforma($sesion, $conexion){
+  $consulta = "SELECT usr_admin FROM usr_det WHERE usr_usr_id='$sesion'";
+  $esadminPlataforma = mysqli_query($conexion,$consulta);
+  if(mysqli_num_rows($esadminPlataforma)>0){
+    $valor = '1';
+  }else{
+    $valor = '0';
+  }
+
+  return $valor;
+}
+
+
+function rolPlataforma($sesion, $espacio, $conexion){
+  $consulta = "SELECT * FROM esp_det, usrol_mst WHERE esp_usr_id='$sesion' AND esp_esp_id = '$espacio' AND usrol_id = esp_usrol_id";
+  $rolPlataforma = mysqli_query($conexion,$consulta);
+  if(mysqli_num_rows($rolPlataforma)>0){
+   $datos = mysqli_fetch_array($rolPlataforma);
+
+   #Aqui ingresamos las variables
+
+  # General
+    $usrol_gral_lec = $datos['usrol_gral_lec'];
+    $usrol_gral_esc = $datos['usrol_gral_esc'];
+
+  # Espacio
+    $usrol_esp_lec  = $datos['usrol_esp_lec'];
+    $usrol_esp_esc  = $datos['usrol_esp_esc'];
+  
+  # Secciones
+    $usrol_sec_lec  = $datos['usrol_sec_lec'];
+    $usrol_sec_esc  = $datos['usrol_sec_esc'];
+
+  # Productos
+    $usrol_prod_lec = $datos['usrol_prod_lec'];
+    $usrol_prod_esc = $datos['usrol_prod_esc'];
+
+
+  # Dispositivos
+    $usrol_disp_lec	= $datos['usrol_disp_lec'];
+    $usrol_disp_esc = $datos['usrol_disp_esc'];
+
+
+
+   $valores = array('usrol_gral_lec' => $usrol_gral_lec, 'usrol_gral_esc' => $usrol_gral_esc, 'usrol_esp_lec' => $usrol_esp_lec, 'usrol_esp_esc' => $usrol_esp_esc, 'usrol_prod_lec' => $usrol_prod_lec, 'usrol_prod_esc' => $usrol_prod_esc, 'usrol_sec_lec' => $usrol_sec_lec, 'usrol_sec_esc' => $usrol_sec_esc, 'usrol_disp_lec' => $usrol_disp_lec,  'usrol_disp_esc' => $usrol_disp_esc);
+   
+  }else{
+    $valores = '';
+  }
+
+  return $valores;
+}
+
+
 
 
 ####################################################################################################
@@ -172,43 +228,6 @@ function destruirvariables(){
 #                                                                                                  #
 ####################################################################################################
 
-function detectarRolUsuarioEspacio($espacio, $sesion, $conexion){         
-  $consulta = "SELECT * FROM esp_mst, esp_det WHERE esp_esp_id = '$espacio' AND esp_usr_id = '$sesion'";
-  $detectarol = mysqli_query($conexion, $consulta);
-
-        if(mysqli_num_rows($detectarol)>0){
-          # Si existe un registro despliega toda la informacion que exista
-          $dato = mysqli_fetch_array($detectarol);
-          $resultado = $dato['esp_usrol_id'];
-          
-        }else{
-          $resultado = '';
-        }
-
-        
-
-        return $resultado;
-}
-
-
-
-function detectarRolNativo($sesion, $conexion){         
-  $consulta = "SELECT * FROM usr_mst WHERE usr_id = '$sesion'";
-  $detectarol = mysqli_query($conexion, $consulta);
-
-        if(mysqli_num_rows($detectarol)>0){
-          # Si existe un registro despliega toda la informacion que exista
-          $dato = mysqli_fetch_array($detectarol);
-          $resultado = $dato['usr_defadmin'];
-          
-        }else{
-          $resultado = '';
-        }
-
-        
-
-        return $resultado;
-}
 
 function detectarCreador($espacio, $conexion){
 $consulta = "SELECT * FROM esp_mst  WHERE esp_id = '$espacio'";
@@ -379,7 +398,7 @@ function eliminaUsuario($usuario, $conexion){
     }
 }
 
-#Modifica el espacio y el nombre
+#Modifica el usuario.
 function modificaUsuario($usuario, $espacio, $nombre, $rol, $conexion){
 
         
@@ -455,7 +474,7 @@ function cargaseccionEspacio($espacio){
 
   if(isset($_SESSION['esp_id'])){
   ?>
-  <script>muestraMensajes('Cargando secciones <?php echo $_SESSION['esp_id'] ;?> ...','error'); 
+  <script>muestraMensajes('Cargando secciones (<?php echo $_SESSION['esp_id'] ;?>) ...','error'); 
    setInterval(function() {
    window.location.href="secciones_mst.php"
 }, 1500);
@@ -467,14 +486,13 @@ function cargaseccionEspacio($espacio){
 return;
 }
 
-#Destruye la seccion que se haya creado anteriormente
-
 ####################################################################################################
 #                                                                                                  #
 #                         Almacena funciones que controlan la vista usuarios                       #
 #                                                                                                  #
 ####################################################################################################
 
+# Agrega un usuario al sistema
 function insertaUsuario($nombre, $usuario, $contrasena, $contrasenacon, $conexion){
   $errores = "";
 
@@ -511,7 +529,7 @@ function insertaUsuario($nombre, $usuario, $contrasena, $contrasenacon, $conexio
 
 }
 
-
+# Modifica la contraseña
 function modificarContrasena($usuario, $contrasena, $contrasenacon, $conexion){
 
   $errores = '';
@@ -539,7 +557,7 @@ function modificarContrasena($usuario, $contrasena, $contrasenacon, $conexion){
 }
 
 
-
+# Modifica los datos del usuario
 function modificarDatos($usuario, $nombre, $conexion){
 
   $errores = '';
@@ -564,7 +582,7 @@ function modificarDatos($usuario, $nombre, $conexion){
 }
 
 
-#Elimina el espacio
+#Elimina el usuario
 function eliminarUsuario($usuario, $conexion){
   $consulta = "DELETE FROM esp_det WHERE esp_usr_id ='$usuario'";
   $eliminaUsuarioEspacio = mysqli_query($conexion, $consulta); 
@@ -596,6 +614,7 @@ function eliminarUsuario($usuario, $conexion){
 #                                                                                                  #
 ####################################################################################################
 
+#Modifica la seccion
 function modificarSeccion($seccion, $nombre, $descripcion, $conexion){
 
   $consulta = "UPDATE sec_mst SET sec_nom = '$nombre', sec_desc = '$descripcion' WHERE sec_id='$seccion'";
@@ -616,7 +635,7 @@ function modificarSeccion($seccion, $nombre, $descripcion, $conexion){
 
 }
 
-#Elimina en el espacio
+#Elimina la seccion (AUN NO FUNCIONA)
 function eliminarSeccion($seccion, $conexion){
      
   $consulta = "DELETE FROM sec_mst WHERE sec_id ='$seccion'";
@@ -628,15 +647,15 @@ function eliminarSeccion($seccion, $conexion){
     <?php
   }else{
       ?>
-    <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+    <script>muestraMensajes('Ocurrio algún error verifica (1)','error');</script>
     <?php
   }
-
+ 
 
  return;
 }
 
-
+# Agrega una nueva sección
 function agregarSeccion($espacio, $nombre, $descripcion, $conexion){
 
   $consulta = "INSERT INTO sec_mst VALUES (NULL, '$nombre', '$descripcion', '$espacio')";
@@ -657,7 +676,7 @@ function agregarSeccion($espacio, $nombre, $descripcion, $conexion){
 
 }
 
-
+#Comprueba que exista una sección de un producto
 function comprobarProductos(){
   if(isset($_SESSION['sec_id'])){
     $espacio = $_SESSION['sec_id'];
@@ -684,6 +703,412 @@ function cargaproductosSeccion($seccion){
  # header('Location:../secciones_mst.php');
   } 
 return;
+}
+
+# Contea los productos en la sección
+function conteoProductosSeccion($id,$conexion){
+  $consulta = "SELECT COUNT(prod_id) as productos FROM prod_mst WHERE prod_sec_id = $id;";
+  $conteoUsuarios = mysqli_query($conexion, $consulta);
+  
+  if(mysqli_num_rows($conteoUsuarios)>0){
+      $dato = mysqli_fetch_array($conteoUsuarios);
+  }
+
+  $conteo = $dato['productos'];
+
+  return $conteo;
+}
+
+####################################################################################################
+#                                                                                                  #
+#                         Almacena funciones que controlan la vista productos                      #
+#                                                                                                  #
+####################################################################################################
+
+
+
+function agregarProducto($seccion, $nombre, $descripcion, $conexion){
+
+  $consulta = "INSERT INTO prod_mst VALUES (NULL, '$nombre', '$descripcion', '$seccion')";
+
+  $insertarProducto = mysqli_query($conexion, $consulta);
+
+  if($insertarProducto){
+    ?>
+    <script>muestraMensajes('Se agregó exitosamente',''); revertirFormulario();  $('#formulariomodal').modal('hide');  cargarProductos(); </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajesFormularios('Ocurrio algún error verifica','error');</script>
+    <?php
+  }
+
+ return;
+
+}
+
+
+function modificarProducto($producto, $nombre, $descripcion, $conexion){
+
+  $consulta = "UPDATE prod_mst SET prod_nom = '$nombre', prod_desc = '$descripcion' WHERE prod_id = '$producto'";
+
+  $modificarProducto = mysqli_query($conexion, $consulta);
+
+  if($modificarProducto){
+    ?>
+    <script>muestraMensajes('Se modificó exitosamente',''); revertirFormulario(); $('#formulariomodal').modal('hide');  cargarProductos();  </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajesFormularios('Ocurrio algún error verifica','error');</script>
+    <?php
+  }
+
+ return;
+
+}
+
+function eliminarProducto($producto, $conexion){
+     
+  $consulta = "DELETE FROM pl_mst WHERE pl_prod_id ='$producto'";
+  $eliminaPlacas = mysqli_query($conexion, $consulta); 
+
+  if($eliminaPlacas){
+
+  $consulta = "DELETE FROM prod_mst WHERE prod_id ='$producto'";
+  $eliminaProducto = mysqli_query($conexion, $consulta); 
+
+  if($eliminaProducto){
+    ?>
+    <script>muestraMensajes('Se eliminó exitosamente',''); revertirFormulario(); formPlacas('<?php echo $producto; ?>') </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajes('Ocurrio algún error verifica (2)','error');</script>
+    <?php
+  }
+}else{
+  ?>
+  <script>muestraMensajes('Ocurrio algún error verifica (1)','error');</script>
+  <?php
+}
+
+
+ return;
+}
+
+
+
+
+function agregarPlaca($producto, $nombre, $descripcion, $ip, $conexion){
+
+  $consulta = "INSERT INTO pl_mst VALUES (NULL, '$nombre', '$descripcion', '$ip', '$producto')";
+
+  $insertarPlaca = mysqli_query($conexion, $consulta);
+
+  if($insertarPlaca){
+    ?>
+    <script>muestraMensajes('Se agregó exitosamente',''); revertirFormulario(); formPlacas('<?php echo $producto; ?>'); </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajesFormularios('Ocurrio algún error verifica','error');</script>
+    <?php
+  }
+
+ return;
+
+}
+
+
+
+function modificarPlaca($placa, $producto, $nombre, $descripcion, $ip, $conexion){
+
+  $consulta = "UPDATE pl_mst SET pl_nom = '$nombre', pl_desc = '$descripcion', pl_ip = '$ip' WHERE pl_id ='$placa'";
+
+  $modificaPlaca = mysqli_query($conexion, $consulta);
+
+  if($modificaPlaca){
+    ?>
+    <script>muestraMensajes('Se modificó exitosamente',''); revertirFormulario(); formPlacas('<?php echo $producto; ?>') </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajesFormularios('Ocurrio algún error verifica','error');</script>
+    <?php
+  }
+
+ return;
+
+}
+
+
+
+
+
+
+function eliminarPlaca($placa, $producto, $conexion){
+     
+  $consulta = "DELETE FROM pl_mst WHERE pl_id ='$placa'";
+  $eliminaPlaca = mysqli_query($conexion, $consulta); 
+
+  if($eliminaPlaca){
+    ?>
+    <script>muestraMensajes('Se eliminó exitosamente',''); revertirFormulario(); formPlacas('<?php echo $producto; ?>') </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+    <?php
+  }
+
+
+ return;
+}
+
+
+function conteoPlacasProducto($id,$conexion){
+  $consulta = "SELECT COUNT(pl_id) as placas FROM pl_mst WHERE pl_prod_id = $id;";
+  $conteoUsuarios = mysqli_query($conexion, $consulta);
+  
+  if(mysqli_num_rows($conteoUsuarios)>0){
+      $dato = mysqli_fetch_array($conteoUsuarios);
+  }
+
+  $conteo = $dato['placas'];
+
+  return $conteo;
+}
+
+
+function conteoDispositivosProducto($id,$conexion){
+  $consulta = "SELECT COUNT(disp_id) as dispositivos FROM disp_mst WHERE disp_prod_id = $id;";
+  $conteoUsuarios = mysqli_query($conexion, $consulta);
+  
+  if(mysqli_num_rows($conteoUsuarios)>0){
+      $dato = mysqli_fetch_array($conteoUsuarios);
+  }
+
+  $conteo = $dato['dispositivos'];
+
+  return $conteo;
+}
+
+
+/* function sensorizarDispositivo($dispositivo, $conexion){
+
+  $consulta = "SELECT * FROM dato_mst WHERE dato_disp_id = '$dispositivo' ORDER BY dato_tpo DESC LIMIT 1";
+  $sensorizaDispositivo = mysqli_query($conexion, $consulta);
+  if(mysqli_num_rows($sensorizaDispositivo)>0){
+    $valor = mysqli_fetch_array($sensorizaDispositivo);
+  
+  
+  echo $valor['dato_val'];
+
+}else{
+  echo 'No hay valores';
+}
+
+  return;
+
+}
+*/
+
+function sensorizarDispositivo($dispositivo, $conexion) {
+  date_default_timezone_set('America/Mexico_City');
+  $fecha_cap = date('Y-m-d H:i', time());
+  $consulta = "SELECT * FROM dato_mst WHERE dato_disp_id = '$dispositivo' AND dato_tpo LIKE '%$fecha_cap%' ORDER BY dato_id DESC LIMIT 1";
+  $sensorizaDispositivo = mysqli_query($conexion, $consulta);
+  
+  if (mysqli_num_rows($sensorizaDispositivo) > 0) {
+    $valor = mysqli_fetch_array($sensorizaDispositivo);
+    echo $valor['dato_val'];
+  } else {
+    echo 'No se esta sensorizando';
+  }
+
+  return;
+}
+
+
+function detectapuertoDisp($dispositivo, $conexion) {
+  $consulta = "SELECT * FROM disp_det WHERE disp_disp_id = '$dispositivo'";
+  $detectaPuerto = mysqli_query($conexion, $consulta);
+  
+  if (mysqli_num_rows($detectaPuerto) > 0) {
+    /* 
+    while($valor = mysqli_fetch_array($detectaPuerto)){
+      */
+
+    /*  if(end($valor)){
+      echo $valor['disp_pto'].". ";
+      }else{
+      echo $valor['disp_pto'].", ";
+      }
+
+      */
+      $resultados = mysqli_fetch_all($detectaPuerto, MYSQLI_ASSOC);
+      foreach ($resultados as $valor) {
+        $disp_pto = $valor['disp_pto'];
+
+        if ($valor === end($resultados)) {
+            echo $disp_pto.". ";
+        } else {
+            echo $disp_pto.", ";
+        }
+    } 
+/*
+    }
+    */
+  } else {
+    echo 'No se han configurado puertos';
+  }
+
+  return;
+}
+
+
+
+function agregarDispositivo($producto, $nombre, $unidad, $placa, $tipo, $puerto, $conexion){
+   $errores = '';
+
+  $ptos_usados = '';
+
+  $arreglo_ptos = explode(",", $puerto);
+
+  foreach($arreglo_ptos as $puertos){
+    $consulta = "SELECT disp_pto FROM disp_det WHERE disp_pto = '$puertos'";
+   
+    $consultaPuertos = mysqli_query($conexion, $consulta);
+    if(mysqli_num_rows($consultaPuertos)>0){
+      $ptos_usados .= $puertos.", ";
+    }
+  }
+  
+
+if($ptos_usados != ''){
+$errores .= "1";
+?>
+<script>muestraMensajesFormularios('Los puertos <?php echo $ptos_usados ?> se encuentran ya ocupados','notificacionesform','error');</script>
+<?php
+} 
+
+
+
+
+  if($errores == ''){
+  $consulta = "INSERT INTO disp_mst VALUES (NULL, '$nombre', '$unidad', '$placa', '$tipo','$producto')";
+
+  $insertarDispositivo = mysqli_query($conexion, $consulta);
+
+  if($insertarDispositivo){
+ 
+    #Ejecuta el ultimo registro insertado
+    $consulta = "SELECT max(disp_id) AS ultimo_dispositivo FROM disp_mst";
+    $ultimoDispositivo = mysqli_query($conexion, $consulta);
+    if(mysqli_num_rows($ultimoDispositivo)>0){
+      $ultimo = mysqli_fetch_array($ultimoDispositivo);
+      $dispositivo = $ultimo['ultimo_dispositivo'];
+    }
+    
+
+    $ptos_insertados = '';
+
+    foreach($arreglo_ptos as $puertos){
+      $consulta = "INSERT INTO disp_det VALUES ('$puertos', '$placa','$dispositivo')";
+      $insertarPuertos = mysqli_query($conexion, $consulta);
+      if($insertarPuertos){
+        $ptos_insertados .= $puertos;
+      }  
+    }
+
+      if($ptos_insertados != ''){
+        ?>
+        <script>muestraMensajes('Se agregó exitosamente',''); revertirFormulario(); formDispositivos('<?php echo $producto; ?>'); </script>
+        <?php
+      }
+
+  }else{
+      ?>
+    <script>muestraMensajesFormularios('Ocurrio algún error verifica','error');</script>
+    <?php 
+  }
+  
+}
+
+#echo $errores;
+
+ return;
+
+}
+
+
+function modificarDispositivo($dispositivo, $producto, $nombre, $unidad, $placa, $tipo, $conexion){
+
+  $errores = '';
+
+ if($errores == ''){
+ $consulta = "UPDATE disp_mst SET disp_nom = '$nombre', disp_dum_id =  '$unidad', disp_pl_id = '$placa', disp_disp_tipo_id = '$tipo' WHERE disp_id = '$dispositivo'";
+
+ $actualizarDispositivo = mysqli_query($conexion, $consulta);
+
+ if($actualizarDispositivo){
+       ?>
+       <script>muestraMensajes('Se modificó exitosamente',''); revertirFormulario(); formDispositivos('<?php echo $producto; ?>'); </script>
+       <?php
+ }else{
+     ?>
+   <script>muestraMensajesFormularios('Ocurrio algún error verifica','error');</script>
+   <?php 
+ }
+ 
+}
+
+#echo $errores;
+
+return;
+
+}
+
+
+function eliminarDispositivo($dispositivo, $producto, $conexion){
+  
+      
+  $consulta = "DELETE FROM dato_mst WHERE dato_disp_id ='$dispositivo'";
+  $eliminaDatos = mysqli_query($conexion, $consulta); 
+
+  if($eliminaDatos){
+    
+  $consulta = "DELETE FROM disp_det WHERE disp_disp_id ='$dispositivo'";
+  $eliminaPuertos = mysqli_query($conexion, $consulta); 
+
+  if($eliminaPuertos){
+  $consulta = "DELETE FROM disp_mst WHERE disp_id ='$dispositivo'";
+  $eliminaDispositivo = mysqli_query($conexion, $consulta); 
+
+  if($eliminaDispositivo){
+    ?>
+    <script>muestraMensajes('Se eliminó exitosamente',''); revertirFormulario(); formDispositivos('<?php echo $producto; ?>') </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajes('Ocurrio algún error verifica (3)','error');</script>
+    <?php
+  }
+
+  }else{
+      ?>
+    <script>muestraMensajes('Ocurrio algún error verifica (2)','error');</script>
+    <?php
+  }
+}else{
+  ?>
+<script>muestraMensajes('Ocurrio algún error verifica (1)','error');</script>
+<?php
+}
+
+
+ return;
 }
 
 

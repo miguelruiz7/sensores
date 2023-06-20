@@ -24,7 +24,7 @@ $buscaUsuarios = mysqli_query($conexion, $consulta);
 
 if(mysqli_num_rows($buscaUsuarios)>0){
 
-  if(1 == 1){
+  if(administradorPlataforma($sesion, $conexion) == 1){
   # Si existe un registro despliega toda la informacion que exista
   ?>
     <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="nuevoUsuario();">

@@ -715,7 +715,395 @@ function nuevoUsuario(){
   }
 
 
+  function formAgregarProd(){
+    verificaConectividad(function() {
+          var formulario = 'agregarProducto';
+          $.ajax({
+                  url: "productos.php",
+                  type: "POST",
+                  data: {formulario:formulario},
+                  success: function(contenido){
+                      $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      });   
+    }
 
+
+    function agregarProducto(seccion) {
+      verificaConectividad(function() {
+          verificarllenosForm("agregarProducto", "notificacionesform",function() {
+              var nombre = $("#txt_prod_nom").val();
+              var descripcion = $("#txt_prod_desc").val();
+              var funcion = $("#funcion").val();
+      
+              $.ajax({
+                      url: "../backend/productos.php",
+                      type: "POST",
+                      data: {nombre:nombre,
+                              seccion:seccion,
+                              descripcion:descripcion,
+                              funcion:funcion},
+                      success: function(errores){
+                          $("#notificaciones").html(errores);       
+                      }
+                  });
+          
+                  window.setTimeout(function() {
+                      $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                          $(this).remove(); 
+                      });
+                  }, 2500);
+          });
+      });    
+    }
+
+
+            
+    function formModificarProd(producto){
+      verificaConectividad(function() {
+            var formulario = 'modificarProducto';
+            $.ajax({
+                    url: "productos.php",
+                    type: "POST",
+                    data: {producto:producto,
+                      formulario:formulario},
+                    success: function(contenido){
+                        $("#formularios_contenedor").html(contenido);
+                    }
+                });
+        });   
+      }
+
+      function modificarProducto(producto) {
+        verificaConectividad(function() {
+            verificarllenosForm("modificarProducto", "notificacionesform",function() {
+                var nombre = $("#txt_prod_nom").val();
+                var descripcion = $("#txt_prod_desc").val();
+               
+                var funcion = $("#funcion").val();
+        
+                $.ajax({
+                        url: "../backend/productos.php",
+                        type: "POST",
+                        data: {nombre:nombre,
+                                producto:producto,
+                                descripcion:descripcion,
+                                funcion:funcion},
+                        success: function(errores){
+                            $("#notificaciones").html(errores);       
+                        }
+                    });
+            
+                    window.setTimeout(function() {
+                        $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                            $(this).remove(); 
+                        });
+                    }, 2500);
+            });
+        });    
+      }
+
+
+      function eliminarProducto(producto) {
+        verificaConectividad(function() {
+          var funcion = "eliminarProducto";
+                $.ajax({
+                        url: "../backend/productos.php",
+                        type: "POST",
+                        data: {producto:producto, funcion:funcion},
+                        success: function(contenido){
+                          $("#notificaciones").html(contenido);
+                        }
+                    });
+            
+                    window.setTimeout(function() {
+                        $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                            $(this).remove(); 
+                        });
+                    }, 2500);
+        });    
+      }
+
+
+
+    function formPlacas(producto){
+      verificaConectividad(function() {
+            var formulario = 'placasProducto';
+            $.ajax({
+                    url: "productos.php",
+                    type: "POST",
+                    data: {producto:producto,
+                      formulario:formulario},
+                    success: function(contenido){
+                        $("#formularios_contenedor").html(contenido);
+                    }
+                });
+        });   
+      }
+
+
+      function formAgregarPlaca(producto){
+        verificaConectividad(function() {
+              var formulario = 'agregarPlaca';
+              $.ajax({
+                      url: "productos.php",
+                      type: "POST",
+                      data: {producto:producto,
+                        formulario:formulario},
+                      success: function(contenido){
+                          $("#formularios_contenedor").html(contenido);
+                      }
+                  });
+          });   
+        }
+  
+
+        function agregarPlaca(producto) {
+          verificaConectividad(function() {
+              verificarllenosForm("agregarPlaca", "notificacionesform",function() {
+                  var nombre = $("#txt_pl_nom").val();
+                  var descripcion = $("#txt_pl_desc").val();
+                  var ip = $("#txt_pl_ip").val();
+                  var funcion = $("#funcion").val();
+          
+                  $.ajax({
+                          url: "../backend/productos.php",
+                          type: "POST",
+                          data: {nombre:nombre,
+                                  producto:producto,
+                                  descripcion:descripcion,
+                                  ip:ip,
+                                  funcion:funcion},
+                          success: function(errores){
+                              $("#notificaciones").html(errores);       
+                          }
+                      });
+              
+                      window.setTimeout(function() {
+                          $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                              $(this).remove(); 
+                          });
+                      }, 2500);
+              });
+          });    
+        }
+    
+        
+      function formModificarPlaca(placa){
+        verificaConectividad(function() {
+              var formulario = 'modificarPlaca';
+              $.ajax({
+                      url: "productos.php",
+                      type: "POST",
+                      data: {placa:placa,
+                        formulario:formulario},
+                      success: function(contenido){
+                          $("#formularios_contenedor").html(contenido);
+                      }
+                  });
+          });   
+        }
+
+
+
+        function modificarPlaca(placa, producto) {
+          verificaConectividad(function() {
+              verificarllenosForm("modificarPlaca", "notificacionesform",function() {
+                  var nombre = $("#txt_pl_nom").val();
+                  var descripcion = $("#txt_pl_desc").val();
+                  var ip = $("#txt_pl_ip").val();
+                  var funcion = $("#funcion").val();
+          
+                  $.ajax({
+                          url: "../backend/productos.php",
+                          type: "POST",
+                          data: {nombre:nombre,
+                                  placa:placa,
+                                  producto:producto,
+                                  descripcion:descripcion,
+                                  ip:ip,
+                                  funcion:funcion},
+                          success: function(errores){
+                              $("#notificaciones").html(errores);       
+                          }
+                      });
+              
+                      window.setTimeout(function() {
+                          $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                              $(this).remove(); 
+                          });
+                      }, 2500);
+              });
+          });    
+        }
+
+
+        function eliminarPlaca(placa, producto) {
+          verificaConectividad(function() {
+            var funcion = "eliminarPlaca";
+                  $.ajax({
+                          url: "../backend/productos.php",
+                          type: "POST",
+                          data: {placa:placa, producto:producto, funcion:funcion},
+                          success: function(contenido){
+                            $("#notificaciones").html(contenido);
+                          }
+                      });
+              
+                      window.setTimeout(function() {
+                          $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                              $(this).remove(); 
+                          });
+                      }, 2500);
+          });    
+        }
+
+
+        function formDispositivos(producto){
+          verificaConectividad(function() {
+                var formulario = 'dispositivosProducto';
+                $.ajax({
+                        url: "productos.php",
+                        type: "POST",
+                        data: {producto:producto,
+                          formulario:formulario},
+                        success: function(contenido){
+                            $("#formularios_contenedor").html(contenido);
+                        }
+                    });
+            });   
+          }
+
+          
+        function formAgregarDispositivos(producto){
+          verificaConectividad(function() {
+                var formulario = 'agregarDispositivo';
+                $.ajax({
+                        url: "productos.php",
+                        type: "POST",
+                        data: {producto:producto,
+                          formulario:formulario},
+                        success: function(contenido){
+                            $("#formularios_contenedor").html(contenido);
+                        }
+                    });
+            });   
+          }
+          
+
+          function agregarDispositivo(producto) {
+            verificaConectividad(function() {
+                verificarllenosForm("agregarDispositivo", "notificacionesform",function() {
+                    var nombre = $("#txt_disp_nom").val();
+                    var unidad = $("#txt_disp_dum_id").val();
+                    var placa = $("#txt_disp_pl_id").val();   
+                    var tipo =  $("#txt_disp_disp_tipo_id").val();
+                    var puerto =  $("#txt_disp_pto").val();
+
+                    var funcion = $("#funcion").val();
+            
+                    $.ajax({
+                            url: "../backend/productos.php",
+                            type: "POST",
+                            data: {nombre:nombre,
+                                    producto:producto,
+                                    unidad:unidad,
+                                    placa:placa,
+                                    tipo:tipo,
+                                    puerto:puerto,
+                                    funcion:funcion},
+                            success: function(errores){
+                                $("#notificaciones").html(errores);       
+                            }
+                        });
+                
+                        window.setTimeout(function() {
+                            $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                                $(this).remove(); 
+                            });
+                        }, 2500);
+                });
+            });    
+          }
+          
+
+                    
+        function formModificarDispositivos(dispositivo,producto){
+          verificaConectividad(function() {
+                var formulario = 'modificarDispositivo';
+                $.ajax({
+                        url: "productos.php",
+                        type: "POST",
+                        data: {dispositivo:dispositivo,
+                               producto:producto,
+                          formulario:formulario},
+                        success: function(contenido){
+                            $("#formularios_contenedor").html(contenido);
+                        }
+                    });
+            });   
+          }
+
+
+          function modificarDispositivo(dispositivo, producto) {
+            verificaConectividad(function() {
+                verificarllenosForm("modificarDispositivo", "notificacionesform",function() {
+                    var nombre = $("#txt_disp_nom").val();
+                    var unidad = $("#txt_disp_dum_id").val();
+                    var placa = $("#txt_disp_pl_id").val();   
+                    var tipo =  $("#txt_disp_disp_tipo_id").val();
+                    var puerto =  $("#txt_disp_pto").val();
+
+                    var funcion = $("#funcion").val();
+            
+                    $.ajax({
+                            url: "../backend/productos.php",
+                            type: "POST",
+                            data: {nombre:nombre,
+                                    dispositivo:dispositivo,
+                                    producto:producto,
+                                    unidad:unidad,
+                                    placa:placa,
+                                    tipo:tipo,
+                                    puerto:puerto,
+                                    funcion:funcion},
+                            success: function(errores){
+                                $("#notificaciones").html(errores);       
+                            }
+                        });
+                
+                        window.setTimeout(function() {
+                            $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                                $(this).remove(); 
+                            });
+                        }, 2500);
+                });
+            });    
+          }
+
+          
+        function eliminarDispositivo(dispositivo,producto) {
+          verificaConectividad(function() {
+            var funcion = "eliminarDispositivo";
+                  $.ajax({
+                          url: "../backend/productos.php",
+                          type: "POST",
+                          data: {dispositivo:dispositivo, producto:producto, funcion:funcion},
+                          success: function(contenido){
+                            $("#notificaciones").html(contenido);
+                          }
+                      });
+              
+                      window.setTimeout(function() {
+                          $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                              $(this).remove(); 
+                          });
+                      }, 2500);
+          });    
+        }
+    
+    
 
 
 function cerrarSesion() {
@@ -859,6 +1247,11 @@ window.setTimeout(function() {
       $(this).remove(); 
   });
 }, 2500);
+
+
+
+
+
 
 
 

@@ -6,7 +6,8 @@ $sesion=sesion_usr();
 
 
 
-$admin = 2;
+
+$admin_sistema = administradorSistema($sesion, $conexion);
 
 
 if(isset($_POST['funcion'])){
@@ -32,15 +33,15 @@ switch($formulario){
     case 'eliminarEspacio':
       #Variables
       $id = $_POST['id'];  
-      $detRol = detectarRolUsuarioEspacio($id, $sesion, $conexion);
+      $funcionesRol = rolPlataforma($sesion, $id, $conexion);
       $detCreador = detectarCreador($id, $conexion);
 
-      if(1 == 1){
-        if($detCreador == $sesion){
+      if($admin_sistema == 1 || $funcionesRol['usrol_esp_esc'] == 1){
+        if($admin_sistema == 1 || $detCreador == $sesion){
       eliminaEspacio($id, $conexion);
         }else{
           ?>
-        <script>muestraMensajes('Solamente el administrador puede eliminar','error');</script>
+        <script>muestraMensajes('Solamente el administrador creador puede eliminar','error');</script>
         <?php
         }
       }else{
@@ -61,9 +62,9 @@ switch($formulario){
       $area = $_POST['area'];
       $ubicacion = $_POST['ubicacion'];
      
-      $detRol = detectarRolUsuarioEspacio($id, $sesion, $conexion);
+      $funcionesRol = rolPlataforma($sesion, $id, $conexion);
 
-      if($detRol == $admin){
+      if($admin_sistema == 1 || $funcionesRol['usrol_esp_esc'] == 1){
         actualizaEspacio($id, $nombre, $descripcion, $area, $ubicacion, $espacio, $conexion);
       }else{
         ?>
@@ -77,6 +78,7 @@ switch($formulario){
     case 'eliminarUsuario':
       $usuario = $_POST['usuario'];  
 
+      
       eliminaUsuario($usuario, $conexion);
 
     break;
