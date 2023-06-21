@@ -28,7 +28,7 @@ if(mysqli_num_rows($buscaEspacio)>0){
   # Si existe un registro despliega toda la informacion que exista
   
   # Detecta el rol si es adminitrativo
-  if(administradorPlataforma($sesion, $conexion) == 1) {
+  if($admin_sistema == 1 || administradorPlataforma($sesion, $conexion) == 1) {
   ?>
   <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarEsp(); ocultarCanvas('menuOffcanvas');">
          <?php echo $i_agregar; ?> Crear espacio

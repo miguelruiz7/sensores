@@ -151,7 +151,7 @@ function destruirvariables(){
 
 
 function administradorSistema($sesion, $conexion){         
-  $consulta = "SELECT * FROM usr_mst WHERE usr_id = '$sesion'";
+  $consulta = "SELECT usr_sistema FROM usr_mst WHERE usr_id = '$sesion'";
   $detectarol = mysqli_query($conexion, $consulta);
 
         if(mysqli_num_rows($detectarol)>0){

@@ -11,6 +11,7 @@ $sesion=sesion_usr();
 
 
 $espacio = comprobarSeccion();
+$admin_sistema = administradorSistema($sesion, $conexion);
 #  
 $funcionesRol = rolPlataforma($sesion, $espacio, $conexion);
 
@@ -113,7 +114,7 @@ switch($formulario){
 
         
 
-          if($funcionesRol['usrol_disp_lec'] == 1) {
+          if($admin_sistema == 1 || $funcionesRol['usrol_disp_lec'] == 1) {
 
           if(mysqli_num_rows($buscaPlacas)>0){
             ?>

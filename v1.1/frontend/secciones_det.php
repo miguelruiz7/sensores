@@ -27,7 +27,7 @@ $buscaSecciones = mysqli_query($conexion, $consulta);
 if(mysqli_num_rows($buscaSecciones)>0){
   # Si existe un registro despliega toda la informacion que exista
   # Detecta el rol si es adminitrativo
-  if(1 == 1) {
+ 
   ?>
   <div class="container m-2 text-center"> <?php  if($admin_sistema == 1 || $funcionesRol['usrol_sec_esc'] == 1) { ?> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarSec(); ocultarCanvas('menuOffcanvas');">
          <?php echo $i_agregar; ?> Crear secciones
@@ -35,9 +35,7 @@ if(mysqli_num_rows($buscaSecciones)>0){
       <a href="espacios_mst.php"><button class="btn btn-outline-dark" type="button"> <?php echo $i_atras; ?>
       Regresar a espacios
     </button> </a></div>
-      <?php
-       }
-       ?>
+   
  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 ">
   <?php
  
