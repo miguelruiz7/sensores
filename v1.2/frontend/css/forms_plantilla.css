@@ -1,0 +1,92 @@
+#contenido {
+  color: black;
+  width: 95%;
+  height: 100%;
+  margin-top: 6%;
+  margin-left: 2%;
+}
+#contenedor {
+  background-color: rgb(252, 252, 252);
+  border-top: solid 4px rgb(7, 6, 105);
+  margin-top: 2px;
+  border-radius: 1px;
+  font-family: Arial, Helvetica, sans-serif;
+  
+}
+.row {
+  margin-top: 1%;
+}
+.lista label {
+  font-size: 1.2vmax;
+}
+.titulo {
+  font-size: 2vmax;
+}
+/*Drop down*/
+.menu-down {
+  width: 30%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.menu-down .list-down-active {
+  border: 1px solid white;
+}
+.menu-down .list-down-active .down-item {
+  /*background-color: black;*/
+  border: 1px solid white;
+  border-radius: 9%;
+  cursor: pointer;
+}
+.menu-down .list-down-active .down-item:hover {
+  background-color: rgb(4, 3, 51);
+}
+.menu-down .list-down-active .down-item a {
+  color: white;
+  text-decoration: none;
+  width: 100%;
+}
+
+.menu-down .list-down {
+  display: none;
+}
+/* Botones */
+.azul {
+  background-color: rgb(7, 6, 105);
+  color: white;
+}
+.azul:hover {
+  border: solid 1px rgb(7, 6, 105);
+  color: rgb(7, 6, 105);
+}
+.light {
+  background-color: white;
+}
+.light:hover {
+  background-color: rgb(7, 6, 105);
+  color: white;
+}
+.largo {
+  width: 100%;
+  font-size: 110%;
+  overflow: hidden;
+}
+.medio {
+  width: 60%;
+}
+.chico {
+  width: 30%;
+}
+/* Texto*/
+.algn-derecha{
+  text-align: right;
+}
+.algn-izquierda{
+  text-align: left;
+}
+.algn-centro{
+  text-align: center;
+}
+.btn_imagen{
+  width: 30px;
+  height: 30px;
+}
+

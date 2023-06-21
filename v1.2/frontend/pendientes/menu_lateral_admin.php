@@ -5,19 +5,19 @@ include('iconos.php');
 include('../backend/funciones.php');
 
 $ruta_base = basename($_SERVER['PHP_SELF']);
+# Consulta de los espacios; consolidar para poder mostrar sus espacios de cada usuario
 
 
 ?>
     <?php
 if(isset($_SESSION['usr_id'])){
   $sesion = $_SESSION['usr_id'];
-  $admin_sistema = administradorSistema($sesion, $conexion);
-
 ?>
 
     <div class="mb-0 container-fluid bg-none text-center p-3 border-bottom" >
 
     <?php
+  
 $consulta = "SELECT * FROM usr_mst WHERE usr_id = '$sesion'";
 $infoUsuario = mysqli_query($conexion, $consulta);
 
@@ -25,8 +25,9 @@ if(mysqli_num_rows($infoUsuario)>0){
   # Si existe un registro despliega toda la informacion que exista
   $datos = mysqli_fetch_array($infoUsuario);
 }
-
-
+  /*
+$rolNativo = detectarRolNativo($sesion,$conexion);
+*/
   ?>
 
 
@@ -35,46 +36,23 @@ if(mysqli_num_rows($infoUsuario)>0){
 <button type="button" class="btn btn-outline-light" onclick="cerrarSesion()">Cerrar sesión</button>
 </div>
 
-<?php
-
-if($admin_sistema == 1) {
-
-  ?>
 <div class="mb-0 container-fluid bg-none text-center p-3 border-bottom mt-3" >
-  <h6 class="text-light">ADMINISTRACION DEL SISTEMA</h6>
-<ul class="list-unstyled ps-0 ">    
-     <li class="mb-1">
-        <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#config" aria-expanded="true">
-         <?php echo $i_variables; ?> Variables
-        </button>
-        <div class="collapse" id="config">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="roles_mst.php" class="link-light d-inline-flex text-decoration-none rounded"> <?php echo $i_roles_usu; ?> Roles de usuario</a></li>
-          </ul>
-        </div>
-      </li>
-    </ul> 
-</div>
-<?php
-}
-  ?>
-
-<div class="mb-0 container-fluid bg-none text-center p-3 border-bottom mt-3" >
-  <h6 class="text-light">PLATAFORMA</h6>
 <ul class="list-unstyled ps-0 ">
    <li class="mb-1">
-          <a href="espacios_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
-            <?php echo $i_espacio_borde; ?> Espacios
+          <a href="admin_usr_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
+            <?php echo $i_personas; ?> Administradores
             </button></a>
     </li>
-    <?php if($admin_sistema == 1 || administradorPlataforma($sesion, $conexion) == 1){ ?>
     <li class="mb-1">
-          <a href="usuarios_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
-            <?php echo $i_personas; ?> Usuarios
+          <a href="#"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
+            <?php echo $i_espacio_borde; ?> Tipos de espacio
             </button></a>
-    </li>
-    <?php } ?>
-    
+    </li>  
+    <li class="mb-1">
+          <a href="#"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
+            <?php echo $i_usuario_rol; ?> Roles
+            </button></a>
+    </li>  
      <li class="mb-1">
         <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#config" aria-expanded="true">
          <?php echo $i_ajustes; ?> Configuración
