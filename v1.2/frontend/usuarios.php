@@ -17,7 +17,7 @@ if(isset($_POST['formulario'])){
 $formulario = $_POST['formulario'];
 switch($formulario){
   # Agrega un nuevo espacio
-    case 'nuevoUsuario':
+    case 'form_usr_agregar':
 
         ?>
  
@@ -25,22 +25,13 @@ switch($formulario){
  <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Crear un nuevo usuario</h5>
    <button type="button" class="btn text-light"  data-bs-dismiss="modal" aria-label="Close"data-bs-dismiss="modal" aria-label="Close" onclick="reseteaFormularios('agregarUsuario');  revertirFormulario();">Cerrar</button>
  </div>
-<form id="agregarUsuario">
-  
+<form id="<?php echo $formulario ?>">
+
           <div class="form-floating text-light mb-3">
             <input type="text" id="txt_usr_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
             <label>Nombre</label>
           </div>
 
-
-        <!--  <div class="form-floating text-light mb-3">
-            <select id="txt_usr_defadmin" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" >
-                    <option class="bg-none text-dark" value=""  selected></option> 
-                    <option class="bg-none text-dark" value="0"  >No</option> 
-                    <option class="bg-none text-dark" value="1"  >Si</option> 
-               </select>
-            <label>Administrador por defecto</label>
-          </div> -->
 
           <div class="form-floating text-light mb-3">
             <input type="text" id="txt_usr_usu" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
@@ -63,7 +54,7 @@ switch($formulario){
         
 
           <div class="text-center">
-          <button type="button" id="funcion" value="agregaUsuario" onclick="agregarUsuario()" class="btn btn-outline-light">Aceptar</button>
+          <button type="button" id="btn_form" onclick="func_usr_agregar(obtenerIdForm())" class="btn btn-outline-light">Aceptar</button>
           </div> 
         </form>
  

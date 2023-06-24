@@ -16,7 +16,7 @@ if(isset($_POST['funcion'])){
 switch($formulario){
 
   #Insertar usuario
-    case 'agregaUsuario':
+    case 'form_usr_agregar':
       #Variables
       $nombre = $_POST['nombre'];
      # $rol = $_POST['rol'];

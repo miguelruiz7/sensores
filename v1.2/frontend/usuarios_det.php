@@ -27,7 +27,7 @@ if(mysqli_num_rows($buscaUsuarios)>0){
   if(administradorPlataforma($sesion, $conexion) == 1){
   # Si existe un registro despliega toda la informacion que exista
   ?>
-    <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="nuevoUsuario();">
+    <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_usr_agregar();">
          <?php echo $i_agregar; ?> Crear nuevo usuario
       </button></div>
 
@@ -80,7 +80,7 @@ if(mysqli_num_rows($buscaUsuarios)>0){
     <p class="col-lg-6 mx-auto mb-4">
       Sin embargo puedes crear uno desde aquí
     </p>
-    <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="nuevoUsuario();"> 
+    <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="form_usr_agregar();"> 
       Crear usuario
     </button>
     </div>

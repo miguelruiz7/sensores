@@ -1255,8 +1255,50 @@ function nuevoUsuario(){
           });    
         }
 
+// Administracion de placas y dispositivos simplificacion de codigo  (v1.2)
 
+          function form_usr_agregar(){
+            verificaConectividad(function() {
+              var formulario = 'form_usr_agregar';
+              $.ajax({
+                      url: "usuarios.php",
+                      type: "POST",
+                      data: {
+                        formulario:formulario},
+                      success: function(contenido){
+                          $("#formularios_contenedor").html(contenido);
+                      }
+                  });
+          });   
+          }
 
+          function func_usr_agregar(formulario) {
+            verificarllenosForm(formulario, "notificacionesform",function() {
+              verificaConectividad(function() {
+
+                      var nombre = $("#txt_usr_nom").val();
+                      var rol = $("#txt_usr_defadmin").val();
+                      var usuario = $("#txt_usr_usu").val();
+                      var contrasena = $("#txt_usr_con").val();
+                      var contrasenacon = $("#txt_usr_con_con").val(); 
+                  
+                      $.ajax({
+                              url: "../backend/usuarios.php",
+                              type: "POST",
+                              data: {nombre:nombre,
+                                rol:rol,
+                            usuario:usuario,
+                            contrasena:contrasena,
+                            contrasenacon:contrasenacon,
+                                funcion:formulario},
+                              success: function(contenido){
+                                $("#notificaciones").html(contenido);
+                                console.log('Los datos que fueron enviados desde el formulario "'+formulario+'" fueron: ' + nombre, descripcion)
+                              }
+                    });
+              });   
+          });    
+          }
 
         function form_pl_agregar(){
           verificaConectividad(function() {
@@ -1456,7 +1498,7 @@ function func_disp_eliminar(dispositivo) {
 }
 
 
-
+//Funciones generales
 function cerrarSesion() {
   verificaConectividad(function() {
     
@@ -1468,6 +1510,7 @@ function cerrarSesion() {
   ocultarCanvas('menuOffcanvas'); 
 }
 
+//Obsoleto
 function muestraMensajesold(alerta, tipo){
   if(tipo == 'error'){
       var spinner = "<div class='spinner-grow text-light' role='status'><span class='visually-hidden'></span></div>";
