@@ -3,6 +3,8 @@
  // Para que la vista se actualize cada 5 segundos
  setInterval(function() {
   cargarEspacios();
+  cargarPlacas();
+  cargarDispositivos();
   cargarUsuarios();
   cargarSecciones();
   cargarProductos();
@@ -62,6 +64,41 @@ function cargarEspacios(){
     });
     });   
   }
+
+  function cargarPlacas(){
+    verificaConectividad(function() {
+      $.ajax({
+        url: 'pl_det.php', // Ruta al archivo que quieres cargar
+        type: 'GET', // Método de la petición (GET, POST, etc.)
+        dataType: 'html', // Tipo de datos esperados en la respuesta
+  
+        success: function(data) {
+          $('#placas').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
+        },
+        error: function() {
+          //alert('Ha ocurrido un error al cargar el archivo.');
+        }
+      });
+      });   
+    }
+
+
+    function cargarDispositivos(){
+      verificaConectividad(function() {
+        $.ajax({
+          url: 'disp_det.php', // Ruta al archivo que quieres cargar
+          type: 'GET', // Método de la petición (GET, POST, etc.)
+          dataType: 'html', // Tipo de datos esperados en la respuesta
+    
+          success: function(data) {
+            $('#dispositivos').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
+          },
+          error: function() {
+            //alert('Ha ocurrido un error al cargar el archivo.');
+          }
+        });
+        });   
+      }
 
   function cargarUsuarios(){
     verificaConectividad(function() {
@@ -1217,7 +1254,207 @@ function nuevoUsuario(){
                       }, 2500);
           });    
         }
+
+
+
+
+        function form_pl_agregar(){
+          verificaConectividad(function() {
+            var formulario = 'form_pl_agregar';
+            $.ajax({
+                    url: "pl.php",
+                    type: "POST",
+                    data: {
+                      formulario:formulario},
+                    success: function(contenido){
+                        $("#formularios_contenedor").html(contenido);
+                    }
+                });
+        });   
+        }
+
+
+        function form_pl_modificar(placa){
+          verificaConectividad(function() {
+            var formulario = 'form_pl_modificar';
+            $.ajax({
+                    url: "pl.php",
+                    type: "POST",
+                    data: {
+                      placa:placa,
+                      formulario:formulario},
+                    success: function(contenido){
+                        $("#formularios_contenedor").html(contenido);
+                    }
+                });
+        });   
+        }
     
+
+        function func_pl_agregar(formulario) {
+              verificarllenosForm(formulario, "notificacionesform",function() {
+                verificaConectividad(function() {
+                          var nombre = $("#txt_pl_nom").val()
+                          var descripcion = $("#txt_pl_desc").val()
+
+                        $.ajax({
+                                url: "../backend/admin.php",
+                                type: "POST",
+                                data: {nombre:nombre,
+                                  descripcion:descripcion,
+                                  funcion:formulario},
+                                success: function(contenido){
+                                  $("#notificaciones").html(contenido);
+                                  console.log('Los datos que fueron enviados desde el formulario "'+formulario+'" fueron: ' + nombre, descripcion)
+                                }
+                      });
+                });   
+          });    
+        }
+
+
+        function func_pl_modificar(formulario, placa) {
+          verificarllenosForm(formulario, "notificacionesform",function() {
+            verificaConectividad(function() {
+                      var nombre = $("#txt_pl_nom").val()
+                      var descripcion = $("#txt_pl_desc").val()
+
+                    $.ajax({
+                            url: "../backend/admin.php",
+                            type: "POST",
+                            data: {placa:placa,
+                              nombre:nombre,
+                              descripcion:descripcion,
+                              funcion:formulario},
+                            success: function(contenido){
+                              $("#notificaciones").html(contenido);
+                              console.log('Los datos que fueron enviados desde el formulario "'+formulario+'" fueron: ' + placa, nombre, descripcion)
+                            }
+                  });
+            });   
+      });    
+    }
+
+
+        function func_pl_eliminar(placa) {
+            verificaConectividad(function() {
+              funcion = 'func_pl_eliminar'
+                    $.ajax({
+                            url: "../backend/admin.php",
+                            type: "POST",
+                            data: {placa:placa,
+                              funcion:funcion},
+                            success: function(contenido){
+                              $("#notificaciones").html(contenido);
+                              console.log('Los datos que fueron enviados fueron: ' + placa)
+                            }
+                  });
+          }); 
+    }
+
+
+    
+    function form_disp_agregar(){
+      verificaConectividad(function() {
+        var formulario = 'form_disp_agregar';
+        $.ajax({
+                url: "disp.php",
+                type: "POST",
+                data: {
+                  formulario:formulario},
+                success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                }
+            });
+    });   
+    }
+    
+    function form_disp_modificar(dispositivo){
+      verificaConectividad(function() {
+        var formulario = 'form_disp_modificar';
+        $.ajax({
+                url: "disp.php",
+                type: "POST",
+                data: {
+                  dispositivo:dispositivo,
+                  formulario:formulario},
+                success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                }
+            });
+    });   
+    }
+
+
+    function func_disp_agregar(formulario) {
+      verificarllenosForm(formulario, "notificacionesform",function() {
+        verificaConectividad(function() {
+                  var nombre = $("#txt_disp_nom").val()
+                  var descripcion = $("#txt_disp_desc").val()
+                  var unidad = $("#txt_disp_dum_id").val()
+                  var tipo = $("#txt_disp_disp_tipo_id").val();
+
+                $.ajax({
+                        url: "../backend/admin.php",
+                        type: "POST",
+                        data: {nombre:nombre,
+                          descripcion:descripcion,
+                          unidad:unidad,
+                          tipo:tipo,
+                          funcion:formulario},
+                        success: function(contenido){
+                          $("#notificaciones").html(contenido);
+                          console.log('Los datos que fueron enviados desde el formulario "'+formulario+'" fueron: ' + nombre, descripcion, unidad, tipo)
+                        }
+              });
+        });   
+  });    
+}
+
+function func_disp_modificar(formulario, dispositivo) {
+  verificarllenosForm(formulario, "notificacionesform",function() {
+    verificaConectividad(function() {
+
+                var nombre = $("#txt_disp_nom").val()
+                var descripcion = $("#txt_disp_desc").val()
+                var unidad = $("#txt_disp_dum_id").val()
+                var tipo = $("#txt_disp_disp_tipo_id").val();
+
+            $.ajax({
+                    url: "../backend/admin.php",
+                    type: "POST",
+                    data: {dispositivo:dispositivo,
+                      nombre:nombre,
+                      descripcion:descripcion,
+                      unidad:unidad,
+                      tipo:tipo,
+                      funcion:formulario},
+                    success: function(contenido){
+                      $("#notificaciones").html(contenido);
+                      console.log('Los datos que fueron enviados desde el formulario "'+formulario+'" fueron: ' + nombre, descripcion, unidad, tipo)
+                    }
+          });
+    });   
+});    
+}
+
+
+function func_disp_eliminar(dispositivo) {
+  verificaConectividad(function() {
+    funcion = 'func_disp_eliminar'
+          $.ajax({
+                  url: "../backend/admin.php",
+                  type: "POST",
+                  data: {dispositivo:dispositivo,
+                    funcion:funcion},
+                  success: function(contenido){
+                    $("#notificaciones").html(contenido);
+                    console.log('Los datos que fueron enviados fueron: ' + dispositivo)
+                  }
+        });
+}); 
+}
+
 
 
 function cerrarSesion() {
@@ -1320,7 +1557,28 @@ function verificaConectividad(funcion) {
     var alerta = 'Sin conexion a red';
     muestraMensajes(alerta),'error';
   }
+ 
 }
+
+function obtenerIdForm(){
+  var form = document.querySelector('form');
+  var id = form.getAttribute('id');
+  return id;
+}
+
+
+function desabilitaFormBtn(){
+  var btn = document.getElementById('btn_form');
+  btn.disabled = true;
+}
+
+
+function habilitaFormBtn(){
+  var btn = document.getElementById('btn_form');
+  btn.disabled = false;
+}
+
+
 
 //Verifica que todos los datos sean llenados
 function verificarllenosForm(formulario,notificacionform,funcion) {
@@ -1341,7 +1599,9 @@ function verificarllenosForm(formulario,notificacionform,funcion) {
                       funcion();
                     }else{
                       var alerta = 'Rellena los campos';
-                      muestraMensajesFormularios(alerta,notificacionform,'error');
+                      habilitaFormBtn();
+                     // muestraMensajesFormularios(alerta,notificacionform,'error');
+                     muestraMensajes(alerta);
                     }
                   }
 

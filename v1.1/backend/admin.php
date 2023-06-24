@@ -39,8 +39,10 @@ switch($formulario){
 
         $rol = $_POST['rol'];
 
+        
+        
         eliminaRol($rol, $conexion);
-            
+
          break;
 
 

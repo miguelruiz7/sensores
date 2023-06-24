@@ -12,7 +12,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 const char* ssid = "EmprendimientoCYT";
 const char* password = "3mpr3nd1m13nt0";
-const char* server = "10.10.100.195";
+const char* server = "10.10.100.210";
 const int port = 1234;
 
 WiFiClient client;
@@ -33,10 +33,11 @@ void setup() {
 void loop() {
  
   //Sensor de Luz
-  objectoSensor("21",String(obtenerValorSensorLuz()));
-   //  objectoSensor("20",String(obtenerValorSensorMov()));
+  
+  objectoSensor("24",String(obtenerValorSensorLuz()));
+  objectoSensor("25",String(obtenerValorSensorMov()));
 
-  //delay(500);
+
 }
 
 

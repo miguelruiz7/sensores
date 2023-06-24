@@ -196,6 +196,140 @@ function rolPlataforma($sesion, $espacio, $conexion){
   return $valores;
 }
 
+####################################################################################################
+#                                                                                                  #
+#                   Almacena funciones que funcionan en la vista del placas                        #
+#                                                                                                  #
+####################################################################################################
+
+
+function insertaPlaca($nombre, $descripcion, $conexion){
+
+    $consulta = "INSERT INTO pl_mst VALUES (NULL, '$nombre', '$descripcion')";
+  
+    $insertarPlaca = mysqli_query($conexion, $consulta);
+  
+    if($insertarPlaca){
+      ?>
+      <script>muestraMensajes('Se agregó exitosamente',''); revertirFormulario(); $('#formulariomodal').modal('hide'), cargarPlacas();  </script>
+      <?php
+    }else{
+        ?>
+      <script>muestraMensajes('Ocurre un error verifica',''); </script>
+      <?php
+    }
+  
+   return;
+}
+
+
+function modificaPlaca($placa, $nombre, $descripcion, $conexion){
+
+  $consulta = "UPDATE  pl_mst SET pl_nom = '$nombre', pl_desc = '$descripcion' WHERE pl_id = '$placa'";
+
+  $modificarPlaca = mysqli_query($conexion, $consulta);
+
+  if($modificarPlaca){
+    ?>
+    <script>muestraMensajes('Se modificó exitosamente',''); revertirFormulario(); $('#formulariomodal').modal('hide'), cargarPlacas();  </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajes('Ocurre un error verifica',''); </script>
+    <?php
+  }
+
+ return;
+}
+
+
+function eliminaPlaca($placa, $conexion){
+
+  $consulta = "DELETE FROM pl_mst WHERE pl_id = '$placa'";
+
+  $eliminarPlaca = mysqli_query($conexion, $consulta);
+
+  if($eliminarPlaca){
+    ?>
+    <script>muestraMensajes('Se eliminó exitosamente',''); cargarPlacas(); </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajes('Ocurre un error verifica',''); </script>
+    <?php
+  }
+
+ return;
+}
+
+
+####################################################################################################
+#                                                                                                  #
+#                   Almacena funciones que funcionan en la vista del dispositivos                  #
+#                                                                                                  #
+####################################################################################################
+
+
+function insertaDispositivo($nombre, $descripcion, $unidad, $tipo, $conexion){
+
+  $consulta = "INSERT INTO disp_mst VALUES (NULL, '$nombre', '$descripcion','$unidad','$tipo')";
+
+  $insertarDispositivo = mysqli_query($conexion, $consulta);
+
+  if($insertarDispositivo){
+    ?>
+    <script>muestraMensajes('Se agregó exitosamente',''); revertirFormulario(); $('#formulariomodal').modal('hide'), cargarDispositivos();  </script>
+    <?php
+  }else{
+      ?>
+    <script>muestraMensajes('Ocurre un error verifica',''); </script>
+    <?php
+  }
+
+ return;
+}
+
+
+function modificaDispositivo($dispositivo, $nombre, $descripcion, $unidad, $tipo, $conexion){
+
+$consulta = "UPDATE disp_mst SET disp_nom = '$nombre', disp_desc_gral = '$descripcion', disp_dum_id = '$unidad', disp_disp_tipo_id = '$tipo' WHERE disp_id = '$dispositivo'";
+
+$modificarDispostivivo = mysqli_query($conexion, $consulta);
+
+if($modificarDispostivivo){
+  ?>
+  <script>muestraMensajes('Se modificó exitosamente',''); revertirFormulario(); $('#formulariomodal').modal('hide'), cargarPlacas();  </script>
+  <?php
+}else{
+    ?>
+  <script>muestraMensajes('Ocurre un error verifica',''); </script>
+  <?php
+}
+
+return;
+}
+
+
+function eliminaDispositivo($dispositivo, $conexion){
+
+$consulta = "DELETE FROM disp_mst WHERE disp_id = '$dispositivo'";
+
+$eliminarDispositivo = mysqli_query($conexion, $consulta);
+
+if($eliminarDispositivo){
+  ?>
+  <script>muestraMensajes('Se eliminó exitosamente',''); cargarPlacas(); </script>
+  <?php
+}else{
+    ?>
+  <script>muestraMensajes('Ocurre un error verifica',''); </script>
+  <?php
+}
+
+return;
+}
+
+
 
 
 
@@ -1058,7 +1192,7 @@ return;
 }
 
 #Elimina el dispositivo en el producto
-function eliminarDispositivo($dispositivo, $producto, $conexion){
+function eliminarDispositivo_($dispositivo, $producto, $conexion){
   
       
   $consulta = "DELETE FROM dato_mst WHERE dato_disp_id ='$dispositivo'";

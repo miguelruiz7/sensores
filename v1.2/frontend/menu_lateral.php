@@ -67,6 +67,16 @@ if($admin_sistema == 1) {
             <?php echo $i_espacio_borde; ?> Espacios
             </button></a>
     </li>
+    <li class="mb-1">
+          <a href="pl_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
+            <?php echo $i_placa; ?> Placas
+            </button></a>
+    </li>
+    <li class="mb-1">
+          <a href="disp_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
+            <?php echo $i_dispositivos; ?> Dispositivos
+            </button></a>
+    </li>
     <?php if($admin_sistema == 1 || administradorPlataforma($sesion, $conexion) == 1){ ?>
     <li class="mb-1">
           <a href="usuarios_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
@@ -75,7 +85,7 @@ if($admin_sistema == 1) {
     </li>
     <?php } ?>
     
-     <li class="mb-1">
+     <!-- <li class="mb-1">
         <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#config" aria-expanded="true">
          <?php echo $i_ajustes; ?> Configuración
         </button>
@@ -84,7 +94,7 @@ if($admin_sistema == 1) {
             <li><a href="#" class="link-light d-inline-flex text-decoration-none rounded">Perfil</a></li>
           </ul>
         </div>
-      </li>
+      </li> -->
    
     </ul> 
 </div>
