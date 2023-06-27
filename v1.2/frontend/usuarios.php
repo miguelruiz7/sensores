@@ -54,7 +54,7 @@ switch($formulario){
         
 
           <div class="text-center">
-          <button type="button" id="btn_form" onclick="func_usr_agregar(obtenerIdForm())" class="btn btn-outline-light">Aceptar</button>
+          <button type="button" id="btn_form" onclick="desabilitaFormBtn(); func_usr_agregar(obtenerIdForm())" class="btn btn-outline-light">Aceptar</button>
           </div> 
         </form>
  
@@ -63,7 +63,7 @@ switch($formulario){
 
 
           # Agrega un nuevo espacio
-    case 'modificarContrasena':
+    case 'form_usr_modificar_con':
 
       $id = $_POST['usuario'];
 
@@ -80,7 +80,7 @@ if(mysqli_num_rows($buscaUsuario)>0){
 <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Modificar claves de acceso</h5>
  <button type="button" class="btn text-light"  data-bs-dismiss="modal" aria-label="Close"data-bs-dismiss="modal" aria-label="Close" onclick="revertirFormulario();">Cerrar</button>
 </div>
-<form id="modificarContrasena">
+<form id="<?php echo $formulario ?>">
 
         <div class="form-floating text-light mb-3">
           <input type="text" id="txt_usr_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" value="<?php echo $buscaNombre['usr_nom']; ?> " disabled>
@@ -103,7 +103,7 @@ if(mysqli_num_rows($buscaUsuario)>0){
       
 
         <div class="text-center">
-        <button type="button" id="funcion" value="modificarContrasena" onclick="modificarContrasena('<?php echo $id;?>')" class="btn btn-outline-light">Aceptar</button>
+        <button type="button" id="btn_form"  onclick="desabilitaFormBtn(); func_usr_modificar_con(obtenerIdForm(),'<?php echo $id;?>')" class="btn btn-outline-light">Aceptar</button>
         </div> 
       </form>
 
@@ -113,7 +113,7 @@ if(mysqli_num_rows($buscaUsuario)>0){
 
 
              # Agrega un nuevo espacio
-    case 'modificarDatos':
+    case 'form_usr_modificar_datos':
 
       $id = $_POST['usuario'];
 
@@ -130,7 +130,7 @@ if(mysqli_num_rows($buscaUsuario)>0){
 <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Modificar datos</h5>
  <button type="button" class="btn text-light"  data-bs-dismiss="modal" aria-label="Close"data-bs-dismiss="modal" aria-label="Close" onclick="revertirFormulario();">Cerrar</button>
 </div>
-<form id="modificarDatos">
+<form id="<?php echo $formulario ?>">
 
         <div class="form-floating text-light mb-3">
           <input type="text" id="txt_usr_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" value="<?php echo $buscaNombre['usr_nom']; ?> " >
@@ -139,7 +139,7 @@ if(mysqli_num_rows($buscaUsuario)>0){
       
 
         <div class="text-center">
-        <button type="button" id="funcion" value="modificarDatos" onclick="modificarDatos('<?php echo $id;?>')" class="btn btn-outline-light">Aceptar</button>
+        <button type="button" id="btn_form"  onclick="desabilitaFormBtn(); func_usr_modificar_datos(obtenerIdForm(),'<?php echo $id;?>')" class="btn btn-outline-light">Aceptar</button>
         </div> 
       </form>
 

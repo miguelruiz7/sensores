@@ -12,6 +12,7 @@ if(isset($_SESSION['usr_id'])){
 
 # Consulta de los espacios; consolidar para poder mostrar sus espacios de cada usuario
 $sesion = $_SESSION['usr_id'];
+$admin_sistema = administradorSistema($sesion, $conexion);
 
 ?>
 
@@ -24,7 +25,7 @@ $buscaUsuarios = mysqli_query($conexion, $consulta);
 
 if(mysqli_num_rows($buscaUsuarios)>0){
 
-  if(administradorPlataforma($sesion, $conexion) == 1){
+  if($admin_sistema == 1 || administradorPlataforma($sesion, $conexion) == 1){
   # Si existe un registro despliega toda la informacion que exista
   ?>
     <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_usr_agregar();">
@@ -49,9 +50,9 @@ if(mysqli_num_rows($buscaUsuarios)>0){
                 <th scope="row"><?php echo $datosUsuarios['usr_nom'];?></th>
                 <td><?php echo $datosUsuarios['usr_usu'];?></td>
                 <td>
-                    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formModificarDatos('<?php echo $datosUsuarios['usr_id'];?>');"><?php echo $i_modificar; ?></button>
-                    <button class="btn btn-outline-dark" onclick="eliminarUsuario_('<?php echo $datosUsuarios['usr_id'];?>')"><?php echo $i_basura; ?></button>
-                    <button class="btn btn-outline-dark"  data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true"  onclick="formModificarCon('<?php echo $datosUsuarios['usr_id'];?>');"><?php echo $i_llave; ?></button>
+                    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_usr_modificar_datos('<?php echo $datosUsuarios['usr_id'];?>');"><?php echo $i_modificar; ?></button>
+                    <button class="btn btn-outline-dark" onclick="func_usr_eliminar('<?php echo $datosUsuarios['usr_id'];?>')"><?php echo $i_basura; ?></button>
+                    <button class="btn btn-outline-dark"  data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true"  onclick="form_usr_modificar_con('<?php echo $datosUsuarios['usr_id'];?>');"><?php echo $i_llave; ?></button>
                   </td>
                 </tr>
             <?php

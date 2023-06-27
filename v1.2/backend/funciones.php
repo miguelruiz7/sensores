@@ -614,12 +614,12 @@ function insertaUsuario($nombre, $usuario, $contrasena, $contrasenacon, $conexio
   $consulta = "SELECT usr_usu FROM usr_mst WHERE usr_usu ='$usuario'";
   $buscaNombreUsuario = mysqli_query($conexion, $consulta);
   if(mysqli_num_rows($buscaNombreUsuario)>0){
-    $errores .= "<script>muestraMensajesFormularios('Usuario existente','notificacionesform','error')</script>";
+    $errores .= "<script>habilitaFormBtn(); muestraMensajes('Usuario existente','notificacionesform','error')</script>";
   }
 
 
   if($contrasena != $contrasenacon){
-    $errores .= "<script>muestraMensajesFormularios('Contraseñas incorrectas','notificacionesform','error')</script>";
+    $errores .= "<script>habilitaFormBtn(); muestraMensajes('Contraseñas incorrectas','notificacionesform','error')</script>";
   }
    
   $contrasena = password_hash($contrasena,PASSWORD_DEFAULT);
@@ -650,7 +650,7 @@ function modificarContrasena($usuario, $contrasena, $contrasenacon, $conexion){
   $errores = '';
 
   if($contrasena != $contrasenacon){
-    $errores .= "<script>muestraMensajesFormularios('Las contraseñas no coinciden','notificacionesform','error')</script>";
+    $errores .= "<script>habilitaFormBtn(); muestraMensajes('Las contraseñas no coinciden','notificacionesform','error')</script>";
   }
 
 
@@ -886,7 +886,7 @@ function modificarProducto($producto, $nombre, $descripcion, $conexion){
 #Elimina un producto 
 function eliminarProducto($producto, $conexion){
      
-  $consulta = "DELETE FROM pl_mst WHERE pl_prod_id ='$producto'";
+  $consulta = "DELETE FROM pl_det WHERE pl_prod_id ='$producto'";
   $eliminaPlacas = mysqli_query($conexion, $consulta); 
 
   if($eliminaPlacas){
@@ -916,9 +916,9 @@ function eliminarProducto($producto, $conexion){
 
 
 #Agrega una placa en el producto
-function agregarPlaca($producto, $nombre, $descripcion, $ip, $conexion){
+function agregarPlaca($producto, $placa, $descripcion, $ip, $conexion){
 
-  $consulta = "INSERT INTO pl_mst VALUES (NULL, '$nombre', '$descripcion', '$ip', '$producto')";
+  $consulta = "INSERT INTO pl_det VALUES (NULL,'$descripcion', '$ip', '$producto','$placa')";
 
   $insertarPlaca = mysqli_query($conexion, $consulta);
 
@@ -939,9 +939,9 @@ function agregarPlaca($producto, $nombre, $descripcion, $ip, $conexion){
 
 #Modifica una placa en el producto
 
-function modificarPlaca($placa, $producto, $nombre, $descripcion, $ip, $conexion){
+function modificarPlaca($placa, $producto, $descripcion, $ip, $conexion){
 
-  $consulta = "UPDATE pl_mst SET pl_nom = '$nombre', pl_desc = '$descripcion', pl_ip = '$ip' WHERE pl_id ='$placa'";
+  $consulta = "UPDATE pl_det SET  pl_desc = '$descripcion', pl_ip = '$ip' WHERE pl_id_ ='$placa'";
 
   $modificaPlaca = mysqli_query($conexion, $consulta);
 
@@ -967,7 +967,7 @@ function modificarPlaca($placa, $producto, $nombre, $descripcion, $ip, $conexion
 
 function eliminarPlaca($placa, $producto, $conexion){
      
-  $consulta = "DELETE FROM pl_mst WHERE pl_id ='$placa'";
+  $consulta = "DELETE FROM pl_det WHERE pl_id_ ='$placa'";
   $eliminaPlaca = mysqli_query($conexion, $consulta); 
 
   if($eliminaPlaca){
@@ -988,7 +988,7 @@ function eliminarPlaca($placa, $producto, $conexion){
 #Contea las placas en el producto
 
 function conteoPlacasProducto($id,$conexion){
-  $consulta = "SELECT COUNT(pl_id) as placas FROM pl_mst WHERE pl_prod_id = $id;";
+  $consulta = "SELECT COUNT(pl_id_) as placas FROM pl_det WHERE pl_prod_id = $id;";
   $conteoUsuarios = mysqli_query($conexion, $consulta);
   
   if(mysqli_num_rows($conteoUsuarios)>0){
@@ -1002,7 +1002,7 @@ function conteoPlacasProducto($id,$conexion){
 
 #Contea los dispositivos en el producto
 function conteoDispositivosProducto($id,$conexion){
-  $consulta = "SELECT COUNT(disp_id) as dispositivos FROM disp_mst WHERE disp_prod_id = $id;";
+  $consulta = "SELECT COUNT(disp_id_) as dispositivos FROM pl_det, disp_det WHERE pl_prod_id = $id AND pl_id_ = disp_pl_id;";
   $conteoUsuarios = mysqli_query($conexion, $consulta);
   
   if(mysqli_num_rows($conteoUsuarios)>0){
@@ -1090,9 +1090,11 @@ function detectapuertoDisp($dispositivo, $conexion) {
 
 
 #Agrega un dispositivo en un producto
-function agregarDispositivo($producto, $nombre, $unidad, $placa, $tipo, $puerto, $conexion){
+function agregarDispositivo($producto, $dispositivo,$placa, $conexion){
    $errores = '';
 
+
+   /*
   $ptos_usados = '';
 
   $arreglo_ptos = explode(",", $puerto);
@@ -1113,17 +1115,17 @@ $errores .= "1";
 <script>muestraMensajesFormularios('Los puertos <?php echo $ptos_usados ?> se encuentran ya ocupados','notificacionesform','error');</script>
 <?php
 } 
-
+*/
 
 
 
   if($errores == ''){
-  $consulta = "INSERT INTO disp_mst VALUES (NULL, '$nombre', '$unidad', '$placa', '$tipo','$producto')";
+  $consulta = "INSERT INTO disp_det VALUES (NULL, '$placa', '$dispositivo')";
 
   $insertarDispositivo = mysqli_query($conexion, $consulta);
 
   if($insertarDispositivo){
- 
+     /*
     #Ejecuta el ultimo registro insertado
     $consulta = "SELECT max(disp_id) AS ultimo_dispositivo FROM disp_mst";
     $ultimoDispositivo = mysqli_query($conexion, $consulta);
@@ -1148,7 +1150,10 @@ $errores .= "1";
         <script>muestraMensajes('Se agregó exitosamente',''); revertirFormulario(); formDispositivos('<?php echo $producto; ?>'); </script>
         <?php
       }
-
+*/
+         ?>
+        <script>muestraMensajes('Se agregó exitosamente',''); revertirFormulario(); formDispositivos('<?php echo $producto; ?>'); </script>
+        <?php
   }else{
       ?>
     <script>muestraMensajesFormularios('Ocurrio algún error verifica','error');</script>
@@ -1192,19 +1197,10 @@ return;
 }
 
 #Elimina el dispositivo en el producto
-function eliminarDispositivo_($dispositivo, $producto, $conexion){
+function eliminarDispositivo($dispositivo, $producto, $conexion){
   
-      
-  $consulta = "DELETE FROM dato_mst WHERE dato_disp_id ='$dispositivo'";
-  $eliminaDatos = mysqli_query($conexion, $consulta); 
 
-  if($eliminaDatos){
-    
-  $consulta = "DELETE FROM disp_det WHERE disp_disp_id ='$dispositivo'";
-  $eliminaPuertos = mysqli_query($conexion, $consulta); 
-
-  if($eliminaPuertos){
-  $consulta = "DELETE FROM disp_mst WHERE disp_id ='$dispositivo'";
+  $consulta = "DELETE FROM disp_det WHERE disp_id_ ='$dispositivo'";
   $eliminaDispositivo = mysqli_query($conexion, $consulta); 
 
   if($eliminaDispositivo){
@@ -1213,21 +1209,9 @@ function eliminarDispositivo_($dispositivo, $producto, $conexion){
     <?php
   }else{
       ?>
-    <script>muestraMensajes('Ocurrio algún error verifica (3)','error');</script>
+    <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
     <?php
   }
-
-  }else{
-      ?>
-    <script>muestraMensajes('Ocurrio algún error verifica (2)','error');</script>
-    <?php
-  }
-}else{
-  ?>
-<script>muestraMensajes('Ocurrio algún error verifica (1)','error');</script>
-<?php
-}
-
 
  return;
 }

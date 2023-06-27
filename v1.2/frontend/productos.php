@@ -107,7 +107,7 @@ switch($formulario){
           <?php
            #Consultamos la informacion de los usuarios que se encuentran en el espacio
           $id = $_POST['producto']; 
-          $consulta = "SELECT * FROM pl_mst WHERE pl_prod_id = '$id'";
+          $consulta = "SELECT *, pl_det.pl_desc AS descripcion_gral FROM pl_det, pl_mst WHERE pl_prod_id = '$id' AND  pl_id = pl_pl_id";
           $buscaPlacas = mysqli_query($conexion, $consulta);
 
 
@@ -131,6 +131,7 @@ switch($formulario){
                   <tr>
                   <th scope="col">Id de placa</th>
                     <th scope="col">Nombre de la placa</th>
+                    <th scope="col">Descripción</th>
                     <th scope="col">Direccion IP</th>
                     <th scope="col">Acciones</th>
                   </tr>
@@ -144,11 +145,12 @@ switch($formulario){
 
             ?>
              <tr>
-                <th scope="row"><?php echo $datosPlaca['pl_id'];?></th>
+                <th scope="row"><?php echo $datosPlaca['pl_id_'];?></th>
                 <td><?php echo $datosPlaca['pl_nom'];?></td>
+                <td><?php echo $datosPlaca['descripcion_gral'];?></td>
                 <td><?php echo $datosPlaca['pl_ip'];?></td>
-                <td><button class="btn btn-outline-light" onclick="revertirFormulario(); formModificarPlaca('<?php echo $datosPlaca['pl_id']?>');"><?php echo $i_modificar; ?></button>
-                    <button class="btn btn-outline-light" onclick="eliminarPlaca('<?php echo $datosPlaca['pl_id']?>','<?php echo $datosPlaca['pl_prod_id']?>');"><?php echo $i_basura; ?></button></td>
+                <td><button class="btn btn-outline-light" onclick="revertirFormulario(); formModificarPlaca('<?php echo $datosPlaca['pl_id_']?>');"><?php echo $i_modificar; ?></button>
+                    <button class="btn btn-outline-light" onclick="eliminarPlaca('<?php echo $datosPlaca['pl_id_']?>','<?php echo $datosPlaca['pl_prod_id']?>');"><?php echo $i_basura; ?></button></td>
               </tr>
            <?php
 
@@ -206,8 +208,20 @@ switch($formulario){
 <form id="agregarPlaca">
   
           <div class="form-floating text-light mb-3">
-            <input type="text" id="txt_pl_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
-            <label>Nombre de la placa</label>
+            <select type="text" id="txt_pl_pl_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+              <option value=""></option>
+              <?php
+                           $consulta="SELECT * FROM pl_mst";
+                            $buscaCatPlacas= mysqli_query($conexion,$consulta);
+                                while($valores= mysqli_fetch_array($buscaCatPlacas)){
+                                    ?>
+                                    <option class="bg-none" value="<?php echo $valores['pl_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['pl_nom']; ?></option>
+                                    <?php
+                                } 
+                                
+                    ?>
+              </select>
+            <label>Seleccione una placa</label>
           </div>
 
           <div class="form-floating text-light mb-3">
@@ -234,7 +248,7 @@ switch($formulario){
 
           
           #Consultamos la información primordial acerca de la placa
-          $consulta = "SELECT * FROM pl_mst WHERE pl_id='$placa'";
+          $consulta = "SELECT * FROM pl_det WHERE pl_id_='$placa'";
           $buscaPlaca = mysqli_query($conexion, $consulta);
 
           if(mysqli_num_rows($buscaPlaca)>0){
@@ -248,17 +262,15 @@ switch($formulario){
    <button type="button" class="btn text-light" onclick="revertirFormulario(); formPlacas('<?php echo $datosPlaca['pl_prod_id']; ?>');">Volver a placas</button>
  </div>
 <form id="modificarPlaca">
-  
-          <div class="form-floating text-light mb-3">
-            <input type="text" id="txt_pl_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" value="<?php echo $datosPlaca['pl_nom']; ?>">
-            <label>Nombre de la placa</label>
-          </div>
 
-          <div class="form-floating text-light mb-3">
+
+<div class="form-floating text-light mb-3">
             <textarea type="text" id="txt_pl_desc" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput"><?php echo $datosPlaca['pl_desc']; ?></textarea>
             <label>Descripción breve</label>
           </div>
 
+  
+        
           <div class="form-floating text-light mb-3">
             <input type="text" id="txt_pl_ip" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput"  value="<?php echo $datosPlaca['pl_ip']; ?>">
             <label>Dirección IP</label>
@@ -284,13 +296,13 @@ switch($formulario){
           $id = $_POST['producto']; 
 
 
-            
 
-          $consulta = "SELECT * FROM disp_mst,  disp_tipo_mst, pl_mst WHERE disp_prod_id = '$id' AND disp_disp_tipo_id = disp_tipo_id AND  disp_pl_id = pl_id";
+
+            #CORREGIR ESTA CLAVE DE CONSULTA QUERY
+            
+          $consulta = "SELECT * FROM disp_mst, disp_det, pl_mst, pl_det, disp_tipo_mst WHERE pl_prod_id = '$id' AND disp_disp_id = disp_id AND disp_tipo_id = disp_disp_tipo_id  AND  disp_pl_id = pl_id_ AND  pl_pl_id = pl_id";
           $buscaPlacas = mysqli_query($conexion, $consulta);
 
-
-        
 
           if($admin_sistema == 1 || $funcionesRol['usrol_disp_lec'] == 1) {
 
@@ -312,7 +324,7 @@ switch($formulario){
                     <th scope="col">Nombre del dispositivo</th>
                     <th scope="col">Tipo de dispositivo</th>
                     <th scope="col">Placa</th>
-                    <th scope="col">Puertos</th>
+                  <!--  <th scope="col">Puertos</th> -->
                     <th scope="col">Acciones</th>
                   </tr>
                 </thead>
@@ -325,13 +337,13 @@ switch($formulario){
 
             ?>
              <tr>
-                <th scope="row"><?php echo $datosPlaca['disp_id'];?></th>
+                <th scope="row"><?php echo $datosPlaca['disp_id_'];?></th>
                 <td><?php echo $datosPlaca['disp_nom'];?></td>
                 <td><?php echo $datosPlaca['disp_tipo_nom'];?></td>
-                <td><?php echo $datosPlaca['pl_nom']." (".$datosPlaca['pl_id'].")";?></td>
-                <td><?php echo detectapuertoDisp($datosPlaca['disp_id'],$conexion);?></td>
-                <td><button class="btn btn-outline-light" onclick="formModificarDispositivos('<?php echo $datosPlaca['disp_id'];?>','<?php echo $id;?>')" ><?php echo $i_modificar; ?></button>
-                    <button class="btn btn-outline-light" onclick="eliminarDispositivo('<?php echo $datosPlaca['disp_id'];?>','<?php echo $id;?>')" ><?php echo $i_basura; ?></button></td>
+                <td><?php echo $datosPlaca['pl_nom']." (".$datosPlaca['pl_id_'].")";?></td>
+               <!-- <td><?php echo detectapuertoDisp($datosPlaca['disp_id'],$conexion);?></td> -->
+                <td><button class="btn btn-outline-light" onclick="formModificarDispositivos('<?php echo $datosPlaca['disp_id_'];?>','<?php echo $id;?>')" ><?php echo $i_modificar; ?></button>
+                    <button class="btn btn-outline-light" onclick="eliminarDispositivo('<?php echo $datosPlaca['disp_id_'];?>','<?php echo $id;?>')" ><?php echo $i_basura; ?></button></td>
               </tr>
            <?php
 
@@ -384,77 +396,48 @@ switch($formulario){
           #Agrega una sección al espacio (NO FUNCIONA)
         ?>
          <div class="offcanvas-header m-3">
- <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Crear un dispositivo</h5>
+ <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Agregar un dispositivo</h5>
    <button type="button" class="btn text-light" onclick="revertirFormulario(); formDispositivos('<?php echo $producto; ?>');">Volver a dispositivos</button>
  </div>
 <form id="agregarDispositivo">
   
           <div class="form-floating text-light mb-3">
-            <input type="text" id="txt_disp_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
-            <label>Nombre del dispositivo</label>
-          </div>
-
-          <div class="form-floating text-light mb-3">
-              <select id="txt_disp_dum_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" >
-              <option value="" selected></option> 
+            <select type="text" id="txt_disp_disp_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+            <option value="" selected></option> 
                       <?php
                       # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
                      
-                             $consulta="SELECT * FROM dum_mst WHERE dum_id NOT IN ('1')";
+                             $consulta="SELECT * FROM disp_mst";
                               $buscatiposUnidad= mysqli_query($conexion,$consulta);
                                   while($valores= mysqli_fetch_array($buscatiposUnidad)){
                                       ?>
-                                      <option class="bg-none" value="<?php echo $valores['dum_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['dum_nom']; ?> (<?php echo $valores['dum_sigl']; ?>)</option>
+                                      <option class="bg-none" value="<?php echo $valores['disp_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['disp_nom']; ?> (<?php echo $valores['disp_desc_gral']; ?>)</option>
                                       <?php
                                   }           
                       ?>
                  </select>
-              <label>Unidad que medira</label>
-            </div>
+            <label>Dispositivo</label>
+          </div>
 
-            <div class="form-floating text-light mb-3">
-              <select id="txt_disp_pl_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" >
-              <option value="" selected></option> 
+
+          <div class="form-floating text-light mb-3">
+            <select type="text" id="txt_disp_pl_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+            <option value="" selected></option> 
                       <?php
                       # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
                      
-                             $consulta="SELECT * FROM pl_mst WHERE pl_prod_id = '$producto'";
-                              $buscaPlacas= mysqli_query($conexion,$consulta);
-                                  while($valores= mysqli_fetch_array($buscaPlacas)){
+                             $consulta="SELECT * FROM pl_mst, pl_det WHERE pl_prod_id = '$producto' AND pl_id = pl_pl_id";
+                              $buscatiposUnidad= mysqli_query($conexion,$consulta);
+                                  while($valores= mysqli_fetch_array($buscatiposUnidad)){
                                       ?>
-                                      <option class="bg-none" value="<?php echo $valores['pl_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['pl_nom']; ?> (<?php echo $valores['pl_id']; ?>)</option>
+                                      <option class="bg-none" value="<?php echo $valores['pl_id_'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['pl_nom']; ?> (<?php echo $valores['pl_id_']; ?>)</option>
                                       <?php
                                   }           
                       ?>
                  </select>
-              <label>Seleccione la placa</label>
-            </div>
-
-
-            <div class="form-floating text-light mb-3">
-              <select id="txt_disp_disp_tipo_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" >
-              <option value="" selected></option> 
-                      <?php
-                      # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
-                     
-                             $consulta="SELECT * FROM disp_tipo_mst WHERE disp_tipo_id NOT IN ('1')";
-                              $buscatiposDisp= mysqli_query($conexion,$consulta);
-                                  while($valores= mysqli_fetch_array($buscatiposDisp)){
-                                      ?>
-                                      <option class="bg-none" value="<?php echo $valores['disp_tipo_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['disp_tipo_nom']; ?></option>
-                                      <?php
-                                  }           
-                      ?>
-                 </select>
-              <label>Seleccione el tipo de dispositivo</label>
-            </div>
-
-            <div class="form-floating text-light mb-3">
-            <input type="text" id="txt_disp_pto" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white">
-            <label>Puertos (Separa por comas ej: D1,D2,D3)</label>
-           </div>
-
-        
+            <label>Selecciona la placa:</label>
+          </div>
+                                  
 
           <div class="text-center">
           <button type="button" id="funcion" value="agregarDispositivo" onclick="agregarDispositivo('<?php echo $producto; ?>')" class="btn btn-outline-light">Aceptar</button>
@@ -464,6 +447,7 @@ switch($formulario){
 
   // Obtener el campo de texto
  
+  /*
 
   // Escuchar el evento 'keyup' para detectar cambios mientras se escribe en el campo de texto
   document.getElementById('txt_disp_pto').addEventListener('keyup', function() {
@@ -472,6 +456,7 @@ switch($formulario){
 
     document.getElementById('txt_disp_pto').value = textoSeparado; // Asignar el nuevo valor al campo de texto
   });
+  */
 </script>
 
 
@@ -486,7 +471,7 @@ switch($formulario){
 
           #Agrega una sección al espacio (NO FUNCIONA)
 
-          $consulta = "SELECT * FROM disp_mst, dum_mst, disp_tipo_mst, pl_mst WHERE disp_id = '$dispositivo' AND disp_dum_id = dum_id AND disp_pl_id = pl_id AND disp_disp_tipo_id = disp_tipo_id";
+          $consulta = "SELECT * FROM disp_mst, disp_det, dum_mst, disp_tipo_mst, pl_mst WHERE disp_id_ = '$dispositivo' AND disp_dum_id = dum_id AND disp_pl_id = pl_id AND disp_disp_tipo_id = disp_tipo_id";
           $buscaDispositivo = mysqli_query($conexion, $consulta);
           if(mysqli_num_rows($buscaDispositivo)>0){
             $datos = mysqli_fetch_array($buscaDispositivo);
@@ -501,94 +486,39 @@ switch($formulario){
 <form id="modificarDispositivo">
   
           <div class="form-floating text-light mb-3">
-            <input type="text" id="txt_disp_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" value="<?php echo $datos['disp_nom']; ?>">
-            <label>Nombre del dispositivo</label>
-          </div>
-
-          <div class="form-floating text-light mb-3">
-              <select id="txt_disp_dum_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
-              <option value="<?php echo $datos['disp_dum_id']; ?>" selected><?php echo $datos['dum_nom']; ?> (<?php echo $datos['dum_sigl']; ?>)</option> 
+            <select type="text" id="txt_disp_pl_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+            <option value="" selected></option> 
+            <optgroup label="Placas de este producto: " style="background-color:#042f52; filter: blur(5px);">
+          
                       <?php
                       # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
-                            $unidad = $datos['disp_dum_id'];
-
-                             $consulta="SELECT * FROM dum_mst WHERE dum_id NOT IN ('1') AND dum_id NOT IN ('$unidad')";
+                     
+                             $consulta="SELECT * FROM pl_mst, pl_det WHERE pl_prod_id = '$producto' AND pl_id = pl_pl_id";
                               $buscatiposUnidad= mysqli_query($conexion,$consulta);
                                   while($valores= mysqli_fetch_array($buscatiposUnidad)){
                                       ?>
-                                      <option class="bg-none" value="<?php echo $valores['dum_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['dum_nom']; ?> (<?php echo $valores['dum_sigl']; ?>)</option>
+                                      <option class="bg-none" value="<?php echo $valores['pl_id_'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['pl_nom']; ?> (<?php echo $valores['pl_id_']; ?>)</option>
                                       <?php
                                   }           
                       ?>
-                 </select>
-              <label>Unidad que medira</label>
-            </div>
-
-            <div class="form-floating text-light mb-3">
-              <select id="txt_disp_pl_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" >
-              <option value="<?php echo $datos['disp_pl_id']; ?>" selected><?php echo $datos['pl_nom']; ?> (<?php echo $datos['disp_pl_id']; ?>)</option> 
-                      <?php
+                        </optgroup>
+                        <optgroup label="Placas de otros productos: " style="background-color:#042f52; filter: blur(5px);">
+                        <?php
                       # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
-                           $placa = $datos['disp_pl_id'];
-
-                             $consulta="SELECT * FROM pl_mst WHERE pl_prod_id = '$producto' AND pl_id NOT IN ('$placa')";
-                              $buscaPlacas= mysqli_query($conexion,$consulta);
-                                  while($valores= mysqli_fetch_array($buscaPlacas)){
+                     
+                             $consulta="SELECT * FROM pl_mst, pl_det, prod_mst WHERE pl_prod_id NOT IN  ('$producto') AND pl_id = pl_pl_id AND prod_id = pl_prod_id";
+                              $buscatiposUnidad= mysqli_query($conexion,$consulta);
+                                  while($valores= mysqli_fetch_array($buscatiposUnidad)){
                                       ?>
-                                      <option class="bg-none" value="<?php echo $valores['pl_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['pl_nom']; ?> (<?php echo $valores['pl_id']; ?>)</option>
+                                      <option class="bg-none" value="<?php echo $valores['pl_id_'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['pl_nom']; ?> (<?php echo $valores['pl_id_']; ?>), (<?php echo $valores['prod_nom']; ?>)</option>
                                       <?php
                                   }           
                       ?>
-                 </select>
-              <label>Seleccione la placa</label>
-            </div>
-
-
-            <div class="form-floating text-light mb-3">
-              <select id="txt_disp_disp_tipo_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" >
-              <option value="<?php echo $datos['disp_disp_tipo_id']; ?>" selected><?php echo $datos['disp_tipo_nom']; ?></option> 
-                      <?php
-                      # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
                       
-                        $tipo = $datos['disp_disp_tipo_id'];
-                         
-                             $consulta="SELECT * FROM disp_tipo_mst WHERE disp_tipo_id NOT IN ('1') AND disp_tipo_id NOT IN ('$tipo')";
-                              $buscatiposDisp= mysqli_query($conexion,$consulta);
-                                  while($valores= mysqli_fetch_array($buscatiposDisp)){
-                                      ?>
-                                      <option class="bg-none" value="<?php echo $valores['disp_tipo_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['disp_tipo_nom']; ?></option>
-                                      <?php
-                                  }           
-                      ?>
+                      </optgroup>
                  </select>
-              <label>Seleccione el tipo de dispositivo</label>
-            </div>
-
-            
-
-       <!--     <div class="form-floating text-light mb-3">
-            <input type="text" id="txt_disp_pto" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" value="<?php
-
-$consulta = "SELECT * FROM disp_det WHERE disp_disp_id = '$dispositivo'";
-$detectaPuerto = mysqli_query($conexion, $consulta);
-
-if (mysqli_num_rows($detectaPuerto) > 0) {
-          $resultados = mysqli_fetch_all($detectaPuerto, MYSQLI_ASSOC);
-          foreach ($resultados as $valor) {
-            $disp_pto = $valor['disp_pto'];
-    
-            if ($valor === end($resultados)) {
-                echo $disp_pto."";
-            } else {
-                echo $disp_pto.",";
-            }
-        } 
-  }
-?>">
-            <label>Puertos (Separa por comas ej: D1,D2,D3)</label>
-           </div> -->
-
-        
+            <label>Selecciona la placa:</label>
+          </div>
 
           <div class="text-center">
           <button type="button" id="funcion" value="modificarDispositivo" onclick="modificarDispositivo('<?php echo $dispositivo; ?>','<?php echo $producto; ?>')" class="btn btn-outline-light">Aceptar</button>

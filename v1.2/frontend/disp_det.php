@@ -12,6 +12,7 @@ if(isset($_SESSION['usr_id'])){
 
 # Consulta de los espacios; consolidar para poder mostrar sus espacios de cada usuario
 $sesion = $_SESSION['usr_id'];
+$admin_sistema = administradorSistema($sesion, $conexion);
 
 ?>
 
@@ -24,7 +25,7 @@ $buscaDispositivos = mysqli_query($conexion, $consulta);
 
 if(mysqli_num_rows($buscaDispositivos)>0){
 
-  if(administradorPlataforma($sesion, $conexion) == 1){
+  if($admin_sistema == 1 || administradorPlataforma($sesion, $conexion) == 1){
   # Si existe un registro despliega toda la informacion que exista
   ?>
     <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_disp_agregar();">

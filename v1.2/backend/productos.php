@@ -41,22 +41,22 @@ break;
 
 case 'agregarPlaca':
     $producto = $_POST['producto'];
-    $nombre = $_POST['nombre'];
+    $placa = $_POST['placa'];
     $descripcion = $_POST['descripcion'];
     $ip =  $_POST['ip'];
 
-    agregarPlaca($producto,$nombre,$descripcion,$ip,$conexion);
+    agregarPlaca($producto,$placa,$descripcion,$ip,$conexion);
+
 break;
 
 
 case 'modificarPlaca':
     $placa = $_POST['placa'];
     $producto = $_POST['producto'];
-    $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
     $ip =  $_POST['ip'];
 
-    modificarPlaca($placa, $producto, $nombre,$descripcion,$ip,$conexion);
+    modificarPlaca($placa, $producto, $descripcion,$ip,$conexion);
 break;
 
 case 'eliminarPlaca':
@@ -67,13 +67,10 @@ break;
 
 case 'agregarDispositivo':
     $producto = $_POST['producto'];
-    $nombre = $_POST['nombre'];
-    $unidad = $_POST['unidad'];
+    $dispositivo = $_POST['dispositivo'];
     $placa = $_POST['placa'];
-    $tipo = $_POST['tipo'];
-    $puerto = $_POST['puerto'];
 
-    agregarDispositivo($producto,$nombre,$unidad,$placa,$tipo,$puerto,$conexion);
+    agregarDispositivo($producto,$dispositivo,$placa,$conexion);
 
 break;
 
@@ -93,6 +90,7 @@ case 'eliminarDispositivo':
     $dispositivo = $_POST['dispositivo'];
     $producto = $_POST['producto'];
     eliminarDispositivo($dispositivo, $producto,$conexion);
+    
 break;
 
 

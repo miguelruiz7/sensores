@@ -521,121 +521,12 @@ function modificarUsuario(id,espacio) {
   });    
 }
 
-function formModificarCon(usuario){
-  verificaConectividad(function() {
-    var formulario = "modificarContrasena";
-          $.ajax({
-                  url: "usuarios.php",
-                  type: "POST",
-                  data: {usuario:usuario,
-                    formulario:formulario},
-                  success: function(contenido){
-                    $("#formularios_contenedor").html(contenido);
-                  }
-              });
-      
-              window.setTimeout(function() {
-                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
-                      $(this).remove(); 
-                  });
-              }, 2500);
-  });    
-}
 
-function formModificarDatos(usuario){
-  verificaConectividad(function() {
-    var formulario = "modificarDatos"; 
-          $.ajax({
-                  url: "usuarios.php",
-                  type: "POST",
-                  data: {usuario:usuario,
-                    formulario:formulario},
-                  success: function(contenido){
-                    $("#formularios_contenedor").html(contenido);
-                  }
-              });
-      
-              window.setTimeout(function() {
-                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
-                      $(this).remove(); 
-                  });
-              }, 2500);
-  });    
-}
 
-function modificarContrasena(usuario) {
-  verificaConectividad(function() {
-      verificarllenosForm("modificarContrasena", "notificacionesform",function() {
-          var contrasena = $("#txt_usr_con").val();
-          var contrasenacon = $("#txt_usr_con_con").val();
-          var funcion = $("#funcion").val();
-  
-          $.ajax({
-                  url: "../backend/usuarios.php",
-                  type: "POST",
-                  data: { usuario:usuario, 
-                          contrasena:contrasena,
-                          contrasenacon:contrasenacon,
-                          funcion:funcion},
-                  success: function(errores){
-                      $("#notificaciones").html(errores);       
-                  }
-              });
-      
-              window.setTimeout(function() {
-                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
-                      $(this).remove(); 
-                  });
-              }, 2500);
-      });
-  });    
-}
 
-function modificarDatos(usuario) {
-  verificaConectividad(function() {
-      verificarllenosForm("modificarDatos", "notificacionesform",function() {
-           var nombre = $("#txt_usr_nom").val();
-          var funcion = $("#funcion").val();
-  
-          $.ajax({
-                  url: "../backend/usuarios.php",
-                  type: "POST",
-                  data: { usuario:usuario, 
-                          nombre:nombre,
-                          funcion:funcion},
-                  success: function(errores){
-                      $("#notificaciones").html(errores);       
-                  }
-              });
-      
-              window.setTimeout(function() {
-                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
-                      $(this).remove(); 
-                  });
-              }, 2500);
-      });
-  });    
-}
 
-function eliminarUsuario_(usuario) {
-  verificaConectividad(function() {
-    var funcion = "eliminarUsuario";
-          $.ajax({
-                  url: "../backend/usuarios.php",
-                  type: "POST",
-                  data: {usuario:usuario, funcion:funcion},
-                  success: function(contenido){
-                    $("#notificaciones").html(contenido);
-                  }
-              });
-      
-              window.setTimeout(function() {
-                  $(".alert").fadeTo(200, 0).slideUp(200, function(){
-                      $(this).remove(); 
-                  });
-              }, 2500);
-  });    
-}
+
+
 
 
 function asignausuarioEspacio(espacio){
@@ -918,7 +809,7 @@ function nuevoUsuario(){
         function agregarPlaca(producto) {
           verificaConectividad(function() {
               verificarllenosForm("agregarPlaca", "notificacionesform",function() {
-                  var nombre = $("#txt_pl_nom").val();
+                  var placa = $("#txt_pl_pl_id").val();
                   var descripcion = $("#txt_pl_desc").val();
                   var ip = $("#txt_pl_ip").val();
                   var funcion = $("#funcion").val();
@@ -926,7 +817,7 @@ function nuevoUsuario(){
                   $.ajax({
                           url: "../backend/productos.php",
                           type: "POST",
-                          data: {nombre:nombre,
+                          data: {placa:placa,
                                   producto:producto,
                                   descripcion:descripcion,
                                   ip:ip,
@@ -966,7 +857,6 @@ function nuevoUsuario(){
         function modificarPlaca(placa, producto) {
           verificaConectividad(function() {
               verificarllenosForm("modificarPlaca", "notificacionesform",function() {
-                  var nombre = $("#txt_pl_nom").val();
                   var descripcion = $("#txt_pl_desc").val();
                   var ip = $("#txt_pl_ip").val();
                   var funcion = $("#funcion").val();
@@ -974,8 +864,7 @@ function nuevoUsuario(){
                   $.ajax({
                           url: "../backend/productos.php",
                           type: "POST",
-                          data: {nombre:nombre,
-                                  placa:placa,
+                          data: { placa:placa,
                                   producto:producto,
                                   descripcion:descripcion,
                                   ip:ip,
@@ -1051,23 +940,17 @@ function nuevoUsuario(){
           function agregarDispositivo(producto) {
             verificaConectividad(function() {
                 verificarllenosForm("agregarDispositivo", "notificacionesform",function() {
-                    var nombre = $("#txt_disp_nom").val();
-                    var unidad = $("#txt_disp_dum_id").val();
+                    var dispositivo = $("#txt_disp_disp_id").val();
                     var placa = $("#txt_disp_pl_id").val();   
-                    var tipo =  $("#txt_disp_disp_tipo_id").val();
-                    var puerto =  $("#txt_disp_pto").val();
-
+        
                     var funcion = $("#funcion").val();
             
                     $.ajax({
                             url: "../backend/productos.php",
                             type: "POST",
-                            data: {nombre:nombre,
-                                    producto:producto,
-                                    unidad:unidad,
+                            data: {dispositivo:dispositivo,
+                                    producto:producto,                   
                                     placa:placa,
-                                    tipo:tipo,
-                                    puerto:puerto,
                                     funcion:funcion},
                             success: function(errores){
                                 $("#notificaciones").html(errores);       
@@ -1164,9 +1047,9 @@ function nuevoUsuario(){
         // ADMINISTRADOR
 
 
-        function formAgregarRol(){
+        function form_rol_agregar(){
           verificaConectividad(function() {
-                var formulario = 'nuevoRol';
+                var formulario = 'form_rol_agregar';
                 $.ajax({
                         url: "admin.php",
                         type: "POST",
@@ -1179,9 +1062,9 @@ function nuevoUsuario(){
             });   
           }
 
-          function agregarRol() {
+          function func_rol_agregar(formulario) {
             verificaConectividad(function() {
-                verificarllenosForm("agregarRol", "notificacionesform",function() {
+                verificarllenosForm(formulario, "notificacionesform",function() {
                     var nombre = $("#txt_usrol_nom").val();
                     var descripcion = $("#txt_usrol_desc").val();
 
@@ -1200,7 +1083,7 @@ function nuevoUsuario(){
                     var disp_lectura = $("#txt_usrol_disp_lec").val();   
                     var disp_escritura =  $("#txt_usrol_disp_esc").val();
 
-                    var funcion = $("#funcion").val();
+                   
             
                     $.ajax({
                             url: "../backend/admin.php",
@@ -1217,26 +1100,21 @@ function nuevoUsuario(){
                               prod_escritura:prod_escritura,
                               disp_lectura:disp_lectura,
                               disp_escritura:disp_escritura,
-                                    funcion:funcion},
+                                    funcion:formulario},
                             success: function(errores){
                                 $("#notificaciones").html(errores);       
                             }
                         });
-                
-                        window.setTimeout(function() {
-                            $(".alert").fadeTo(200, 0).slideUp(200, function(){
-                                $(this).remove(); 
-                            });
-                        }, 2500);
+      
                 });
             });    
           }
 
 
                 
-        function eliminarRol(rol) {
+        function func_rol_eliminar(rol) {
           verificaConectividad(function() {
-            var funcion = "eliminaRol";
+            var funcion = "func_rol_eliminar";
                   $.ajax({
                           url: "../backend/admin.php",
                           type: "POST",
@@ -1246,16 +1124,13 @@ function nuevoUsuario(){
                             $("#notificaciones").html(contenido);
                           }
                       });
-              
-                      window.setTimeout(function() {
-                          $(".alert").fadeTo(200, 0).slideUp(200, function(){
-                              $(this).remove(); 
-                          });
-                      }, 2500);
           });    
         }
 
-// Administracion de placas y dispositivos simplificacion de codigo  (v1.2)
+
+
+
+// Administracion de usuarios, placas y dispositivos simplificacion de codigo  (v1.2)
 
           function form_usr_agregar(){
             verificaConectividad(function() {
@@ -1299,6 +1174,132 @@ function nuevoUsuario(){
               });   
           });    
           }
+
+
+          function form_usr_modificar_con(usuario){
+            verificaConectividad(function() {
+              var formulario = "form_usr_modificar_con";
+                    $.ajax({
+                            url: "usuarios.php",
+                            type: "POST",
+                            data: {usuario:usuario,
+                              formulario:formulario},
+                            success: function(contenido){
+                              $("#formularios_contenedor").html(contenido);
+                            }
+                        });
+                
+                        window.setTimeout(function() {
+                            $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                                $(this).remove(); 
+                            });
+                        }, 2500);
+            });    
+          }
+
+          function func_usr_modificar_con(formulario, usuario) {
+            verificaConectividad(function() {
+                verificarllenosForm(formulario, "notificacionesform",function() {
+                    var contrasena = $("#txt_usr_con").val();
+                    var contrasenacon = $("#txt_usr_con_con").val();
+                 
+            
+                    $.ajax({
+                            url: "../backend/usuarios.php",
+                            type: "POST",
+                            data: { usuario:usuario, 
+                                    contrasena:contrasena,
+                                    contrasenacon:contrasenacon,
+                                    funcion:formulario},
+                            success: function(errores){
+                                $("#notificaciones").html(errores);       
+                            }
+                        });
+                
+                        window.setTimeout(function() {
+                            $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                                $(this).remove(); 
+                            });
+                        }, 2500);
+                });
+            });    
+          }
+
+
+          
+                      function form_usr_modificar_datos(usuario){
+                        verificaConectividad(function() {
+                          var formulario = "form_usr_modificar_datos"; 
+                                $.ajax({
+                                        url: "usuarios.php",
+                                        type: "POST",
+                                        data: {usuario:usuario,
+                                          formulario:formulario},
+                                        success: function(contenido){
+                                          $("#formularios_contenedor").html(contenido);
+                                        }
+                                    });
+                            
+                                    window.setTimeout(function() {
+                                        $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                                            $(this).remove(); 
+                                        });
+                                    }, 2500);
+                        });    
+                      }
+
+
+                      function func_usr_modificar_datos(formulario, usuario) {
+                        verificaConectividad(function() {
+                            verificarllenosForm(formulario, "notificacionesform",function() {
+                                 var nombre = $("#txt_usr_nom").val();
+                                
+                        
+                                $.ajax({
+                                        url: "../backend/usuarios.php",
+                                        type: "POST",
+                                        data: { usuario:usuario, 
+                                                nombre:nombre,
+                                                funcion:formulario},
+                                        success: function(errores){
+                                            $("#notificaciones").html(errores);       
+                                        }
+                                    });
+                            
+                                    window.setTimeout(function() {
+                                        $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                                            $(this).remove(); 
+                                        });
+                                    }, 2500);
+                            });
+                        });    
+                      }
+
+
+
+
+              function func_usr_eliminar(usuario) {
+                verificaConectividad(function() {
+                  var funcion = "func_usr_eliminar";
+                        $.ajax({
+                                url: "../backend/usuarios.php",
+                                type: "POST",
+                                data: {usuario:usuario, funcion:funcion},
+                                success: function(contenido){
+                                  $("#notificaciones").html(contenido);
+                                }
+                            });
+                    
+                            window.setTimeout(function() {
+                                $(".alert").fadeTo(200, 0).slideUp(200, function(){
+                                    $(this).remove(); 
+                                });
+                            }, 2500);
+                });    
+              }
+
+
+          
 
         function form_pl_agregar(){
           verificaConectividad(function() {
@@ -1498,7 +1499,13 @@ function func_disp_eliminar(dispositivo) {
 }
 
 
-//Funciones generales
+
+
+
+
+
+//Funciones generales del sistema que son muy importantes
+
 function cerrarSesion() {
   verificaConectividad(function() {
     

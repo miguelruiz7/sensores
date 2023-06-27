@@ -31,7 +31,7 @@ switch($formulario){
 
      
   #Modificar contrasena usuario
-    case 'modificarContrasena':
+    case 'form_usr_modificar_con':
       #Variables
       $usuario = $_POST['usuario'];
       $contrasena = $_POST['contrasena'];
@@ -44,7 +44,7 @@ switch($formulario){
 
         
   #Modificar datos usuario
-    case 'modificarDatos':
+    case 'form_usr_modificar_datos':
       #Variables
       $usuario = $_POST['usuario'];
       $nombre = $_POST['nombre'];
@@ -56,7 +56,7 @@ switch($formulario){
 
 
     #Modificar datos usuario
-    case 'eliminarUsuario':
+    case 'func_usr_eliminar':
       #Variables
       $usuario = $_POST['usuario'];
     

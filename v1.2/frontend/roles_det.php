@@ -28,7 +28,7 @@ if(mysqli_num_rows($buscaUsuarios)>0){
   if(administradorSistema($sesion, $conexion) == 1){
   # Si existe un registro despliega toda la informacion que exista
   ?>
-    <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarRol();">
+    <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_rol_agregar();">
          <?php echo $i_agregar; ?> Crear nuevo rol
       </button></div>
 
@@ -50,8 +50,8 @@ if(mysqli_num_rows($buscaUsuarios)>0){
                 <th scope="row"><?php echo $datosUsuarios['usrol_nom'];?></th>
                 <td><?php echo $datosUsuarios['usrol_desc'];?></td>
                 <td>
-                   <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formModificarRol('<?php echo $datosUsuarios['usrol_id'];?>');"><?php echo $i_modificar; ?></button>
-                    <button class="btn btn-outline-dark" onclick="eliminarRol('<?php echo $datosUsuarios['usrol_id'];?>')"><?php echo $i_basura; ?></button>
+                   <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="sinDefinir('<?php echo $datosUsuarios['usrol_id'];?>');"><?php echo $i_modificar; ?></button>
+                    <button class="btn btn-outline-dark" onclick="func_rol_eliminar('<?php echo $datosUsuarios['usrol_id'];?>')"><?php echo $i_basura; ?></button>
                   </td>
                 </tr>
             <?php
@@ -76,12 +76,12 @@ if(mysqli_num_rows($buscaUsuarios)>0){
   <div class="position-relative p-5 text-center bg-body">
     <?php echo $i_advertencia ?>
 
-    <h1 class="text-body-emphasis"> No hay usuarios en el sistema</h1>
+    <h1 class="text-body-emphasis"> No hay roles en el sistema</h1>
     <p class="col-lg-6 mx-auto mb-4">
       Sin embargo puedes crear uno desde aquí
     </p>
-    <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="nuevoUsuario();"> 
-      Crear usuario
+    <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="form_rol_agregar();"> 
+      Crear rol.
     </button>
     </div>
 
