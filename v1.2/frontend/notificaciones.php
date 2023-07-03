@@ -1,3 +1,6 @@
+    <!-- Version antigua de notificaciones v1.1 (NO ELIMINAR) -->
+   <header id="notificaciones" class="sticky-top"></header> 
+    
     <!-- Notificaciones -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
 <div id="toast_alert" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">

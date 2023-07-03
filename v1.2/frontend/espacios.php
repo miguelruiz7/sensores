@@ -341,7 +341,7 @@ switch($formulario){
                       <?php
                       # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
                            $id_tipo_rol = $datosUsuario['esp_usrol_id'];
-                             $consulta="SELECT * FROM usrol_mst WHERE usrol_id AND usrol_id NOT IN ('1')";
+                             $consulta="SELECT * FROM usrol_mst WHERE usrol_id AND usrol_id NOT IN ('1') AND usrol_id NOT IN ('2')";
                               $buscarolesEspacio= mysqli_query($conexion,$consulta);
                                   while($valores= mysqli_fetch_array($buscarolesEspacio)){
                                       ?>

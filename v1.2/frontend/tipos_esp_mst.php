@@ -1,19 +1,24 @@
 <?php
+#Incluimos nuestras dependencias.
+
 include('../backend/conexion.php');
 include('../backend/info.php');
 include('iconos.php');
 include('../backend/funciones.php');
 
 sesion_usr();
+// Almacenamos esto en variables
 $sesion=sesion_usr();
 
-$espacio = comprobarSeccion();
+# Limpiamos la seccion 
+destruirvariables();
+
 ?>
 
 <!doctype html>
 <html lang="es">
 <head>
-    <title>Secciones</title>
+    <title>Tipos de espacio</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="css/app.css">
@@ -22,6 +27,7 @@ $espacio = comprobarSeccion();
 </head>
 
 <body id="cuerpo">
+    <header id="notificaciones" class="sticky-top"></header>
 
     <?php include('notificaciones.php'); ?>
 
@@ -42,14 +48,14 @@ $espacio = comprobarSeccion();
 
             <div id="contenedor">
                 <!-- aqui va el contenido de la paginación -->
-                <div id="contenedor_encabezado"><h1>Secciones</h1></div>
+                <div id="contenedor_encabezado"><h1> Tipos de espacio</h1></div>
              
             </div>
 </div>
 </div>
 
 <div class="album py-5">
-    <div id="secciones" class="container">
+    <div id="tipos_espacios"  class="container">
     <div id="loader" class="text-center">
     <div class="spinner-border text-dark" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -77,10 +83,10 @@ $espacio = comprobarSeccion();
 <!-- Formularios modales -->
 <?php include('formularios_modal.php'); ?>
 
+
+
     <script src="jquery/jquery.min.js"></script>
     <script src="js/app.js"></script>
     <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-

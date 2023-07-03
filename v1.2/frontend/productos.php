@@ -11,6 +11,8 @@ $sesion=sesion_usr();
 
 
 $espacio = comprobarSeccion();
+$seccion = comprobarProductos();
+
 $admin_sistema = administradorSistema($sesion, $conexion);
 $funcionesRol = rolPlataforma($sesion, $espacio, $conexion);
 
@@ -248,7 +250,7 @@ switch($formulario){
 
           
           #Consultamos la información primordial acerca de la placa
-          $consulta = "SELECT * FROM pl_det WHERE pl_id_='$placa'";
+          $consulta = "SELECT * FROM pl_det, prod_mst WHERE pl_id_='$placa' AND pl_prod_id = prod_id";
           $buscaPlaca = mysqli_query($conexion, $consulta);
 
           if(mysqli_num_rows($buscaPlaca)>0){
@@ -276,8 +278,27 @@ switch($formulario){
             <label>Dirección IP</label>
           </div>
 
+          <div class="form-floating text-light mb-3">
+            <select type="text" id="txt_pl_prod_id" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+            <option value="<?php echo $datosPlaca['pl_prod_id']; ?>" selected><?php echo $datosPlaca['prod_nom']; ?></option> 
+           
+                      <?php
+                      # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
+                       $producto = $datosPlaca['pl_prod_id'];
+                             $consulta="SELECT * FROM prod_mst WHERE prod_sec_id = '$seccion' AND prod_id NOT IN ('$producto')";
+                              $buscatiposUnidad= mysqli_query($conexion,$consulta);
+                                  while($valores= mysqli_fetch_array($buscatiposUnidad)){
+                                      ?>
+                                      <option class="bg-none" value="<?php echo $valores['prod_id'];?>" style="background-color:#042f52; filter: blur(5px);"><?php echo $valores['prod_nom']; ?></option>
+                                      <?php
+                                  }           
+                      ?>
+                 </select>
+            <label>Selecciona el producto:</label>
+          </div>
+
           <div class="text-center">
-          <button type="button" id="funcion" value="modificarPlaca" onclick="modificarPlaca('<?php echo $placa; ?>', '<?php echo $datosPlaca['pl_prod_id']; ?>')" class="btn btn-outline-light">Aceptar</button>
+          <button type="button" id="funcion" value="modificarPlaca" onclick="modificarPlaca('<?php echo $placa; ?>')" class="btn btn-outline-light">Aceptar</button>
           </div> 
         </form>
         <?php
@@ -471,7 +492,7 @@ switch($formulario){
 
           #Agrega una sección al espacio (NO FUNCIONA)
 
-          $consulta = "SELECT * FROM disp_mst, disp_det, dum_mst, disp_tipo_mst, pl_mst WHERE disp_id_ = '$dispositivo' AND disp_dum_id = dum_id AND disp_pl_id = pl_id AND disp_disp_tipo_id = disp_tipo_id";
+          $consulta = "SELECT * FROM disp_det WHERE disp_id_ = '$dispositivo'";
           $buscaDispositivo = mysqli_query($conexion, $consulta);
           if(mysqli_num_rows($buscaDispositivo)>0){
             $datos = mysqli_fetch_array($buscaDispositivo);
@@ -492,8 +513,9 @@ switch($formulario){
           
                       <?php
                       # Queda pendiente realizar el código mientras que no evaluen el diagrama de entidad relación
-                     
-                             $consulta="SELECT * FROM pl_mst, pl_det WHERE pl_prod_id = '$producto' AND pl_id = pl_pl_id";
+                           $placa = $datos['disp_pl_id'];
+                           echo $placa;
+                             $consulta="SELECT * FROM pl_mst, pl_det WHERE pl_prod_id = '$producto' AND pl_id_ NOT IN ('$placa') AND pl_id = pl_pl_id";
                               $buscatiposUnidad= mysqli_query($conexion,$consulta);
                                   while($valores= mysqli_fetch_array($buscatiposUnidad)){
                                       ?>
@@ -525,7 +547,7 @@ switch($formulario){
           </div> 
         </form>
         <script>
-
+/*
   // Obtener el campo de texto
  
 
@@ -536,6 +558,7 @@ switch($formulario){
 
     document.getElementById('txt_disp_pto').value = textoSeparado; // Asignar el nuevo valor al campo de texto
   });
+  */
 </script>
 
 

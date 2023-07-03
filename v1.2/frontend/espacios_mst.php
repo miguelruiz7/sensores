@@ -27,7 +27,6 @@ destruirvariables();
 </head>
 
 <body id="cuerpo">
-    <header id="notificaciones" class="sticky-top"></header>
 
     <?php include('notificaciones.php'); ?>
 
@@ -82,17 +81,6 @@ destruirvariables();
 
 <!-- Formularios modales -->
 <?php include('formularios_modal.php'); ?>
-
-<!-- Notificaciones -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-<div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="d-flex">
-    <div class="toast-body" id="mensaje"></div>
-    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-  </div>
-</div>
-</div>
-
     <script src="jquery/jquery.min.js"></script>
     <script src="js/app.js"></script>
     <script src="bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -127,6 +127,40 @@ if(isset($_POST['funcion'])){
              break;
 
 
+      ##########################################################
+      #
+      #                        Administrador
+      #
+      ##########################################################
+
+      case 'form_usr_admin':
+    
+        $usuario = $_POST['usuario'];
+
+        asignaAdministrador($usuario, $conexion);
+
+      break;
+
+      ##########################################################
+      #
+      #                      Tipos de espacio
+      #
+      ##########################################################
+
+      case 'form_esp_tipo_agregar':
+
+        $nombre = $_POST['nombre'];
+        $descripcion = $_POST['descripcion'];
+
+
+        agregarTipoEspacio($nombre,$descripcion,$conexion);
+
+        
+      break;
+   
+
+
+
     default:
       ?>
       <script>muestraMensajes('No se encontró la función, verifica','error');</script>

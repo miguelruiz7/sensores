@@ -8,12 +8,10 @@ function insertarDatos($documento, $conexion){
    
   
 
-   $consulta = "SELECT disp_id FROM disp_mst WHERE disp_id = '$id'";
+   $consulta = "SELECT disp_id_ FROM disp_det WHERE disp_id_ = '$id'";
    $checarDispositivos = mysqli_query($conexion, $consulta);
 
    if(mysqli_num_rows($checarDispositivos)>0){
-
-
 
    $consultaInsertar = "INSERT INTO dato_mst VALUES (NULL, '$valores','$fecha_cap', '$id')";
 
@@ -24,6 +22,7 @@ function insertarDatos($documento, $conexion){
    }else{
     echo 'Fallo'. PHP_EOL;
    }
+   
    }else{
       echo 'Los datos no han sido transferidos a la base de datos (dispositivo: '.$id.', valor: '.$valores.', fecha_cap: '.$fecha_cap.')'. PHP_EOL;
    }

@@ -2,13 +2,42 @@
 
  // Para que la vista se actualize cada 5 segundos
  setInterval(function() {
-  cargarEspacios();
-  cargarPlacas();
-  cargarDispositivos();
-  cargarUsuarios();
-  cargarSecciones();
-  cargarProductos();
-  cargarRoles();
+
+  compruebaRuta('espacios_mst.php',function(){
+    cargarEspacios();
+  })
+
+  compruebaRuta('pl_mst.php',function(){
+    cargarPlacas();
+  })
+  
+  compruebaRuta('disp_mst.php',function(){
+    cargarDispositivos();
+  })
+
+  compruebaRuta('usuarios_mst.php',function(){
+    cargarUsuarios();
+  })
+
+  compruebaRuta('secciones_mst.php',function(){
+    cargarSecciones();
+  })
+
+  compruebaRuta('productos_mst.php',function(){
+    cargarProductos();
+  })
+
+  compruebaRuta('roles_mst.php',function(){
+    cargarRoles();
+  })
+
+  compruebaRuta('administrador_mst.php',function(){
+    cargarAdministrador();
+  })
+
+  compruebaRuta('tipos_esp_mst.php',function(){
+    cargarTiposEspacio();
+  })
 
 }, 1000);
 
@@ -169,6 +198,40 @@ function cargarSecciones(){
         });   
       }
 
+      function cargarAdministrador(){
+        verificaConectividad(function() {
+          $.ajax({
+            url: 'administrador_det.php', // Ruta al archivo que quieres cargar
+            type: 'GET', // Método de la petición (GET, POST, etc.)
+            dataType: 'html', // Tipo de datos esperados en la respuesta
+      
+            success: function(data) {
+              $('#administrador').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
+            },
+            error: function() {
+              //alert('Ha ocurrido un error al cargar el archivo.');
+            }
+          });
+          });   
+        }
+
+        function cargarTiposEspacio(){
+          verificaConectividad(function() {
+            $.ajax({
+              url: 'tipos_esp_det.php', // Ruta al archivo que quieres cargar
+              type: 'GET', // Método de la petición (GET, POST, etc.)
+              dataType: 'html', // Tipo de datos esperados en la respuesta
+        
+              success: function(data) {
+                $('#tipos_espacios').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
+              },
+              error: function() {
+                //alert('Ha ocurrido un error al cargar el archivo.');
+              }
+            });
+            });   
+          }
+
 
  function cargarSeccionesEspacio(espacio){
   verificaConectividad(function() {
@@ -227,6 +290,27 @@ function cargarSecciones(){
       });
       });   
     }
+
+
+
+    function obtenerURL() {
+      var ruta = window.location.pathname;
+      var archivo = ruta.split('/').pop();
+      return archivo;
+    }
+
+
+
+    function compruebaRuta(url,funcion){
+     var archivobase =  obtenerURL()
+     console.log(archivobase);
+     if(url === archivobase){
+       funcion();
+     }
+    }
+    
+
+    
 
 
 //Espacio
@@ -854,11 +938,12 @@ function nuevoUsuario(){
 
 
 
-        function modificarPlaca(placa, producto) {
+        function modificarPlaca(placa) {
           verificaConectividad(function() {
               verificarllenosForm("modificarPlaca", "notificacionesform",function() {
                   var descripcion = $("#txt_pl_desc").val();
                   var ip = $("#txt_pl_ip").val();
+                  var producto = $("#txt_pl_prod_id").val();
                   var funcion = $("#funcion").val();
           
                   $.ajax({
@@ -988,24 +1073,15 @@ function nuevoUsuario(){
           function modificarDispositivo(dispositivo, producto) {
             verificaConectividad(function() {
                 verificarllenosForm("modificarDispositivo", "notificacionesform",function() {
-                    var nombre = $("#txt_disp_nom").val();
-                    var unidad = $("#txt_disp_dum_id").val();
                     var placa = $("#txt_disp_pl_id").val();   
-                    var tipo =  $("#txt_disp_disp_tipo_id").val();
-                    var puerto =  $("#txt_disp_pto").val();
-
                     var funcion = $("#funcion").val();
             
                     $.ajax({
                             url: "../backend/productos.php",
                             type: "POST",
-                            data: {nombre:nombre,
-                                    dispositivo:dispositivo,
+                            data: { dispositivo:dispositivo,
                                     producto:producto,
-                                    unidad:unidad,
-                                    placa:placa,
-                                    tipo:tipo,
-                                    puerto:puerto,
+                                    placa:placa, 
                                     funcion:funcion},
                             success: function(errores){
                                 $("#notificaciones").html(errores);       
@@ -1126,6 +1202,85 @@ function nuevoUsuario(){
                       });
           });    
         }
+
+
+        function form_esp_tipo_agregar(){
+          verificaConectividad(function() {
+            var formulario = 'form_esp_tipo_agregar';
+            $.ajax({
+                    url: "admin.php",
+                    type: "POST",
+                    data: {
+                      formulario:formulario},
+                    success: function(contenido){
+                        $("#formularios_contenedor").html(contenido);
+                    }
+                });
+        });  
+        }
+
+
+
+
+        function func_esp_tipo_agregar(formulario) {
+          verificarllenosForm(formulario, "notificacionesform",function() {
+            verificaConectividad(function() {
+                      var nombre = $("#txt_pl_nom").val()
+                      var descripcion = $("#txt_pl_desc").val()
+
+                      $.ajax({
+                              url: "../backend/admin.php",
+                              type: "POST",
+                              data: {nombre:nombre,
+                                descripcion:descripcion,
+                                      funcion:formulario},
+                              success: function(errores){
+                                  $("#notificaciones").html(errores);       
+                              }
+                          });
+            });   
+      });    
+    }
+
+
+
+    function form_esp_tipo_modificar(variable){
+      verificaConectividad(function() {
+        var formulario = 'form_esp_tipo_modificar';
+        $.ajax({
+                url: "admin.php",
+                type: "POST",
+                data: {
+                  variable:variable,
+                  formulario:formulario},
+                success: function(contenido){
+                    $("#formularios_contenedor").html(contenido);
+                }
+            });
+    });  
+    }
+
+
+    function func_esp_tipo_modificar(formulario) {
+      verificarllenosForm(formulario, "notificacionesform",function() {
+        verificaConectividad(function() {
+                  var nombre = $("#txt_pl_nom").val()
+                  var descripcion = $("#txt_pl_desc").val()
+
+  
+                  $.ajax({
+                          url: "../backend/admin.php",
+                          type: "POST",
+                          data: {nombre:nombre,
+                            descripcion:descripcion,
+                                  funcion:formulario},
+                          success: function(errores){
+                              $("#notificaciones").html(errores);       
+                          }
+                      });
+        });   
+  });    
+}
 
 
 
@@ -1296,6 +1451,52 @@ function nuevoUsuario(){
                                 });
                             }, 2500);
                 });    
+              }
+               
+
+              
+          function form_usr_admin(){
+            verificaConectividad(function() {
+              var formulario = 'form_usr_admin';
+              $.ajax({
+                      url: "admin.php",
+                      type: "POST",
+                      data: {
+                        formulario:formulario},
+                      success: function(contenido){
+                          $("#formularios_contenedor").html(contenido);
+                      }
+                  });
+          });   
+          }
+
+
+          function func_usr_admin(formulario) {
+              verificaConectividad(function() {
+                      var usuario = $("#txt_usr_id").val();
+                
+                      $.ajax({
+                              url: "../backend/admin.php",
+                              type: "POST",
+                              data: {usuario:usuario,
+                                funcion:formulario},
+                              success: function(contenido){
+                                $("#notificaciones").html(contenido);
+                                console.log('Los datos que fueron enviados desde el formulario "'+formulario+'" fueron: ' + usuario)
+                              }
+                    });
+              });   
+          }
+
+
+
+              function pruebaalerta(usuario) {
+                mensajeconfirmacion('Esto es una prueba de confirmacion', function(){
+
+                 alert("Aqui continua la lógica del negocio");
+
+                })
+                 
               }
 
 
@@ -1628,6 +1829,13 @@ function habilitaFormBtn(){
   btn.disabled = false;
 }
 
+function mensajeconfirmacion(alerta, funcion){
+  var mensaje = confirm(alerta)
+
+  if(mensaje){
+    funcion();
+  }
+}
 
 
 //Verifica que todos los datos sean llenados

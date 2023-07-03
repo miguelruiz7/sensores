@@ -589,7 +589,7 @@ function cargaseccionEspacio($espacio){
 
   if(isset($_SESSION['esp_id'])){
   ?>
-  <script>muestraMensajes('Cargando secciones (<?php echo $_SESSION['esp_id'] ;?>) ...','error'); 
+  <script>muestraMensajes('Cargando secciones...','error'); 
    setInterval(function() {
    window.location.href="secciones_mst.php"
 }, 1500);
@@ -941,7 +941,7 @@ function agregarPlaca($producto, $placa, $descripcion, $ip, $conexion){
 
 function modificarPlaca($placa, $producto, $descripcion, $ip, $conexion){
 
-  $consulta = "UPDATE pl_det SET  pl_desc = '$descripcion', pl_ip = '$ip' WHERE pl_id_ ='$placa'";
+  $consulta = "UPDATE pl_det SET  pl_desc = '$descripcion', pl_ip = '$ip', pl_prod_id = '$producto' WHERE pl_id_ ='$placa'";
 
   $modificaPlaca = mysqli_query($conexion, $consulta);
 
@@ -1169,12 +1169,12 @@ $errores .= "1";
 }
 
 #Modifica el dispositivo en un producto
-function modificarDispositivo($dispositivo, $producto, $nombre, $unidad, $placa, $tipo, $conexion){
+function modificarDispositivo($dispositivo, $producto, $placa, $conexion){
 
   $errores = '';
 
  if($errores == ''){
- $consulta = "UPDATE disp_mst SET disp_nom = '$nombre', disp_dum_id =  '$unidad', disp_pl_id = '$placa', disp_disp_tipo_id = '$tipo' WHERE disp_id = '$dispositivo'";
+ $consulta = "UPDATE disp_det SET disp_pl_id = '$placa' WHERE disp_id_ = '$dispositivo'";
 
  $actualizarDispositivo = mysqli_query($conexion, $consulta);
 
@@ -1263,4 +1263,83 @@ function eliminaRol($rol, $conexion){
 }
 
 
+####################################################################################################
+#                                        Administrador                                             #
+####################################################################################################
+
+
+function asignaAdministrador($usuario, $conexion){
+  if($usuario == ''){
+    $consulta = "TRUNCATE usr_det";
+    $vaciarAdministrador = mysqli_query($conexion, $consulta);
+    if($vaciarAdministrador){
+      ?>
+      <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se modificó exitosamente',''); cargarRoles();</script>
+      <?php
+    }else{
+      ?>
+      <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+      <?php
+    }
+  }else{
+   
+
+    $consulta = "SELECT * FROM usr_det";
+    $verificaAdministrador = mysqli_query($conexion, $consulta);
+    
+    if(mysqli_num_rows($verificaAdministrador)>0){
+      
+    $consulta = "UPDATE usr_det SET usr_usr_id = '$usuario'";
+    $actualizaAdministrador = mysqli_query($conexion, $consulta);
+    if($actualizaAdministrador){
+      ?>
+      <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se modificó exitosamente',''); cargarRoles();</script>
+      <?php
+    }else{
+      ?>
+      <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+      <?php
+    }
+
+    }else{
+
+    $consulta = "INSERT INTO usr_det VALUES ('$usuario', '1')";
+    $asignarAdministrador = mysqli_query($conexion, $consulta);
+    if($asignarAdministrador){
+      ?>
+      <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se modificó exitosamente',''); cargarRoles();</script>
+      <?php
+    }else{
+      ?>
+      <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+      <?php
+    }
+
+    }
+
+  }
+
+}
+
+
+####################################################################################################
+#                                       Tipos de espacios                                          #
+####################################################################################################
+
+function agregarTipoEspacio($nombre, $descripcion,$conexion){
+
+  $consulta = "INSERT INTO esp_tipo_mst VALUES (NULL, '$nombre', '$descripcion')";
+    $agregarTipoEspacio = mysqli_query($conexion, $consulta);
+
+    if($agregarTipoEspacio){
+      ?>
+      <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se agregó exitosamente',''); cargarTiposEspacio();</script>
+      <?php
+    }else{
+      ?>
+      <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+      <?php
+    }
+
+}
 ?>

@@ -44,16 +44,28 @@ if($admin_sistema == 1) {
   <h6 class="text-light">ADMINISTRACION DEL SISTEMA</h6>
 <ul class="list-unstyled ps-0 ">    
      <li class="mb-1">
-        <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#config" aria-expanded="true">
+        <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#variables" aria-expanded="true">
          <?php echo $i_variables; ?> Variables
         </button>
-        <div class="collapse" id="config">
+        <div class="collapse" id="variables">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
             <li><a href="roles_mst.php" class="link-light d-inline-flex text-decoration-none rounded"> <?php echo $i_roles_usu; ?> Roles de usuario</a></li>
+            <li><a href="tipos_esp_mst.php" class="link-light d-inline-flex text-decoration-none rounded"> <?php echo '(!)'; ?> Tipos de espacios</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#sistema" aria-expanded="true">
+         <?php echo $i_sistemas; ?> Sistema
+        </button>
+        <div class="collapse" id="sistema">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="administrador_mst.php" class="link-light d-inline-flex text-decoration-none rounded"> <?php echo $i_roles_usu; ?> Administrador</a></li>
           </ul>
         </div>
       </li>
     </ul> 
+    
 </div>
 <?php
 }

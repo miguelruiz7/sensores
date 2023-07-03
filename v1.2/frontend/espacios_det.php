@@ -79,7 +79,7 @@ if(mysqli_num_rows($buscaEspacio)>0){
   <div class="position-relative p-5 text-center bg-body">
     <?php echo $i_advertencia ?>
 
-    <?php if(administradorPlataforma($sesion, $conexion) == 1) { ?> <h1 class="text-body-emphasis"> Aun no has creado espacios</h1>
+    <?php if($admin_sistema == 1 || administradorPlataforma($sesion, $conexion) == 1) { ?> <h1 class="text-body-emphasis"> Aun no has creado espacios</h1>
     <p class="col-lg-6 mx-auto mb-4">
       Sin embargo puedes crear uno desde aquí
     </p>

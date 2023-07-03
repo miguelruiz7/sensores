@@ -10,9 +10,9 @@
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 
-const char* ssid = "EmprendimientoCYT";
-const char* password = "3mpr3nd1m13nt0";
-const char* server = "10.10.100.210";
+const char* ssid = "CITNOVA";
+const char* password = "PRU3B@C1TN0V@";
+const char* server = "20.20.2.113";
 const int port = 1234;
 
 WiFiClient client;
@@ -34,8 +34,8 @@ void loop() {
  
   //Sensor de Luz
   
-  objectoSensor("24",String(obtenerValorSensorLuz()));
-  objectoSensor("25",String(obtenerValorSensorMov()));
+  objectoSensor("11",String(obtenerValorSensorLuz()));
+  objectoSensor("12",String(obtenerValorSensorMov()));
 
 
 }

@@ -8,7 +8,7 @@ class conexionDB {
 
 		//Datos principales de la conexión
 			$host = "localhost";    
-			$basededatos = "sensores_bd"; 
+			$basededatos = "sensores_bd_v2"; 
 			$usuariodb = "root";    
 			$clavedb = ""; 
             

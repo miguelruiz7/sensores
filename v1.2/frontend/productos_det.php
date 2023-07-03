@@ -39,7 +39,7 @@ if(mysqli_num_rows($buscaSecciones)>0){
   # Detecta el rol si es adminitrativo
   if(1 == 1) {
   ?>
-  <div class="container m-2 text-center"> <?php if($admin_sistema == 1 || $funcionesRol['usrol_prod_esc'] == 1) { ?> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarProd();">
+  <div class="container mb-5 text-center"> <?php if($admin_sistema == 1 || $funcionesRol['usrol_prod_esc'] == 1) { ?> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarProd();">
          <?php echo $i_agregar; ?> Crear producto
       </button> <?php } ?>
       <a href="secciones_mst.php"><button class="btn btn-outline-dark" type="button"> <?php echo $i_atras; ?>
@@ -60,18 +60,19 @@ if(mysqli_num_rows($buscaSecciones)>0){
             <div class="col">
             <div class="card w-auto shadow-sm" style="width: 18rem;">
             <div class="card-body">
+
+            
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3 m-1">
               <div class="col"><h5 class="card-title"><?php echo $datos['prod_nom']; ?></h5></div>
               <div class="col text-center mb-3"> <?php if($admin_sistema == 1 || $funcionesRol['usrol_prod_esc'] == 1) { ?><button class="btn btn-outline-danger" onclick="eliminarProducto(<?php echo $datos['prod_id']; ?>)"><?php echo $i_basura; ?></button> <?php } ?>
               <?php if($admin_sistema == 1 || $funcionesRol['usrol_prod_esc'] == 1) { ?><button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formModificarProd(<?php echo $datos['prod_id']; ?>)"><?php echo $i_modificar; ?></button><?php } ?></div>
-            
             </div>
   
-           <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
         <div class="col text-center">   <?php if($admin_sistema == 1 || $funcionesRol['usrol_disp_lec'] == 1) { ?> <button class="btn p-2  " data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formPlacas(<?php echo $datos['prod_id']; ?>)"><h6 class="card-subtitle  text-body-secondary"><?php //echo $i_placa; ?> Placas: <span class="badge bg-secondary"><?php echo conteoPlacasProducto($datos['prod_id'],$conexion); ?></span></h6></button><?php } ?></div>
             <?php  if(conteoPlacasProducto($datos['prod_id'],$conexion)>0){  ?>  <div class="col text-center"> <?php if($admin_sistema == 1 || $funcionesRol['usrol_disp_lec'] == 1) { ?><button class="btn p-2" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formDispositivos(<?php echo $datos['prod_id']; ?>)"><h6 class="card-subtitle mb-2 text-body-secondary"><?php //echo $i_dispositivos; ?>Disp: <span class="badge bg-secondary"><?php echo conteoDispositivosProducto($datos['prod_id'],$conexion); ?></span></h6></button><?php  } ?></div> <?php } ?>
-            <!--  <div class="col text-center"><button class="btn"><h6 class="card-subtitle mb-2 text-body-secondary"><?php echo $i_lista_prod; ?><span class="badge bg-secondary">0</span></h6></button></div> -->
             </div> 
+            
 
 
 <?php
@@ -81,6 +82,7 @@ $consulta = "SELECT * FROM pl_det, disp_mst, disp_det, dum_mst WHERE  pl_prod_id
 $buscaDispositivos = mysqli_query($conexion, $consulta);
 if(mysqli_num_rows($buscaDispositivos)>0){
 ?>
+
 <div class="table-responsive">
             <table class="table small">
   <thead class="thead-dark">
@@ -103,14 +105,7 @@ if(mysqli_num_rows($buscaDispositivos)>0){
   </tbody>
 </table>
 </div>
-
-
-            <div class="text-center">
-            <!-- <button class="btn btn-outline-dark">Ver detalles</button> -->
-            </div>
-            </div>
-            </div>
-            </div>
+          
             <?php
 }else{
   ?>
@@ -121,6 +116,9 @@ if(mysqli_num_rows($buscaDispositivos)>0){
 
 <?php 
 } ?>
+  </div>
+    </div>
+      </div>
 <?php
 
     }

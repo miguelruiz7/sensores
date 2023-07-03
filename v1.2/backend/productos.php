@@ -77,12 +77,9 @@ break;
 case 'modificarDispositivo':
     $dispositivo = $_POST['dispositivo'];
     $producto = $_POST['producto'];
-    $nombre = $_POST['nombre'];
-    $unidad = $_POST['unidad'];
     $placa = $_POST['placa'];
-    $tipo = $_POST['tipo'];
 
-    modificarDispositivo($dispositivo,$producto,$nombre,$unidad,$placa,$tipo,$conexion);
+    modificarDispositivo($dispositivo,$producto,$placa,$conexion);
 
 break;
 
@@ -90,7 +87,7 @@ case 'eliminarDispositivo':
     $dispositivo = $_POST['dispositivo'];
     $producto = $_POST['producto'];
     eliminarDispositivo($dispositivo, $producto,$conexion);
-    
+
 break;
 
 
