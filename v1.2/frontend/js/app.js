@@ -1186,7 +1186,71 @@ function nuevoUsuario(){
             });    
           }
 
+          function form_rol_modificar(usrol){
+            verificaConectividad(function() {
+                  var formulario = 'form_rol_modificar';
+                  $.ajax({
+                          url: "admin.php",
+                          type: "POST",
+                          data: {
+                            usrol:usrol,
+                            formulario:formulario},
+                          success: function(contenido){
+                              $("#formularios_contenedor").html(contenido);
+                          }
+                      });
+              });   
+            }
 
+            function func_rol_modificar(formulario,usrol) {
+              verificaConectividad(function() {
+                  verificarllenosForm(formulario, "notificacionesform",function() {
+                      var nombre = $("#txt_usrol_nom").val();
+                      var descripcion = $("#txt_usrol_desc").val();
+  
+                      var gral_lectura = $("#txt_usrol_gral_lec").val();   
+                      var gral_escritura =  $("#txt_usrol_gral_esc").val();
+  
+                      var esp_lectura = $("#txt_usrol_esp_lec").val();   
+                      var esp_escritura =  $("#txt_usrol_esp_esc").val();
+                      
+                      var sec_lectura = $("#txt_usrol_sec_lec").val();   
+                      var sec_escritura =  $("#txt_usrol_sec_esc").val();
+                         
+                      var prod_lectura = $("#txt_usrol_prod_lec").val();   
+                      var prod_escritura =  $("#txt_usrol_prod_esc").val();
+                      
+                      var disp_lectura = $("#txt_usrol_disp_lec").val();   
+                      var disp_escritura =  $("#txt_usrol_disp_esc").val();
+  
+                     
+              
+                      $.ajax({
+                              url: "../backend/admin.php",
+                              type: "POST",
+                              data: {
+                                usrol:usrol,
+                                nombre:nombre,
+                                descripcion:descripcion,
+                                gral_lectura:gral_lectura,
+                                gral_escritura:gral_escritura,
+                                esp_lectura:esp_lectura,
+                                esp_escritura:esp_escritura,
+                                sec_lectura:sec_lectura,
+                                sec_escritura:sec_escritura,
+                                prod_lectura:prod_lectura,
+                                prod_escritura:prod_escritura,
+                                disp_lectura:disp_lectura,
+                                disp_escritura:disp_escritura,
+                                      funcion:formulario},
+                              success: function(errores){
+                                  $("#notificaciones").html(errores);       
+                              }
+                          });
+        
+                  });
+              });    
+            }
                 
         function func_rol_eliminar(rol) {
           verificaConectividad(function() {
@@ -1225,8 +1289,8 @@ function nuevoUsuario(){
         function func_esp_tipo_agregar(formulario) {
           verificarllenosForm(formulario, "notificacionesform",function() {
             verificaConectividad(function() {
-                      var nombre = $("#txt_pl_nom").val()
-                      var descripcion = $("#txt_pl_desc").val()
+                      var nombre = $("#txt_esp_tipo_nom").val()
+                      var descripcion = $("#txt_esp_tipo_desc").val()
 
                       $.ajax({
                               url: "../backend/admin.php",
@@ -1261,17 +1325,18 @@ function nuevoUsuario(){
     }
 
 
-    function func_esp_tipo_modificar(formulario) {
+    function func_esp_tipo_modificar(formulario, tipoEspacio) {
       verificarllenosForm(formulario, "notificacionesform",function() {
         verificaConectividad(function() {
-                  var nombre = $("#txt_pl_nom").val()
-                  var descripcion = $("#txt_pl_desc").val()
+                  var nombre = $("#txt_esp_tipo_nom").val()
+                  var descripcion = $("#txt_esp_tipo_desc").val()
 
   
                   $.ajax({
                           url: "../backend/admin.php",
                           type: "POST",
-                          data: {nombre:nombre,
+                          data: {tipoEspacio:tipoEspacio,
+                            nombre:nombre,
                             descripcion:descripcion,
                                   funcion:formulario},
                           success: function(errores){
@@ -1279,6 +1344,22 @@ function nuevoUsuario(){
                           }
                       });
         });   
+  });    
+}
+
+          
+function func_esp_tipo_eliminar(tipoEspacio) {
+  verificaConectividad(function() {
+    var funcion = "func_esp_tipo_eliminar";
+          $.ajax({
+                  url: "../backend/admin.php",
+                  type: "POST",
+                  data: {tipoEspacio:tipoEspacio,
+                         funcion:funcion},
+                  success: function(contenido){
+                    $("#notificaciones").html(contenido);
+                  }
+              });
   });    
 }
 

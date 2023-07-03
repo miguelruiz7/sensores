@@ -50,7 +50,7 @@ if(mysqli_num_rows($buscaUsuarios)>0){
                 <th scope="row"><?php echo $datosUsuarios['usrol_nom'];?></th>
                 <td><?php echo $datosUsuarios['usrol_desc'];?></td>
                 <td>
-                   <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="sinDefinir('<?php echo $datosUsuarios['usrol_id'];?>');"><?php echo $i_modificar; ?></button>
+                   <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_rol_modificar('<?php echo $datosUsuarios['usrol_id'];?>');"><?php echo $i_modificar; ?></button>
                     <button class="btn btn-outline-dark" onclick="func_rol_eliminar('<?php echo $datosUsuarios['usrol_id'];?>')"><?php echo $i_basura; ?></button>
                   </td>
                 </tr>

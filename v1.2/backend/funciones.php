@@ -1244,6 +1244,37 @@ function insertaRol($nombre, $descripcion, $gral_lectura, $gral_escritura, $esc_
 
 }
 
+
+function modificaRol($usrol, $nombre, $descripcion, $gral_lectura, $gral_escritura, $esp_lectura, $esp_escritura, $sec_lectura, $sec_escritura, $prod_lectura, $prod_escritura, $disp_lectura, $disp_escritura, $conexion){
+    
+  $consulta = "UPDATE usrol_mst SET 
+  usrol_nom = '$nombre', 
+  usrol_desc = '$descripcion', 
+  usrol_gral_lec = '$gral_lectura', 
+  usrol_gral_esc = '$gral_escritura',
+  usrol_esp_lec = '$esp_lectura',
+  usrol_esp_esc = '$esp_escritura',
+  usrol_sec_lec = '$sec_lectura',
+  usrol_sec_esc = '$sec_escritura', 
+  usrol_prod_lec = '$prod_lectura',
+  usrol_prod_esc = '$prod_escritura', 
+  usrol_disp_lec = '$disp_lectura',
+  usrol_disp_esc = '$disp_escritura' WHERE usrol_id ='$usrol'";
+
+  $modificarRol = mysqli_query($conexion, $consulta);
+
+  if($modificarRol){
+  ?>
+   <script>muestraMensajes('Se modificó exitosamente',''); revertirFormulario(); $('#formulariomodal').modal('hide'); cargarRoles();</script>
+  <?php
+  }else{
+    ?>
+    <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+    <?php
+  }
+
+}
+
 function eliminaRol($rol, $conexion){
 
   $consulta = "DELETE FROM usrol_mst WHERE usrol_id = $rol";
@@ -1334,6 +1365,40 @@ function agregarTipoEspacio($nombre, $descripcion,$conexion){
     if($agregarTipoEspacio){
       ?>
       <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se agregó exitosamente',''); cargarTiposEspacio();</script>
+      <?php
+    }else{
+      ?>
+      <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+      <?php
+    }
+
+}
+
+function modificarTipoEspacio($tipoEspacio, $nombre, $descripcion,$conexion){
+
+  $consulta = "UPDATE esp_tipo_mst SET esp_tipo_nom = '$nombre', esp_tipo_desc = '$descripcion' WHERE esp_tipo_id = '$tipoEspacio'";
+    $modificarTipoEspacio = mysqli_query($conexion, $consulta);
+
+    if($modificarTipoEspacio){
+      ?>
+      <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se modificó exitosamente',''); cargarTiposEspacio();</script>
+      <?php
+    }else{
+      ?>
+      <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+      <?php
+    }
+
+}
+
+function eliminarTipoEspacio($tipoEspacio,$conexion){
+
+  $consulta = "DELETE FROM esp_tipo_mst WHERE esp_tipo_id = '$tipoEspacio' ";
+    $eliminarTipoEspacio = mysqli_query($conexion, $consulta);
+
+    if($eliminarTipoEspacio){
+      ?>
+      <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se eliminó exitosamente',''); cargarTiposEspacio();</script>
       <?php
     }else{
       ?>
