@@ -387,30 +387,14 @@ function conteoSecciones($id,$conexion){
 function insertaEspacio($nombre, $descripcion, $area, $ubicacion, $espacio, $conexion, $sesion){
      
     
-    $consulta = "INSERT INTO esp_mst VALUES (NULL, '$nombre', '$descripcion','$area','$ubicacion','$espacio', '$sesion')";
+    $consulta = "INSERT INTO esp_mst VALUES (NULL, '$nombre', '$descripcion','$area','$ubicacion','$espacio')";
     $agregaEspacio = mysqli_query($conexion, $consulta);
 
     if($agregaEspacio){
-      $consulta = "SELECT MAX(esp_id) AS ultimo_valor FROM esp_mst";
-        $buscaEspacio = mysqli_query($conexion, $consulta);
-        if(mysqli_num_rows($buscaEspacio)>0){
-          $obtenerDatos = mysqli_fetch_array($buscaEspacio);
-        }
-
-        $espacio_id = $obtenerDatos['ultimo_valor'];
-      
-      #Inserción
-      $consulta = "INSERT INTO esp_det VALUES (NULL, '$espacio_id','$sesion', '2');";
-      $agregaEspacioUsuario = mysqli_query($conexion, $consulta);
-      if($agregaEspacioUsuario){
         ?>
         <script>muestraMensajes('Se agrego exitosamente',''); $('#formulariomodal').modal('hide');  cargarEspacios(); revertirFormulario() </script>
         <?php
-      }else{
-        ?>
-      <script>muestraMensajesFormularios('Ocurrio algún error verifica (1)','error');</script>
-      <?php
-      }
+      
     }else{
       ?>
       <script>muestraMensajesFormularios('Ocurrio algún error verifica (2)','error');</script>

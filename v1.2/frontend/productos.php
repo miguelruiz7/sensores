@@ -14,6 +14,7 @@ $espacio = comprobarSeccion();
 $seccion = comprobarProductos();
 
 $admin_sistema = administradorSistema($sesion, $conexion);
+$admin_plataforma = administradorPlataforma($sesion,$conexion);
 $funcionesRol = rolPlataforma($sesion, $espacio, $conexion);
 
 
@@ -115,7 +116,7 @@ switch($formulario){
 
         
 
-          if($admin_sistema == 1 || $funcionesRol['usrol_disp_lec'] == 1) {
+          if($admin_sistema == 1 || $admin_plataforma == 1 || $funcionesRol['usrol_disp_lec'] == 1) {
 
           if(mysqli_num_rows($buscaPlacas)>0){
             ?>
@@ -325,7 +326,7 @@ switch($formulario){
           $buscaPlacas = mysqli_query($conexion, $consulta);
 
 
-          if($admin_sistema == 1 || $funcionesRol['usrol_disp_lec'] == 1) {
+          if($admin_sistema == 1 || $admin_plataforma == 1 || $funcionesRol['usrol_disp_lec'] == 1) {
 
           if(mysqli_num_rows($buscaPlacas)>0){
             ?>

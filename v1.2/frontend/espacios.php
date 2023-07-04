@@ -187,9 +187,9 @@ switch($formulario){
           $buscaUsuarios = mysqli_query($conexion, $consulta);
 
           $admin_sistema = administradorSistema($sesion, $conexion);
-          $detRol = rolPlataforma($sesion, $id, $conexion);
+          $admin_plataforma = administradorPlataforma($sesion,$conexion);
 
-          if( $admin_sistema == 1 || $detRol['usrol_gral_lec'] == 1) {
+          if($admin_sistema == 1 || $admin_plataforma == 1) {
 
           if(mysqli_num_rows($buscaUsuarios)>0){
             ?>
@@ -224,14 +224,30 @@ switch($formulario){
             ?>
              <tr>
                 <th scope="row"><?php if($datosUsuarios['usr_id'] == $sesion){ echo $datosUsuarios['usr_nom']." (Tú)";}else{echo $datosUsuarios['usr_nom'];}?></th>
-                <td><?php echo $datosUsuarios['usrol_nom'];?> <?php if($datosUsuarios['esp_crea'] == $datosUsuarios['usr_id'] ){echo '(Creador)';}?></td>
+                <td><?php echo $datosUsuarios['usrol_nom'];?></td>
                 <td><?php echo $datosUsuarios['usr_usu'];?></td>
-                <td><?php if($datosUsuarios['usr_id'] != $sesion){ if(detectarCreador($id, $conexion) != $datosUsuarios['usr_id']){?><button class="btn btn-outline-light" onclick="revertirFormulario(); formModificaUsr('<?php echo $datosUsuarios['esp_usr_id']?>','<?php echo $datosUsuarios['esp_esp_id']?>');"><?php echo $i_modificar; ?></button>
-                    <button class="btn btn-outline-light" onclick="eliminarUsuario('<?php echo $datosUsuarios['esp_id_']?>');"><?php echo $i_basura; ?></button><?php } } ?></td>
+                <td><?php if($datosUsuarios['usr_id'] != $sesion){ ?><button class="btn btn-outline-light" onclick="revertirFormulario(); formModificaUsr('<?php echo $datosUsuarios['esp_usr_id']?>','<?php echo $datosUsuarios['esp_esp_id']?>');"><?php echo $i_modificar; ?></button>
+                    <button class="btn btn-outline-light" onclick="eliminarUsuario('<?php echo $datosUsuarios['esp_id_']?>');"><?php echo $i_basura; ?></button><?php } ?></td>
               </tr>
            <?php
 
            }
+          }else{
+            ?>
+            <div class="position-relative p-5 text-center text-light">
+            <?php echo $i_advertencia ?>
+            <h1 class="text-body-emphasis">No hay ningún usuario activo</h1>
+            <p class="col-lg-6 mx-auto mb-4">
+              Puedes asignar un usuario en este espacio aquí
+            </p>
+            <a href="usuarios_mst.php"><button class="btn btn-outline-light">
+           <?php echo $i_enlace; ?> Administrar usuarios
+           </button></a>
+           <button class="btn btn-outline-light" onclick="revertirFormulario(); asignausuarioEspacio('<?php echo $id;?>');">
+           <?php echo $i_agregar; ?> Asignar un usuario al espacio
+           </button>
+          </div>
+          <?php
           }
         }else{
           ?>

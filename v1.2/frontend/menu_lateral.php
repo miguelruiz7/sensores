@@ -12,6 +12,7 @@ $ruta_base = basename($_SERVER['PHP_SELF']);
 if(isset($_SESSION['usr_id'])){
   $sesion = $_SESSION['usr_id'];
   $admin_sistema = administradorSistema($sesion, $conexion);
+  $admin_plataforma = administradorPlataforma($sesion,$conexion);
 
 ?>
 
@@ -89,7 +90,7 @@ if($admin_sistema == 1) {
             <?php echo $i_dispositivos; ?> Dispositivos
             </button></a>
     </li>
-    <?php if($admin_sistema == 1 || administradorPlataforma($sesion, $conexion) == 1){ ?>
+    <?php if($admin_sistema == 1 || $admin_plataforma == 1 ){ ?>
     <li class="mb-1">
           <a href="usuarios_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
             <?php echo $i_personas; ?> Usuarios
