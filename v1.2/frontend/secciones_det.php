@@ -30,7 +30,7 @@ if(mysqli_num_rows($buscaSecciones)>0){
   # Detecta el rol si es adminitrativo
  
   ?>
-  <div class="container m-2 text-center"> <?php  if($admin_sistema == 1 || $admin_plataforma == 1 || $funcionesRol['usrol_sec_esc'] == 1) { ?> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarSec(); ocultarCanvas('menuOffcanvas');">
+  <div class="container m-2 text-center"> <?php  if($admin_sistema == 1 || $admin_plataforma == 1 || $funcionesRol['usrol_sec_esc'] == 1 ) { ?> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="formAgregarSec(); ocultarCanvas('menuOffcanvas');">
          <?php echo $i_agregar; ?> Crear secciones
       </button> <?php } ?>
       <a href="espacios_mst.php"><button class="btn btn-outline-dark" type="button"> <?php echo $i_atras; ?>
