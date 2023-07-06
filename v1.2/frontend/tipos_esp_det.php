@@ -19,11 +19,11 @@ $sesion = $_SESSION['usr_id'];
 
 <?php
 
-$consulta = "SELECT * FROM esp_tipo_mst WHERE esp_tipo_id NOT IN ('1')";
+$consulta = "SELECT * FROM esp_tipo_mst WHERE esp_tipo_id NOT IN ('1') ORDER BY esp_tipo_nom ASC";
 
-$buscaUsuarios = mysqli_query($conexion, $consulta);
+$buscaTipos = mysqli_query($conexion, $consulta);
 
-if(mysqli_num_rows($buscaUsuarios)>0){
+if(mysqli_num_rows($buscaTipos)>0){
 
   if(administradorSistema($sesion, $conexion) == 1){
   # Si existe un registro despliega toda la informacion que exista
@@ -43,15 +43,15 @@ if(mysqli_num_rows($buscaUsuarios)>0){
                 </thead>
                 <tbody>
   <?php
-    while($datosUsuarios = mysqli_fetch_array($buscaUsuarios)){
+    while($datos = mysqli_fetch_array($buscaTipos)){
 
             ?>
           <tr>
-                <th scope="row"><?php echo $datosUsuarios['esp_tipo_nom'];?></th>
-                <td><?php echo $datosUsuarios['esp_tipo_desc'];?></td>
+          <?php if($datos['esp_tipo_estado'] == 1){ ?> <th scope="row"><?php echo $datos['esp_tipo_nom'];?></th> <?php }else{ ?> <th scope="row" style="color:gray;"><?php echo $datos['esp_tipo_nom'];?></th> <?php } ?> 
+                <td><?php echo $datos['esp_tipo_desc'];?></td>
                 <td>
-                   <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_esp_tipo_modificar('<?php echo $datosUsuarios['esp_tipo_id'];?>');"><?php echo $i_modificar; ?></button>
-                    <button class="btn btn-outline-dark" onclick="func_esp_tipo_eliminar('<?php echo $datosUsuarios['esp_tipo_id'];?>')"><?php echo $i_basura; ?></button>
+                   <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_esp_tipo_modificar('<?php echo $datos['esp_tipo_id'];?>');"><?php echo $i_modificar; ?></button>
+                    <button class="btn btn-outline-dark" onclick="func_esp_tipo_eliminar('<?php echo $datos['esp_tipo_id'];?>')"><?php echo $i_basura; ?></button>
                   </td>
                 </tr>
             <?php

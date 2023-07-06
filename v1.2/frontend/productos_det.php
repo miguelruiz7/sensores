@@ -33,9 +33,9 @@ if($seccion != ''){
 
 # Consulta de las secciones
 $consulta = "SELECT * FROM prod_mst, sec_mst WHERE prod_sec_id = '$seccion' AND sec_id = prod_sec_id";
-$buscaSecciones = mysqli_query($conexion, $consulta);
+$buscaProductos = mysqli_query($conexion, $consulta);
 
-if(mysqli_num_rows($buscaSecciones)>0){
+if(mysqli_num_rows($buscaProductos)>0){
   # Si existe un registro despliega toda la informacion que exista
   # Detecta el rol si es adminitrativo
   if(1 == 1) {
@@ -55,7 +55,7 @@ if(mysqli_num_rows($buscaSecciones)>0){
   <?php
  
 
-    while($datos = mysqli_fetch_array($buscaSecciones)){
+    while($datos = mysqli_fetch_array($buscaProductos)){
 
             ?>
             <div class="col">

@@ -198,6 +198,43 @@ function rolPlataforma($sesion, $espacio, $conexion){
 
 ####################################################################################################
 #                                                                                                  #
+#                                           Socket                                                 #
+#                                                                                                  #
+####################################################################################################
+
+
+function insertarDatos($documento, $conexion){
+  $datos = json_decode($documento);
+  $id = $datos->id;
+  $valores = $datos->valor;
+  date_default_timezone_set('America/Mexico_City');
+  $fecha_cap = date('Y-m-d H:i:s', time());
+  
+ 
+
+  $consulta = "SELECT disp_id_ FROM disp_det WHERE disp_id_ = '$id'";
+  $checarDispositivos = mysqli_query($conexion, $consulta);
+
+  if(mysqli_num_rows($checarDispositivos)>0){
+
+  $consultaInsertar = "INSERT INTO dato_mst VALUES (NULL, '$valores','$fecha_cap', '$id')";
+
+  $conecta = mysqli_query($conexion, $consultaInsertar);
+
+  if($conecta){
+   echo 'Los datos han sido transferidos a la base de datos (dispositivo: '.$id.', valor: '.$valores.', fecha_cap: '.$fecha_cap.')'. PHP_EOL;
+  }else{
+   echo 'Fallo'. PHP_EOL;
+  }
+  
+  }else{
+     echo 'Los datos no han sido transferidos a la base de datos (dispositivo: '.$id.', valor: '.$valores.', fecha_cap: '.$fecha_cap.')'. PHP_EOL;
+  }
+
+}
+
+####################################################################################################
+#                                                                                                  #
 #                   Almacena funciones que funcionan en la vista del placas                        #
 #                                                                                                  #
 ####################################################################################################
@@ -1213,7 +1250,7 @@ function eliminarDispositivo($dispositivo, $producto, $conexion){
 
 function insertaRol($nombre, $descripcion, $gral_lectura, $gral_escritura, $esc_lectura, $esc_escritura, $sec_lectura, $sec_escritura, $prod_lectura, $prod_escritura, $disp_lectura, $disp_escritura, $conexion){
     
-  $consulta = "INSERT INTO usrol_mst VALUES (NULL, '$nombre', '$descripcion', '$gral_lectura', '$gral_escritura','$esc_lectura','$esc_escritura','$sec_lectura','$sec_escritura', '$prod_lectura','$prod_escritura', '$disp_lectura','$disp_escritura')";
+  $consulta = "INSERT INTO usrol_mst VALUES (NULL, '$nombre', '$descripcion', '$gral_lectura', '$gral_escritura','$esc_lectura','$esc_escritura','$sec_lectura','$sec_escritura', '$prod_lectura','$prod_escritura', '$disp_lectura','$disp_escritura','1')";
   $insertarRol = mysqli_query($conexion, $consulta);
 
   if($insertarRol){
@@ -1229,7 +1266,7 @@ function insertaRol($nombre, $descripcion, $gral_lectura, $gral_escritura, $esc_
 }
 
 
-function modificaRol($usrol, $nombre, $descripcion, $gral_lectura, $gral_escritura, $esp_lectura, $esp_escritura, $sec_lectura, $sec_escritura, $prod_lectura, $prod_escritura, $disp_lectura, $disp_escritura, $conexion){
+function modificaRol($usrol, $nombre, $descripcion, $gral_lectura, $gral_escritura, $esp_lectura, $esp_escritura, $sec_lectura, $sec_escritura, $prod_lectura, $prod_escritura, $disp_lectura, $disp_escritura, $estado, $conexion){
     
   $consulta = "UPDATE usrol_mst SET 
   usrol_nom = '$nombre', 
@@ -1243,7 +1280,8 @@ function modificaRol($usrol, $nombre, $descripcion, $gral_lectura, $gral_escritu
   usrol_prod_lec = '$prod_lectura',
   usrol_prod_esc = '$prod_escritura', 
   usrol_disp_lec = '$disp_lectura',
-  usrol_disp_esc = '$disp_escritura' WHERE usrol_id ='$usrol'";
+  usrol_disp_esc = '$disp_escritura',
+  usrol_estado = '$estado' WHERE usrol_id ='$usrol'";
 
   $modificarRol = mysqli_query($conexion, $consulta);
 
@@ -1343,7 +1381,7 @@ function asignaAdministrador($usuario, $conexion){
 
 function agregarTipoEspacio($nombre, $descripcion,$conexion){
 
-  $consulta = "INSERT INTO esp_tipo_mst VALUES (NULL, '$nombre', '$descripcion')";
+  $consulta = "INSERT INTO esp_tipo_mst VALUES (NULL, '$nombre', '$descripcion','1')";
     $agregarTipoEspacio = mysqli_query($conexion, $consulta);
 
     if($agregarTipoEspacio){
@@ -1358,9 +1396,9 @@ function agregarTipoEspacio($nombre, $descripcion,$conexion){
 
 }
 
-function modificarTipoEspacio($tipoEspacio, $nombre, $descripcion,$conexion){
+function modificarTipoEspacio($tipoEspacio, $nombre, $descripcion,$estado, $conexion){
 
-  $consulta = "UPDATE esp_tipo_mst SET esp_tipo_nom = '$nombre', esp_tipo_desc = '$descripcion' WHERE esp_tipo_id = '$tipoEspacio'";
+  $consulta = "UPDATE esp_tipo_mst SET esp_tipo_nom = '$nombre', esp_tipo_desc = '$descripcion', esp_tipo_estado ='$estado' WHERE esp_tipo_id = '$tipoEspacio'";
     $modificarTipoEspacio = mysqli_query($conexion, $consulta);
 
     if($modificarTipoEspacio){
@@ -1391,4 +1429,61 @@ function eliminarTipoEspacio($tipoEspacio,$conexion){
     }
 
 }
+
+####################################################################################################
+#                                       Unidades de medida                                         #
+####################################################################################################
+
+function  agregarUnidadMedida($nombre,$siglas,$conexion){
+  $consulta = "INSERT INTO dum_mst VALUES (NULL, '$nombre', '$siglas','1')";
+  $agregarUnidadMedida = mysqli_query($conexion, $consulta);
+
+  if($agregarUnidadMedida){
+    ?>
+    <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se agregó exitosamente',''); cargarUnidadesMedida();</script>
+    <?php
+  }else{
+    ?>
+    <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+    <?php
+  }
+}
+
+
+function modificarUnidadMedida($unidad, $nombre, $siglas,$estado, $conexion){
+
+  $consulta = "UPDATE dum_mst SET dum_nom = '$nombre', dum_sigl = '$siglas', dum_estado ='$estado' WHERE dum_id = '$unidad'";
+    $modificarTipoEspacio = mysqli_query($conexion, $consulta);
+
+    if($modificarTipoEspacio){
+      ?>
+      <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se modificó exitosamente',''); cargarUnidadesMedida();</script>
+      <?php
+    }else{
+      ?>
+      <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+      <?php
+    }
+
+}
+
+
+function eliminarUnidadMedida($unidad,$conexion){
+
+  $consulta = "DELETE FROM dum_mst WHERE dum_id = '$unidad'";
+    $eliminarUnidadMedida = mysqli_query($conexion, $consulta);
+
+    if($eliminarUnidadMedida){
+      ?>
+      <script>revertirFormulario(); $('#formulariomodal').modal('hide'); muestraMensajes('Se eliminó exitosamente',''); cargarTiposEspacio();</script>
+      <?php
+    }else{
+      ?>
+      <script>muestraMensajes('Ocurrio algún error verifica','error');</script>
+      <?php
+    }
+
+}
+
+
 ?>

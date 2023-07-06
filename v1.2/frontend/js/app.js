@@ -39,6 +39,10 @@
     cargarTiposEspacio();
   })
 
+  compruebaRuta('dum_mst.php',function(){
+    cargarUnidadesMedida();
+  })
+
 }, 1000);
 
 
@@ -233,6 +237,24 @@ function cargarSecciones(){
           }
 
 
+          function cargarUnidadesMedida(){
+            verificaConectividad(function() {
+              $.ajax({
+                url: 'dum_det.php', // Ruta al archivo que quieres cargar
+                type: 'GET', // Método de la petición (GET, POST, etc.)
+                dataType: 'html', // Tipo de datos esperados en la respuesta
+          
+                success: function(data) {
+                  $('#unidades_medida').html(data); // Insertar el contenido en el contenedor con ID 'espacio'
+                },
+                error: function() {
+                  //alert('Ha ocurrido un error al cargar el archivo.');
+                }
+              });
+              });   
+            }
+
+
  function cargarSeccionesEspacio(espacio){
   verificaConectividad(function() {
     var funcion = "cargarSeccion";
@@ -303,7 +325,7 @@ function cargarSecciones(){
 
     function compruebaRuta(url,funcion){
      var archivobase =  obtenerURL()
-     console.log(archivobase);
+    // console.log(archivobase);
      if(url === archivobase){
        funcion();
      }
@@ -1207,6 +1229,7 @@ function nuevoUsuario(){
                   verificarllenosForm(formulario, "notificacionesform",function() {
                       var nombre = $("#txt_usrol_nom").val();
                       var descripcion = $("#txt_usrol_desc").val();
+                      var estado = $("#txt_usrol_estado").val();
   
                       var gral_lectura = $("#txt_usrol_gral_lec").val();   
                       var gral_escritura =  $("#txt_usrol_gral_esc").val();
@@ -1232,6 +1255,7 @@ function nuevoUsuario(){
                                 usrol:usrol,
                                 nombre:nombre,
                                 descripcion:descripcion,
+                                estado:estado,
                                 gral_lectura:gral_lectura,
                                 gral_escritura:gral_escritura,
                                 esp_lectura:esp_lectura,
@@ -1330,6 +1354,7 @@ function nuevoUsuario(){
         verificaConectividad(function() {
                   var nombre = $("#txt_esp_tipo_nom").val()
                   var descripcion = $("#txt_esp_tipo_desc").val()
+                  var estado = $("#txt_esp_tipo_estado").val();
 
   
                   $.ajax({
@@ -1338,6 +1363,7 @@ function nuevoUsuario(){
                           data: {tipoEspacio:tipoEspacio,
                             nombre:nombre,
                             descripcion:descripcion,
+                            estado:estado,
                                   funcion:formulario},
                           success: function(errores){
                               $("#notificaciones").html(errores);       
@@ -1355,6 +1381,102 @@ function func_esp_tipo_eliminar(tipoEspacio) {
                   url: "../backend/admin.php",
                   type: "POST",
                   data: {tipoEspacio:tipoEspacio,
+                         funcion:funcion},
+                  success: function(contenido){
+                    $("#notificaciones").html(contenido);
+                  }
+              });
+  });    
+}
+
+
+
+function form_dum_agregar(){
+  verificaConectividad(function() {
+    var formulario = 'form_dum_agregar';
+    $.ajax({
+            url: "admin.php",
+            type: "POST",
+            data: {
+              formulario:formulario},
+            success: function(contenido){
+                $("#formularios_contenedor").html(contenido);
+            }
+        });
+});  
+}
+
+function func_dum_agregar(formulario) {
+  verificarllenosForm(formulario, "notificacionesform",function() {
+    verificaConectividad(function() {
+              var nombre = $("#txt_dum_nom").val()
+              var siglas = $("#txt_dum_sigl").val()
+
+              $.ajax({
+                      url: "../backend/admin.php",
+                      type: "POST",
+                      data: {nombre:nombre,
+                        siglas:siglas,
+                              funcion:formulario},
+                      success: function(errores){
+                          $("#notificaciones").html(errores);       
+                      }
+                  });
+    });   
+});    
+}
+
+function form_dum_modificar(unidad){
+  verificaConectividad(function() {
+    var formulario = 'form_dum_modificar';
+    $.ajax({
+            url: "admin.php",
+            type: "POST",
+            data: {
+              unidad:unidad,
+              formulario:formulario},
+            success: function(contenido){
+                $("#formularios_contenedor").html(contenido);
+            }
+        });
+});  
+}
+
+
+function func_dum_modificar(formulario, unidad) {
+  verificarllenosForm(formulario, "notificacionesform",function() {
+    verificaConectividad(function() {
+              var nombre = $("#txt_dum_nom").val()
+              var siglas = $("#txt_dum_sigl").val()
+              var estado = $("#txt_dum_estado").val();
+
+
+              $.ajax({
+                      url: "../backend/admin.php",
+                      type: "POST",
+                      data: {unidad:unidad,
+                        nombre:nombre,
+                        siglas:siglas,
+                        estado:estado,
+                              funcion:formulario},
+                      success: function(errores){
+                          $("#notificaciones").html(errores);       
+                      }
+                  });
+    });   
+});    
+}
+
+
+
+
+function func_dum_eliminar(unidad) {
+  verificaConectividad(function() {
+    var funcion = "func_dum_eliminar";
+          $.ajax({
+                  url: "../backend/admin.php",
+                  type: "POST",
+                  data: {unidad:unidad,
                          funcion:funcion},
                   success: function(contenido){
                     $("#notificaciones").html(contenido);

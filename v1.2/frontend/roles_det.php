@@ -47,7 +47,7 @@ if(mysqli_num_rows($buscaUsuarios)>0){
 
             ?>
           <tr>
-                <th scope="row"><?php echo $datosUsuarios['usrol_nom'];?></th>
+              <?php if($datosUsuarios['usrol_estado'] == 1){ ?>  <th scope="row" ><?php echo $datosUsuarios['usrol_nom'];?></th>   <?php }else{ ?>  <th scope="row" style="color: gray;"><?php echo $datosUsuarios['usrol_nom'];?></th>    <?php } ?> 
                 <td><?php echo $datosUsuarios['usrol_desc'];?></td>
                 <td>
                    <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_rol_modificar('<?php echo $datosUsuarios['usrol_id'];?>');"><?php echo $i_modificar; ?></button>

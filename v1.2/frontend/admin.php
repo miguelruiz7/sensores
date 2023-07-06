@@ -248,6 +248,22 @@ switch($formulario){
              <textarea type="text" id="txt_usrol_desc" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput"><?php echo $dato['usrol_desc'];?></textarea>
              <label>Descripción breve</label>
            </div>
+
+
+           <div class="form-floating text-light mb-3">
+                                     <select type="text" id="txt_usrol_estado" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+                                       <option class="bg-none" style="background-color:#042f52; filter: blur(5px);" selected value=""></option>
+ 
+                                       <?php foreach ($booleanos as $valores) {
+                                          $selected = $dato['usrol_estado'] == $valores[1];
+                                        ?>
+                                          <option class="bg-none" style="background-color:#042f52; filter: blur(5px);" value="<?php echo $valores[1] ?>" <?php echo $selected ? 'selected' : ''; ?>><?php echo $valores[0] ?></option>
+                                      <?php } ?>
+
+ 
+                                     </select>
+                                     <label>Activo en el sistema</label>
+            </div>
  
  
            <div class="container m-1 text-white text-center">
@@ -533,6 +549,8 @@ switch($formulario){
 
                       $variable = $_POST['variable'];
 
+                      $booleanos = array(['No', 0],['Si', 1]);
+
                       $consulta="SELECT * FROM esp_tipo_mst WHERE esp_tipo_id = '$variable'";
                       $buscaDatos = mysqli_query($conexion,$consulta);
 
@@ -559,6 +577,21 @@ switch($formulario){
                                   <textarea type="text" id="txt_esp_tipo_desc" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput"><?php echo $dato['esp_tipo_desc'];?></textarea>
                                   <label>Descripción breve</label>
                                 </div>
+
+                                <div class="form-floating text-light mb-3">
+                                     <select type="text" id="txt_esp_tipo_estado" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+                                       <option class="bg-none" style="background-color:#042f52; filter: blur(5px);" selected value=""></option>
+ 
+                                       <?php foreach ($booleanos as $valores) {
+                                          $selected = $dato['esp_tipo_estado'] == $valores[1];
+                                        ?>
+                                          <option class="bg-none" style="background-color:#042f52; filter: blur(5px);" value="<?php echo $valores[1] ?>" <?php echo $selected ? 'selected' : ''; ?>><?php echo $valores[0] ?></option>
+                                      <?php } ?>
+
+ 
+                                     </select>
+                                     <label>Activo en el sistema</label>
+                                  </div>
                       
                       
                                 <div class="text-center">
@@ -576,6 +609,104 @@ switch($formulario){
           </div>
                         <?php
                       }
+                              break;
+
+
+          case 'form_dum_agregar':
+         
+            ?>
+
+            <div class="offcanvas-header m-3">
+              <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Crear unidad de medida</h5>
+                <button type="button" class="btn text-light"  data-bs-dismiss="modal" aria-label="Close"data-bs-dismiss="modal" aria-label="Close" onclick="revertirFormulario();">Cerrar</button>
+              </div>
+            <form id="<?php echo $formulario ?>">
+              
+                      <div class="form-floating text-light mb-3">
+                        <input type="text" id="txt_dum_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" >
+                        <label>Nombre de la unidad de medida:</label>
+                      </div>
+            
+            
+                      <div class="form-floating text-light mb-3">
+                        <input type="text" id="txt_dum_sigl" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" >
+                        <label>Siglas de la unidad de medida:</label>
+                      </div>
+            
+            
+                      <div class="text-center">
+                      <button type="button"  id="btn_form" onclick="func_dum_agregar(obtenerIdForm())" class="btn btn-outline-light">Aceptar</button>
+                      </div> 
+                    </form>
+              
+                    <?php
+                    break;
+
+
+                    case 'form_dum_modificar':
+
+                      $unidad = $_POST['unidad'];
+                      $booleanos = array(['No', 0],['Si', 1]);
+
+                      $consulta="SELECT * FROM dum_mst WHERE dum_id = '$unidad'";
+                      $buscaDatos = mysqli_query($conexion,$consulta);
+
+                      if(mysqli_num_rows($buscaDatos)>0){
+
+                        $dato = mysqli_fetch_array($buscaDatos);
+
+                      ?>
+
+                      
+          
+                      <div class="offcanvas-header m-3">
+                        <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Modificar unidad de medida</h5>
+                          <button type="button" class="btn text-light"  data-bs-dismiss="modal" aria-label="Close"data-bs-dismiss="modal" aria-label="Close" onclick="revertirFormulario();">Cerrar</button>
+                        </div>
+                      <form id="<?php echo $formulario ?>">
+                        
+                                <div class="form-floating text-light mb-3">
+                                  <input type="text" id="txt_dum_nom" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" value="<?php echo $dato['dum_nom'];?>">
+                                  <label>Nombre de la unidad de medida:</label>
+                                </div>
+                      
+                      
+                                <div class="form-floating text-light mb-3">
+                                  <input type="text" id="txt_dum_sigl" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput" value="<?php echo $dato['dum_sigl'];?>">
+                                  <label>Siglas de la unidad de medida:</label>
+                                </div>
+
+                                <div class="form-floating text-light mb-3">
+                                     <select type="text" id="txt_dum_estado" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+                                       <option class="bg-none" style="background-color:#042f52; filter: blur(5px);" selected value=""></option>
+ 
+                                       <?php foreach ($booleanos as $valores) {
+                                          $selected = $dato['dum_estado'] == $valores[1];
+                                        ?>
+                                          <option class="bg-none" style="background-color:#042f52; filter: blur(5px);" value="<?php echo $valores[1] ?>" <?php echo $selected ? 'selected' : ''; ?>><?php echo $valores[0] ?></option>
+                                      <?php } ?>
+
+ 
+                                     </select>
+                                     <label>Activo en el sistema</label>
+                                  </div>
+                      
+                      
+                                <div class="text-center">
+                                <button type="button"  id="btn_form" onclick="func_dum_modificar(obtenerIdForm(),'<?php echo $unidad; ?>')" class="btn btn-outline-light">Aceptar</button>
+                                </div> 
+                              </form>
+                        
+                              <?php
+                                      }else{
+                                        ?>
+                                        <div class="position-relative p-5 text-center text-light">
+                            <?php echo $i_advertencia ?>
+                            <h1 class="text-body-emphasis">¿Qué estas haciendo?</h1>
+                            <button type="button" class="btn btn-outline-light text-light"  data-bs-dismiss="modal" aria-label="Close"data-bs-dismiss="modal" aria-label="Close" onclick="revertirFormulario();">Cerrar</button>
+                          </div>
+                                        <?php
+                                      }
                               break;
 
 

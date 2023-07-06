@@ -10,6 +10,8 @@
 #define DHTTYPE DHT22
 DHT dht(DHTPIN, DHTTYPE);
 
+#define led 2
+
 const char* ssid = "CITNOVA";
 const char* password = "PRU3B@C1TN0V@";
 const char* server = "20.20.2.113";
@@ -17,7 +19,14 @@ const int port = 1234;
 
 WiFiClient client;
 
-void setup() {
+void setup()
+{
+
+  pinMode(led, OUTPUT);
+  digitalWrite(led, HIGH);
+
+
+  
   Serial.begin(115200);
   
   // Conéctate a la red Wi-Fi
@@ -25,17 +34,23 @@ void setup() {
   
   while (WiFi.status() != WL_CONNECTED) {
     Serial.println("Conectando a la red Wi-Fi...");
+    digitalWrite(led, LOW);
+    delay(250);
+    digitalWrite(led, HIGH);
+    delay(250);
   }
     Serial.println("Conexión establecida");
-  
+    digitalWrite(led, LOW);
+
   }
 
 void loop() {
  
   //Sensor de Luz
   
-  objectoSensor("11",String(obtenerValorSensorLuz()));
-  objectoSensor("12",String(obtenerValorSensorMov()));
+  objectoSensor("15",String(obtenerValorSensorLuz()));
+  objectoSensor("16",String(obtenerValorSensorMov()));
+  objectoSensor("14",String(obtenerValorUltrasonico()));
 
 
 }
@@ -56,6 +71,7 @@ void objectoSensor(String id, String valor){
 void EnviarDatosServidor(DynamicJsonDocument& jsonDoc){
 // Enviar el documento JSON al servidor
   if (client.connect(server, port)) {
+     digitalWrite(led, LOW);
     // Convertir el documento JSON en una cadena
     String jsonString;
     serializeJson(jsonDoc, jsonString);
@@ -67,6 +83,10 @@ void EnviarDatosServidor(DynamicJsonDocument& jsonDoc){
     // client.stop();
   } else {
     Serial.println("Error al conectar con el servidor");
+     digitalWrite(led, LOW);
+    delay(125);
+    digitalWrite(led, HIGH);
+    delay(125);
   }
 
   }
@@ -85,7 +105,7 @@ return porcentajeLuz ;
 
  
 String obtenerValorSensorMov(){
-  #define sensorMic 5
+  #define sensorMic 16
 String valorLetra;
 int datos = digitalRead(sensorMic);
 int datosInv = (datos == 1) ? 0 : 1; // Invierte el valor
@@ -105,7 +125,64 @@ int obtenerValorPir(){
 int datos = digitalRead(sensorPir);
 Serial.println(datos);
 return datos;
+}
 
+/* float obtenerValorUltrasonico(){
+  int duracion;
+  float distancia;
+
+  
+  #define trigPin 5
+  #define echoPin 4
+  
+  pinMode(trigPin, OUTPUT);        // Pin de disparo como salida
+  pinMode(echoPin, INPUT);         // Pin de eco como entrada
+
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duracion = pulseIn(echoPin, HIGH);
+
+  // Calcula la distancia en centímetros
+  distancia = duracion * 0.034 / 2;  
+  return distancia;
+  }
+
+ */
+
+
+float obtenerValorUltrasonico() {
+    #define trigPin 5
+  #define echoPin 4
+  
+  pinMode(trigPin, OUTPUT);    // Pin de disparo como salida
+  pinMode(echoPin, INPUT);     // Pin de eco como entrada
+
+  long duracion;
+  float distancia_cm, distancia_m, distancia_mm, distancia_pie, distancia_pulg;
+
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duracion = pulseIn(echoPin, HIGH);
+
+  // Calcula la distancia en centímetros, metros, milímetros, pies y pulgadas...
+
+  distancia_cm = duracion * 0.034 / 2;
+  distancia_m = distancia_cm / 100.0;
+  distancia_mm = distancia_cm * 10;
+  distancia_pie = distancia_m / 0.3048;
+  distancia_pulg = distancia_cm / 2.54;
+
+  return distancia_cm;
 }
 
 

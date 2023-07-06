@@ -32,7 +32,7 @@ if(mysqli_num_rows($infoUsuario)>0){
 
 
     <svg class="bd-placeholder-img rounded-circle" width="70" height="70" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="white"></rect><text x="40%" y="52%" fill="#084f88" dy=".3em"><?php echo substr($datos['usr_nom'],0,1) ?></text></svg>
-<h5 class="fw-light text-light m-3">¡Hola!, <?php echo $datos['usr_nom']; ?></h5>
+<h5 class="fw-light text-light m-3"><?php echo $datos['usr_nom']; ?></h5>
 <button type="button" class="btn btn-outline-light" onclick="cerrarSesion()">Cerrar sesión</button>
 </div>
 
@@ -50,14 +50,15 @@ if($admin_sistema == 1) {
         </button>
         <div class="collapse" id="variables">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="roles_mst.php" class="link-light d-inline-flex text-decoration-none rounded"> <?php echo $i_roles_usu; ?> Roles de usuario</a></li>
+            <li><a href="roles_mst.php" class="link-light d-inline-flex text-decoration-none rounded"> <?php echo '(!)'; ?> Roles de usuario</a></li>
             <li><a href="tipos_esp_mst.php" class="link-light d-inline-flex text-decoration-none rounded"> <?php echo '(!)'; ?> Tipos de espacios</a></li>
+            <li><a href="dum_mst.php" class="link-light d-inline-flex text-decoration-none rounded"> <?php echo '(!)'; ?> Unidades de medida</a></li>
           </ul>
         </div>
       </li>
       <li class="mb-1">
         <button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light" data-bs-toggle="collapse" data-bs-target="#sistema" aria-expanded="true">
-         <?php echo $i_sistemas; ?> Sistema
+         <?php echo $i_sistemas; ?> Plataforma
         </button>
         <div class="collapse" id="sistema">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -80,6 +81,7 @@ if($admin_sistema == 1) {
             <?php echo $i_espacio_borde; ?> Espacios
             </button></a>
     </li>
+    <?php if($admin_sistema == 1 || $admin_plataforma == 1 ){ ?>
     <li class="mb-1">
           <a href="pl_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
             <?php echo $i_placa; ?> Placas
@@ -90,7 +92,7 @@ if($admin_sistema == 1) {
             <?php echo $i_dispositivos; ?> Dispositivos
             </button></a>
     </li>
-    <?php if($admin_sistema == 1 || $admin_plataforma == 1 ){ ?>
+   
     <li class="mb-1">
           <a href="usuarios_mst.php"><button class="btn d-inline-flex align-items-center rounded border-0 collapsed text-light">
             <?php echo $i_personas; ?> Usuarios

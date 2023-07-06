@@ -127,6 +127,7 @@ if(isset($_POST['funcion'])){
           $usrol = $_POST['usrol'];
           $nombre = $_POST['nombre'];
           $descripcion = $_POST['descripcion'];
+          $estado = $_POST['estado'];
           $gral_lectura = $_POST['gral_lectura'];
           $gral_escritura = $_POST['gral_escritura'];
           $esp_lectura = $_POST['esp_lectura'];
@@ -138,7 +139,7 @@ if(isset($_POST['funcion'])){
           $disp_lectura = $_POST['disp_lectura'];
           $disp_escritura = $_POST['disp_escritura'];
 
-          modificaRol($usrol,$nombre, $descripcion, $gral_lectura, $gral_escritura, $esp_lectura, $esp_escritura, $sec_lectura, $sec_escritura, $prod_lectura, $prod_escritura, $disp_lectura, $disp_escritura, $conexion);
+          modificaRol($usrol,$nombre, $descripcion, $gral_lectura, $gral_escritura, $esp_lectura, $esp_escritura, $sec_lectura, $sec_escritura, $prod_lectura, $prod_escritura, $disp_lectura, $disp_escritura,  $estado, $conexion);
 
         break;
     
@@ -187,7 +188,8 @@ if(isset($_POST['funcion'])){
         $tipoEspacio = $_POST['tipoEspacio'];
         $nombre = $_POST['nombre'];
         $descripcion = $_POST['descripcion'];
-        modificarTipoEspacio($tipoEspacio, $nombre,$descripcion,$conexion); 
+        $estado = $_POST['estado'];
+        modificarTipoEspacio($tipoEspacio, $nombre,$descripcion,$estado,$conexion); 
       break;
 
       case 'func_esp_tipo_eliminar':
@@ -197,9 +199,47 @@ if(isset($_POST['funcion'])){
         eliminarTipoEspacio($tipoEspacio, $conexion); 
 
       break;
+
+
+       ##########################################################
+      #
+      #               Unidades de medida 
+      #
+      ##########################################################
    
+      case 'form_dum_agregar':
+        
+        $nombre = $_POST['nombre'];
+        $siglas = $_POST['siglas'];
+
+        agregarUnidadMedida($nombre,$siglas,$conexion);
+
+        
+      break;
+
+
+      case 'form_dum_modificar':
+        
+        $unidad = $_POST['unidad'];
+        $nombre = $_POST['nombre'];
+        $siglas = $_POST['siglas'];
+        $estado = $_POST['estado'];
+
+        modificarUnidadMedida($unidad,$nombre,$siglas,$estado,$conexion);
+
+        
+      break;
    
-   
+
+      case 'func_dum_eliminar':
+        
+        $unidad = $_POST['unidad'];
+        
+        eliminarUnidadMedida($unidad, $conexion); 
+      
+
+      break;
+
 
 
 

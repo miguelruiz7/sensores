@@ -12,8 +12,6 @@ if(isset($_SESSION['usr_id'])){
 
 # Consulta de los espacios; consolidar para poder mostrar sus espacios de cada usuario
 $sesion = $_SESSION['usr_id'];
-$admin_sistema = administradorSistema($sesion, $conexion);
-$admin_plataforma = administradorPlataforma($sesion,$conexion);
 
 ?>
 
@@ -21,16 +19,17 @@ $admin_plataforma = administradorPlataforma($sesion,$conexion);
 
 <?php
 
-$consulta = "SELECT * FROM disp_mst, dum_mst, disp_tipo_mst WHERE disp_dum_id = dum_id AND disp_disp_tipo_id = disp_tipo_id";
-$buscaDispositivos = mysqli_query($conexion, $consulta);
+$consulta = "SELECT * FROM dum_mst WHERE dum_id NOT IN ('1') ORDER BY dum_nom ASC";
 
-if(mysqli_num_rows($buscaDispositivos)>0){
+$buscaUnidades = mysqli_query($conexion, $consulta);
 
-  if($admin_sistema == 1 || $admin_plataforma == 1){
+if(mysqli_num_rows($buscaUnidades)>0){
+
+  if(administradorSistema($sesion, $conexion) == 1){
   # Si existe un registro despliega toda la informacion que exista
   ?>
-    <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_disp_agregar();">
-         <?php echo $i_agregar; ?> Crear nueva dispositivo
+    <div class="container m-2 text-center"> <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_dum_agregar();">
+         <?php echo $i_agregar; ?> Crear unidad de medida
       </button></div>
 
    <div class="table-responsive">
@@ -38,26 +37,20 @@ if(mysqli_num_rows($buscaDispositivos)>0){
                 <thead>
                   <tr>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Descripcion</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Unidad que medirá</th>
+                    <th scope="col">Descripción</th>
                     <th scope="col">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
   <?php
-    while($datos = mysqli_fetch_array($buscaDispositivos)){
-
+    while($datosUsuarios = mysqli_fetch_array($buscaUnidades)){
             ?>
           <tr>
-                <th scope="row"><?php echo $datos['disp_nom'];?></th>
-                <td><?php echo $datos['disp_desc_gral'];?></td>
-                <td><?php echo $datos['disp_tipo_nom'];?></td>
-                <td><?php echo $datos['dum_nom'];?> (<?php echo $datos['dum_sigl'];?>)</td>
+          <?php if($datosUsuarios['dum_estado'] == 1){ ?> <th scope="row"><?php echo $datosUsuarios['dum_nom'];?></th> <?php }else{ ?> <th scope="row" style="color:gray;"><?php echo $datosUsuarios['dum_nom'];?></th> <?php } ?> 
+                <td><?php echo $datosUsuarios['dum_sigl'];?></td>
                 <td>
-                  <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_disp_modificar('<?php echo $datos['disp_id'];?>');"><?php echo $i_modificar; ?></button> 
-                    <button class="btn btn-outline-dark" onclick="func_disp_eliminar('<?php echo $datos['disp_id'];?>')"><?php echo $i_basura; ?></button>
-
+                   <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_dum_modificar('<?php echo $datosUsuarios['dum_id'];?>');"><?php echo $i_modificar; ?></button>
+                   <button class="btn btn-outline-dark" onclick="func_dum_eliminar('<?php echo $datosUsuarios['dum_id'];?>')"><?php echo $i_basura; ?></button> 
                   </td>
                 </tr>
             <?php
@@ -82,12 +75,12 @@ if(mysqli_num_rows($buscaDispositivos)>0){
   <div class="position-relative p-5 text-center bg-body">
     <?php echo $i_advertencia ?>
 
-    <h1 class="text-body-emphasis"> No hay dispositivos en el sistema</h1>
+    <h1 class="text-body-emphasis"> No hay ningúna unidad en el sistema</h1>
     <p class="col-lg-6 mx-auto mb-4">
       Sin embargo puedes crear uno desde aquí
     </p>
-    <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="form_disp_agregar();"> 
-      Crear dispositivos
+    <button class="btn btn-outline-dark px-5 mb-5" type="button" data-bs-toggle="modal" data-bs-target="#formulariomodal" onclick="form_dum_agregar();"> 
+      Crear unidad de medida.
     </button>
     </div>
 
