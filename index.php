@@ -1,2 +1,2 @@
 <?php
-header('Location:frontend');
+header('Location:v1.2/frontend');
