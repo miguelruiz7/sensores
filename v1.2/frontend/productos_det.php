@@ -51,7 +51,7 @@ if(mysqli_num_rows($buscaProductos)>0){
       <?php
        }
        ?>
- <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 ">
+ <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 ">
   <?php
  
 
@@ -90,15 +90,26 @@ if(mysqli_num_rows($buscaDispositivos)>0){
     <tr>
       <th scope="col">Dispositivo</th>
       <th scope="col">Valores</th>
+      <th scope="col"></th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="table-group-divider">
 <?php
   while($datosDispositivos = mysqli_fetch_array($buscaDispositivos)){
+
+    $siglas = $datosDispositivos['dum_sigl'];
+
+    if($siglas != '*'){
+      $siglas_def = $datosDispositivos['dum_sigl'];
+    }else{
+      $siglas_def = '';
+    }
+
 ?>
     <tr>
       <th scope="row"><?php echo $datosDispositivos['disp_nom']; ?></th>
-      <td><?php echo sensorizarDispositivo($datosDispositivos['disp_id_'], $conexion)." ".$datosDispositivos['dum_sigl'] ; ?></td>
+      <td><?php echo sensorizarDispositivo($datosDispositivos['disp_id_'], $conexion)." ".$siglas_def; ?></td>
+     <td><?php if ($datosDispositivos['dum_sigl'] != '*') { ?><button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#formulariomodal" aria-expanded="true" onclick="form_disp_historico('<?php echo $datosDispositivos['disp_id_'] ?>')">Datos historicos</button> <?php } ?></td>  
     </tr>
     <?php
 }

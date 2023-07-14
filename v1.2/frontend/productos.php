@@ -567,6 +567,48 @@ switch($formulario){
         <?php
         break;
 
+
+        case 'form_disp_historico':
+
+          $dispositivo = $_POST['dispositivo'];
+
+          #Agrega una sección al espacio (NO FUNCIONA)
+        ?>
+         <div class="offcanvas-header m-3">
+ <h5 class="offcanvas-title text-light" id="offcanvasExampleLabel">Selecciona:</h5>
+   <button type="button" class="btn text-light" onclick="revertirFormulario();" data-bs-dismiss="modal" aria-label="Close" data-bs-dismiss="modal" aria-label="Close" >Cerrar</button>
+ </div>
+<form id="<?php echo $formulario; ?>">
+
+<div class="row row-cols-2 row-cols-3 text-center">
+ <div class="col  ">
+ <div class="form-floating text-light mb-3">
+            <input type="date" id="txt_disp_his_inicio" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+            <label>Fecha de inicio</label>
+          </div>
+ </div>
+ <div class="col  ">
+ <div class="form-floating text-light mb-3">
+            <input type="date" id="txt_disp_his_final" class="form-control border-bottom border-0 border-bottom-2 border-light bg-transparent rounded-0 text-white" id="floatingInput">
+            <label>Fecha de finalización</label>
+          </div>
+ </div>
+ <div class="col  ">
+ <div class="text-center">
+          <button id="btn_form" type="button" onclick="func_disp_historico(obtenerIdForm(),'<?php echo $dispositivo; ?>');" class="btn btn-outline-light">Gráfica (php)</button>
+          <button id="btn_form" type="button" onclick="func_disp_historicov2(obtenerIdForm(),'<?php echo $dispositivo; ?>');" class="btn btn-outline-light">Gráfica (chart.js)</button>
+          </div> 
+ </div>
+</div>
+        </form>
+
+  <iframe  id="historico" src="" style="width: 100%; height: 50vh;"></iframe>
+
+
+        <?php
+
+          break;
+
         default:
         echo 'Error al comunicar con el sistema';
         break;

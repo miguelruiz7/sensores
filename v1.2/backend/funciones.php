@@ -1072,6 +1072,40 @@ function sensorizarDispositivo($dispositivo, $conexion) {
   return;
 }
 
+
+
+function sensorizarDispositivoPromedios($dispositivo, $conexion) {
+  date_default_timezone_set('America/Mexico_City');
+  $fecha_cap = date('Y-m-d H:i', time());
+  $consulta = "SELECT prod_sec_id, disp_id, AVG(dato_val) AS promedio_valor
+  FROM dato_mst, disp_mst, disp_det, pl_det, prod_mst
+  WHERE disp_id = '$dispositivo' AND dato_tpo LIKE '%$fecha_cap%'
+      AND disp_pl_id = pl_id_
+      AND disp_disp_id = disp_id
+      AND prod_id = pl_prod_id
+      AND dato_disp_id = disp_id_
+  GROUP BY disp_id LIMIT 1";
+  $sensorizaDispositivo = mysqli_query($conexion, $consulta);
+  
+  if (mysqli_num_rows($sensorizaDispositivo) > 0) {
+    $valor = mysqli_fetch_array($sensorizaDispositivo);
+   /* if(is_numeric($valor['promedio_valor'])){
+    echo $valor['promedio_valor'];
+    } */
+      $promedio_valor =  $valor['promedio_valor'];
+
+      if (preg_match('/^[0-9]+(?:\.[0-9]+)?$/', $promedio_valor)) {
+        echo $promedio_valor;
+    }
+    
+
+  } else {
+    echo 'No se esta sensorizando';
+  }
+
+  return;
+}
+
 #Detecta los puertos del dispositivo
 function detectapuertoDisp($dispositivo, $conexion) {
   $consulta = "SELECT * FROM disp_det WHERE disp_disp_id = '$dispositivo'";

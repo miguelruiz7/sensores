@@ -1139,6 +1139,48 @@ function nuevoUsuario(){
                       }, 2500);
           });    
         }
+
+
+       function form_disp_historico(dispositivo){
+        verificaConectividad(function() {
+          var formulario = 'form_disp_historico';
+          $.ajax({
+                  url: "productos.php",
+                  type: "POST",
+                  data: {
+                    dispositivo:dispositivo,
+                    formulario:formulario},
+                  success: function(contenido){
+                      $("#formularios_contenedor").html(contenido);
+                  }
+              });
+      });   
+       }
+
+
+       function func_disp_historico(formulario,dispositivo) {
+        verificaConectividad(function() {
+            verificarllenosForm(formulario, "notificacionesform",function() {
+                var inicio = $("#txt_disp_his_inicio").val();
+                var final = $("#txt_disp_his_final").val();         
+                var url = 'g.php?disp='+dispositivo+'&txtInicio='+inicio+'&txtFinal='+final+''; // Ruta al archivo que quieres cargar
+                document.getElementById('historico').src = url;
+
+            });
+        });    
+      }
+
+      function func_disp_historicov2(formulario,dispositivo) {
+        verificaConectividad(function() {
+            verificarllenosForm(formulario, "notificacionesform",function() {
+                var inicio = $("#txt_disp_his_inicio").val();
+                var final = $("#txt_disp_his_final").val();         
+                var url = 'g2.php?disp='+dispositivo+'&txtInicio='+inicio+'&txtFinal='+final+''; // Ruta al archivo que quieres cargar
+                document.getElementById('historico').src = url;
+
+            });
+        });    
+      }
     
 
 

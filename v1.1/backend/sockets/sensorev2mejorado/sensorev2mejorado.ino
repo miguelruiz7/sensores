@@ -48,9 +48,9 @@ void loop() {
  
   //Sensor de Luz
   
-  objectoSensor("15",String(obtenerValorSensorLuz()));
-  objectoSensor("16",String(obtenerValorSensorMov()));
-  objectoSensor("14",String(obtenerValorUltrasonico()));
+  objectoSensor("24",String(obtenerValorSensorLuz()));
+  objectoSensor("27",String(obtenerValorSensorMov()));
+
 
 
 }
