@@ -597,12 +597,18 @@ switch($formulario){
  <div class="text-center">
           <button id="btn_form" type="button" onclick="func_disp_historico(obtenerIdForm(),'<?php echo $dispositivo; ?>');" class="btn btn-outline-light">Gráfica (php)</button>
           <button id="btn_form" type="button" onclick="func_disp_historicov2(obtenerIdForm(),'<?php echo $dispositivo; ?>');" class="btn btn-outline-light">Gráfica (chart.js)</button>
+         
           </div> 
  </div>
 </div>
         </form>
 
   <iframe  id="historico" src="" style="width: 100%; height: 50vh;"></iframe>
+
+
+  <div class="text-center">
+  <button id="btn_form" type="button" onclick="func_disp_historico_exportar(obtenerIdForm(),'<?php echo $dispositivo; ?>');" class="btn btn-outline-light">Exportar datos a Excel</button>
+  </div>
 
 
         <?php

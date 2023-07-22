@@ -6,22 +6,22 @@
 
 #include <DHT.h>
 #include <Adafruit_Sensor.h>
-#define DHTPIN 4
-#define DHTTYPE DHT22
+#define DHTPIN 5
+#define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
 #define led 2
 
-const char* ssid = "CITNOVA";
-const char* password = "PRU3B@C1TN0V@";
-const char* server = "20.20.2.113";
+const char* ssid = "sensores";
+const char* password = "sensores";
+const char* server = "192.168.144.178";
 const int port = 1234;
 
 WiFiClient client;
 
 void setup()
 {
-
+  dht.begin();
   pinMode(led, OUTPUT);
   digitalWrite(led, HIGH);
 
@@ -45,11 +45,10 @@ void setup()
   }
 
 void loop() {
- 
-  //Sensor de Luz
-  
-  objectoSensor("24",String(obtenerValorSensorLuz()));
-  objectoSensor("27",String(obtenerValorSensorMov()));
+
+  objectoSensor("30",String(obtenerValorSensorMov()));
+  objectoSensor("29",String(obtenerValorSensorLuz()));
+  objectoSensor("28",String(obtenerTemperatura()));
 
 
 
@@ -105,7 +104,7 @@ return porcentajeLuz ;
 
  
 String obtenerValorSensorMov(){
-  #define sensorMic 16
+  #define sensorMic 2
 String valorLetra;
 int datos = digitalRead(sensorMic);
 int datosInv = (datos == 1) ? 0 : 1; // Invierte el valor
@@ -186,15 +185,9 @@ float obtenerValorUltrasonico() {
 }
 
 
-//FUNCIONES HUMEDAD Y TEMPERATURA
-float temperaturaHumedad(){
-      // Esperamos 5 segundos entre medidas
-  // Leemos la humedad relativa
-  //float h = dht.readHumidity();
-  // Leemos la temperatura en grados centígrados (por defecto)
-  float t = dht.readTemperature();
-  // Leemos la temperatura en grados Fahrenheit
-  //float f = dht.readTemperature(true);
-    Serial.println(t);
-    return t;
-  }
+float obtenerTemperatura() {
+float h = dht.readHumidity();
+float t = dht.readTemperature();
+
+return t;
+}
