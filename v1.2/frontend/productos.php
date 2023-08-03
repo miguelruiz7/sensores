@@ -607,7 +607,7 @@ switch($formulario){
 
 
   <div class="text-center">
-  <button id="btn_form" type="button" onclick="func_disp_historico_exportar(obtenerIdForm(),'<?php echo $dispositivo; ?>');" class="btn btn-outline-light">Exportar datos a Excel</button>
+  <!--<button id="btn_form" type="button" onclick="func_disp_historico_exportar(obtenerIdForm(),'<?php echo $dispositivo; ?>');" class="btn btn-outline-light">Exportar datos a Excel</button> -->
   </div>
 
 

@@ -203,35 +203,50 @@ function rolPlataforma($sesion, $espacio, $conexion){
 ####################################################################################################
 
 
-function insertarDatos($documento, $conexion){
-  $datos = json_decode($documento);
-  $id = $datos->id;
-  $valores = $datos->valor;
-  date_default_timezone_set('America/Mexico_City');
-  $fecha_cap = date('Y-m-d H:i:s', time());
-  
- 
+function insertarDatos($documento, $conexion)
+{
+    $datos = json_decode($documento);
 
-  $consulta = "SELECT disp_id_ FROM disp_det WHERE disp_id_ = '$id'";
-  $checarDispositivos = mysqli_query($conexion, $consulta);
+    // Verificar si el JSON es válido
+    if ($datos === null) {
+        echo 'Error: JSON mal formado.' . PHP_EOL;
+        return;
+    }
 
-  if(mysqli_num_rows($checarDispositivos)>0){
+    $id = $datos->id;
+    $valores = $datos->valor;
 
-  $consultaInsertar = "INSERT INTO dato_mst VALUES (NULL, '$valores','$fecha_cap', '$id')";
+    date_default_timezone_set('America/Mexico_City');
+    $fecha_cap = date('Y-m-d H:i:s', time());
 
-  $conecta = mysqli_query($conexion, $consultaInsertar);
+    // Verificar si el dispositivo existe en la tabla disp_det usando una consulta preparada
+    $consulta = "SELECT disp_id_ FROM disp_det WHERE disp_id_ = ?";
+    $stmt = mysqli_prepare($conexion, $consulta);
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_store_result($stmt);
 
-  if($conecta){
-   echo 'Los datos han sido transferidos a la base de datos (dispositivo: '.$id.', valor: '.$valores.', fecha_cap: '.$fecha_cap.')'. PHP_EOL;
-  }else{
-   echo 'Fallo'. PHP_EOL;
-  }
-  
-  }else{
-     echo 'Los datos no han sido transferidos a la base de datos (dispositivo: '.$id.', valor: '.$valores.', fecha_cap: '.$fecha_cap.')'. PHP_EOL;
-  }
+    if (mysqli_stmt_num_rows($stmt) > 0) {
+        // El dispositivo existe, insertar datos en la tabla dato_mst usando una consulta preparada
+        $consultaInsertar = "INSERT INTO dato_mst VALUES (NULL, ?, ?, ?)";
+        $stmtInsertar = mysqli_prepare($conexion, $consultaInsertar);
+        mysqli_stmt_bind_param($stmtInsertar, 'sss', $valores, $fecha_cap, $id);
+        $conecta = mysqli_stmt_execute($stmtInsertar);
+
+        if ($conecta) {
+            echo 'Los datos han sido transferidos a la base de datos (dispositivo: ' . $id . ', valor: ' . $valores . ', fecha_cap: ' . $fecha_cap . ')' . PHP_EOL;
+        } else {
+            echo 'Fallo al insertar datos.' . PHP_EOL;
+        }
+
+        mysqli_stmt_close($stmtInsertar);
+    } else {
+        echo 'Los datos no han sido transferidos a la base de datos (dispositivo: ' . $id . ', valor: ' . $valores . ', fecha_cap: ' . $fecha_cap . ')' . PHP_EOL;
+    }
 
 }
+
+
 
 ####################################################################################################
 #                                                                                                  #
